@@ -1,5 +1,6 @@
 package com.example.dog_crud_spring_boot.controller;
 
+import com.example.dog_crud_spring_boot.dto.PostRequestDto;
 import com.example.dog_crud_spring_boot.model.Post;
 import com.example.dog_crud_spring_boot.repository.PostRepository;
 
@@ -51,9 +52,16 @@ public class PostController {
      * @return 保存された投稿データを含む HTTP レスポンス（ステータスコード 200）
      */
     @PostMapping
-    public ResponseEntity<Post> create(@Valid @RequestBody Post post) {
+    public ResponseEntity<Post> create(@Valid @RequestBody PostRequestDto postRequest) {
+        Post post = new Post();
+        post.setTitle(postRequest.getTitle());
+        post.setContent(postRequest.getContent());
+        post.setImageUrl(postRequest.getImageUrl());
+
         // パスワードはハッシュ化してから保存する
-        post.setPassword(passwordEncoder.encode(post.getPassword()));
+        // post.setPassword(passwordEncoder.encode(postRequest.getPassword()));
+        post.setPassword("aaa");
+
         Post savedPost = postRepository.save(post);
         return ResponseEntity.ok(savedPost);
     }

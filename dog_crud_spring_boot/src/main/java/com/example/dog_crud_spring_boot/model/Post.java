@@ -14,22 +14,15 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "タイトルは必須です")
-    @Size(max = 20, message = "タイトルは20文字以内で入力してください")
     @Column(nullable = false, length = 20)
     private String title;
 
-    @NotBlank(message = "内容は必須です")
-    @Size(max = 100, message = "内容は100文字以内で入力してください")
     @Column(nullable = false, length = 100)
     private String content;
 
-    @NotBlank(message = "パスワードは必須です")
-    @Size(min = 5, max = 20, message = "パスワードは5文字以上20文字以内で入力してください")
     @Column(nullable = false)
     private String password;
 
-    @NotBlank(message = "画像のURLは必須です")
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 

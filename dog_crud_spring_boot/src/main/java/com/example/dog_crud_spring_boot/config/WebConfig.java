@@ -42,4 +42,22 @@ public class WebConfig implements WebMvcConfigurer {
                 // 認証情報（Cookie等）の送信を許可する
                 .allowCredentials(true);
     }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                // CORSを有効化（↑で定義したCORS設定が使われるようにする）
+                .cors(Customizer.withDefaults())
+
+                // CSRF対策（Cross-Site Request Forgery大まかにいうとなりすまし攻撃の対策）
+                // を無効化（API用アプリのため、トークン管理しないので無効にする）
+                .csrf(csrf -> csrf.disable())
+
+                // 全てのリクエストを許可する（現状は細かい制限を加えない）
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll());
+
+        // 最終的にSecurityFilterChainを返す
+        return http.build();
+    }
 }
