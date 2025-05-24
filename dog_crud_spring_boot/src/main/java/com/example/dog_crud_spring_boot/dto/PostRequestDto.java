@@ -20,7 +20,6 @@ public class PostRequestDto {
     @Size(max = 100, message = "内容は100文字以内で入力してください")
     private String content;
 
-    @NotBlank(message = "パスワードは必須です")
     @Size(min = 5, max = 20, message = "パスワードは5文字以上20文字以内で入力してください")
     private String password;
 

@@ -33,19 +33,21 @@ export const MESSAGES = {
     POST_CREATE_SUCCESSED: '投稿の作成に成功しました',
     POST_CREATE_FAILED: '投稿の作成に失敗しました',
     POST_UPDATE_SUCCESSED: '投稿の更新に成功しました',
+    POST_UPDATE_FORBIDDEN: '更新に失敗しました\nパスワードが間違っていませんか？',
     POST_UPDATE_FAILED: '投稿の更新に失敗しました',
     
     POST_GET_FAILED: '投稿の取得に失敗しました',
     POST_NOT_FOUND: "投稿が見つかりません（削除された可能性があります）",
 
-    EXECUTE_CONFIRM: '本当に実行しますか？\n実行する場合、作成時に設定したパスワードを入力してください',
-    DELETE_SUCCESSED: '削除に成功しました',
-    DELETE_FORBIDDEN: '削除に失敗しました\nパスワードが間違っていませんか？',
-    DELETE_FAILED: '削除に失敗しました',
+    POST_EXECUTE_CONFIRM: '本当に実行しますか？',
+    POST_EXECUTE_CONFIRM_WITH_PASSWORD: '本当に実行しますか？\n実行する場合、作成時に設定したパスワードを入力してください',
+    POST_DELETE_SUCCESSED: '削除に成功しました',
+    POST_DELETE_FORBIDDEN: '削除に失敗しました\nパスワードが間違っていませんか？',
+    POST_DELETE_FAILED: '削除に失敗しました',
 
     // デバッグ用メッセージ
-    NOT_USED_IN_USER_PROVIDER: 'UserProviderの位置が不正です',
     UNEXPECTED_ERROR: '想定していないエラーが発生しました',
+    SHOW_VALIDATED_MESSAGE_WRONG_USAGE: 'デバッグ用メッセージ：showValidatedMessageの使い方が不正です'
 }
 
 // API

@@ -1,38 +1,82 @@
-.App {
-  text-align: center;
+/* 色の変数設定 */
+:root {
+    /* body(画面全体）の背景色 */
+    --body_background_color: rgb(245, 245, 255);
+    /* メインボタンの背景色 */
+    --button_background_color: rgb(156, 0, 0);
+    /* ボタンの文字色 */
+    --button_text_color: white;
+    /* 成功メッセージの背景色 */
+    --success_background_color: #d4edda;
+    /* 成功メッセージの文字色 */
+    --success_text_color: #155724;
+    /* エラーメッセージの背景色 */
+    --error_background_color: #edd4d4;
+    /* エラーメッセージの文字色 */
+    --error_text_color: #571515;
+    /* 無効ボタンの背景色 */
+    --common_disabled_button_background: grey;
+    /* 無効ボタンの文字色 */
+    --common_disabled_button_text_color: #ccc;
+    /* 影を設定するときの色 */
+    --box_shadow_color: rgba(0, 0, 0, 0.1);
+    /* 基本となるフォントサイズ（スマホ、PCともに16pxが推奨されている。 https://tane-be.co.jp/knowledge/web-design/2601/） */
+    --base-font-size: 16px;
+
+    /* リンクの文字色 */
+    --common_link_font_color: blue;
+    /* 境界線の色（ほかのcssファイルからも使用する） */
+    --common_border_color: #ccc;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+    background-color: var(--body_background_color);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.common_container {
+    width: 60%;
+    padding: 0px;
+    margin: 0px auto;
 }
 
-.App-link {
-  color: #61dafb;
+.common_button {
+    display: inline-block;
+    width: 120px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    background-color: green;
+    ;
+    color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.common_input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.common_button_to_link {
+    background: none;
+    border: none;
+    color: var(--common_link_font_color);
+}
+
+.common_shadow {
+    box-shadow: 0px 10px 10px #0000003b;
 }

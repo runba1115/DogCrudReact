@@ -4,7 +4,8 @@ import { APIS, MESSAGES, ROUTES } from '../config/Constant';
 import { useDeletePost } from '../hooks/DeletePost';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
-// import './PostIndex.css';
+import { format } from 'date-fns';
+import './PostIndex.css';
 
 /**
  * 投稿一覧画面
@@ -61,29 +62,45 @@ function PostIndex() {
     return (
         <div className='common_container '>
             {/* 新規投稿作成画面へのリンク */}
-            <Link to={`/posts/new`} className='common_button posts_create_button'>新規作成</Link>
+            <Link to={`/posts/new`} className='common_button post_create_button'>新規作成</Link>
             <h2>投稿一覧</h2>
 
             {/* 投稿が存在しない場合のメッセージ表示 */}
             {posts.length === 0 ? (
                 <p>投稿がまだありません</p>
             ) : (
-                <ul>
+                <>
                     {posts.map(post => {
                         return (
-                            <div className="posts_simple_view_post">
-                                {/* <p className="posts_simple_view_user">ユーザー名：{post.user.userName}</p> */}
-                                <h3 className="posts_simple_view_title">{post.title}</h3>
-                                <p>{post.content}</p>
-                                <Link to={ROUTES.POST_SHOW(post.id)} className="common_button posts_simple_view_button posts_simple_view_detail_button">詳細</Link>
-                                <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button posts_simple_view_button posts_simple_view_edit_button"}>編集</Link>
-                                <img src={post.imageUrl} alt="犬の画像" />
-                                <button onClick={() => handleDelete(post.id)} className={"common_button posts_simple_view_button posts_simple_view_delete_button"}>削除</button>
+                            // <div className="post_simple_view_post" key={post.id}>
+                            //     {/* <p className="post_simple_view_user">ユーザー名：{post.user.userName}</p> */}
+                            //     <h3 className="post_simple_view_title">{post.title}</h3>
+                            //     <p>{post.content}</p>
+                            //     <Link to={ROUTES.POST_SHOW(post.id)} className="common_button post_simple_view_button post_simple_view_simple_button">詳細</Link>
+                            //     <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button post_simple_view_button post_simple_view_edit_button"}>編集</Link>
+                            //     <img src={post.imageUrl} alt="犬の画像" />
+                            //     <button onClick={() => handleDelete(post.id)} className={"common_button post_simple_view_button post_simple_view_delete_button"}>削除</button>
 
-                            </div>
+                            // </div>
+
+                <div className='post_simple_view_post common_shadow'>
+                    <h2>投稿詳細</h2>
+                    <h3>{post.title}
+                        <span className="post_simple_date_info">作成日時: {format(new Date(post.createdAt), 'yyyy/MM/dd HH:mm')}</span>
+                        <span className="post_simple_date_info">更新日時: {format(new Date(post.updatedAt), 'yyyy/MM/dd HH:mm')}</span>
+                    </h3>
+                    <p>{post.content}</p>
+                    <img src={post.imageUrl} alt="犬の画像" className="post_simple_dog_image" />
+                    <p>
+                        <Link to={ROUTES.POST_SHOW(post.id)} className={"common_button post_simple_view_button post_simple_view_simple_button"}>詳細</Link>
+                        <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button post_simple_view_button post_simple_view_edit_button"}>編集</Link>
+                        <button onClick={() => handleDelete(post.id)} className={"common_button post_simple_view_button post_simple_view_delete_button"}>削除</button>
+                    </p>
+                </div >
+
                         );
                     })}
-                </ul>
+                </>
             )}
         </div>
     );

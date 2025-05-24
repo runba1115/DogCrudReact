@@ -26,7 +26,8 @@ export const useDeletePost = (onSuccess = () => { }) => {
      */
     const deletePost = useCallback(async (id) => {
         // 削除確認ダイアログの表示を行う（キャンセルされたら中断）
-        const inputtedPassword = prompt(MESSAGES.EXECUTE_CONFIRM, "");
+        // TODO:パスワードを入力するが、これでは入力されたパスワードが伏字にならない。伏字になる方法を検討する必要がある
+        const inputtedPassword = prompt(MESSAGES.POST_EXECUTE_CONFIRM_WITH_PASSWORD, "");
         if (!inputtedPassword) {
             // パスワードが入力されなかった。以降の処理を行わない
             return;
@@ -44,12 +45,12 @@ export const useDeletePost = (onSuccess = () => { }) => {
 
             if (res.ok) {
                 //レスポンスが成功（200系）の場合
-                alert(MESSAGES.DELETE_SUCCESSED);
+                alert(MESSAGES.POST_DELETE_SUCCESSED);
                 onSuccess();
             }
             else {
                 if (res.status === HTTP_STATUS_CODES.FORBIDDEN) {
-                    alert(MESSAGES.DELETE_FORBIDDEN);
+                    alert(MESSAGES.POST_DELETE_FORBIDDEN);
                 } else {
                     //想定外のエラー応答があった場合は共通関数でErrorオブジェクト生成する
                     throw await createErrorFromResponse(res);
@@ -59,7 +60,7 @@ export const useDeletePost = (onSuccess = () => { }) => {
         }
         catch (error) {
             // ネットワークエラー or 明示的にthrowされたErrorをキャッチする
-            showErrorMessage(error, MESSAGES.DELETE_FAILED)
+            showErrorMessage(error, MESSAGES.POST_DELETE_FAILED)
         }
     }, [onSuccess, createErrorFromResponse, showErrorMessage]);
 

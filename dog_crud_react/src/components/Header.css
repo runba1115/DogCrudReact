@@ -1,0 +1,72 @@
+/* 色の変数設定 */
+:root {
+    /* ヘッダーの背景色 */
+    --header_background_color: white;
+    /* ヘッダーの文字色 */
+    --header_text_color: black;
+    /* ヘッダー内リンクのホバー時の色 */
+    --header_hover_color: rgb(0, 204, 255);
+}
+
+/* ヘッダー全体のスタイル */
+header {
+    width: 100%;
+    border-bottom: 1px solid var(--common_border_color);
+    background-color: var(--header_background_color);
+
+    /* ヘッダーの位置を左上に固定し、ほかの要素と被ったときヘッダーが手前に表示されるようにする */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* ヘッダー内のコンテナ設定 */
+.header_container {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ヘッダー内の左側の要素 */
+.header_left_element p {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+/* ヘッダー内の右側の要素 */
+.header_right_element {
+    display: flex;
+    align-items: center;
+}
+
+/* ヘッダー内右側リンクとユーザー名のスタイル */
+.header_right_element>a,
+.header_right_element>p,
+.header_right_element>button {
+    display: inline-block;
+    width: 100px;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    color: var(--header_text_color);
+    border-left: 1px solid var(--common_border_color);
+    border-right: 1px solid var(--common_border_color);
+}
+
+/* 最初のリンクとユーザー名には右ボーダーを適用しない */
+.header_right_element>a:first-of-type,
+.header_right_element>p:first-of-type {
+    border-right: none;
+}
+
+/* ヘッダー内リンクにホバー時の色 */
+.header_right_element>a:hover,
+.header_right_element>button:hover {
+    color: var(--header_hover_color);
+}
+
+/* ヘッダーでコンテンツが隠れないよう、bodyの上にスペースを追加 */
+body {
+    padding-top: 70px;
+}

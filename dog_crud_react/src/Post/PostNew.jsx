@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { APIS, MESSAGES, ROUTES } from "../config/Constant";
+import { APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from "../config/Constant";
 import { useNavigate } from 'react-router-dom';
 import PostFormFields from "../components/PostFormFields";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
+import { useShowVaridatedMessage } from "../hooks/ShowValidatedMessage";
 
 /**
  * 新規投稿作成ページ
  * @returns 新規投稿作成ページ
  */
-function PostNew({isAuthenticated, email, userPasword}) {
+function PostNew({ isAuthenticated, email, userPasword }) {
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -20,17 +21,18 @@ function PostNew({isAuthenticated, email, userPasword}) {
     const navigate = useNavigate();
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
+    const showVaridatedMessage = useShowVaridatedMessage();
 
     /**
      * 初回レンダリング時の処理
      * - 未ログインの場合、投稿フォームへのアクセスをブロック
      * - ユーザーIDを投稿データに設定
      */
-    useEffect(()=>{
-        if(isAuthenticated && userPasword !== null && userPasword !== ''){
-            setPost(prevPost => ({...prevPost, password: userPasword}));
-        }
-    },[]);
+    useEffect(() => {
+        const isUserLogin = (isAuthenticated && userPasword !== null && userPasword !== '');
+        const defaultPassword = isUserLogin ? userPasword : '';
+        setPost(prevPost => ({ ...prevPost, password: defaultPassword }));
+    }, []);
 
     /**
      * フォーム送信
@@ -67,13 +69,18 @@ function PostNew({isAuthenticated, email, userPasword}) {
                 alert(MESSAGES.POST_CREATE_SUCCESSED);
                 navigate(ROUTES.POST_INDEX);
             } else {
-                // 想定外の例外が発生した
-                throw await createErrorFromResponse(response);
+                if (response.status === HTTP_STATUS_CODES.BAD_REQUEST) {
+                    await showVaridatedMessage(response);
+                }
+                else {
+                    // 想定外の例外が発生した
+                    throw await createErrorFromResponse(response);
+                }
             }
         } catch (error) {
             // ネットワークエラーまたはサーバーエラーをキャッチ
             showErrorMessage(error, MESSAGES.POST_CREATE_FAILED)
-        } finally{
+        } finally {
             // 投稿送信中フラグをfalseにリセット
             setIsSubmitting(false);
         }
@@ -83,6 +90,7 @@ function PostNew({isAuthenticated, email, userPasword}) {
         <PostFormFields
             formTitle={'新規投稿'}
             post={post}
+            isEdit={false}
             setPost={setPost}
             onSubmit={handleSubmit}
             buttonLabel={"投稿する"}
