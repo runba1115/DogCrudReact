@@ -84,6 +84,7 @@ function PostNew({isAuthenticated, email, userPasword}) {
             formTitle={'新規投稿'}
             post={post}
             setPost={setPost}
+            isEdit={true}
             onSubmit={handleSubmit}
             buttonLabel={"投稿する"}
         />
