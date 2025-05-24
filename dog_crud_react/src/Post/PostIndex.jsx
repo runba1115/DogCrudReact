@@ -92,7 +92,7 @@ function PostIndex() {
                     <p>{post.content}</p>
                     <img src={post.imageUrl} alt="犬の画像" className="post_simple_dog_image" />
                     <p>
-                        <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button post_simple_view_button post_simple_view_simple_button"}>詳細</Link>
+                        <Link to={ROUTES.POST_SHOW(post.id)} className={"common_button post_simple_view_button post_simple_view_simple_button"}>詳細</Link>
                         <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button post_simple_view_button post_simple_view_edit_button"}>編集</Link>
                         <button onClick={() => handleDelete(post.id)} className={"common_button post_simple_view_button post_simple_view_delete_button"}>削除</button>
                     </p>

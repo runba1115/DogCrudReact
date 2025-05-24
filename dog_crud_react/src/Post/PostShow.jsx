@@ -76,7 +76,7 @@ function PostShow() {
                 <div>読み込み中です…</div>
             ) : (
 
-                <div className='post_detail_view_post'>
+                <div className='common_shadow post_detail_view_post'>
                     <h3>{post.title}
                         <span className="post_detail_date_info">作成日時: {format(new Date(post.createdAt), 'yyyy/MM/dd HH:mm')}</span>
                         <span className="post_detail_date_info">更新日時: {format(new Date(post.updatedAt), 'yyyy/MM/dd HH:mm')}</span>

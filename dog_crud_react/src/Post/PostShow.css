@@ -10,10 +10,13 @@
     --delete_button_background_color: #dc3545;
 }
 
+
 /* 各投稿のスタイル */
 .post_detail_view_post {
     margin-bottom: 20px;
-    padding: 5px;
+    padding: 20px;
+    border-radius: 30px;
+    background-color: white;
 }
 
 .post_detail_view_post p {
