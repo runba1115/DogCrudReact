@@ -37,7 +37,7 @@ function PostFormFields({ formTitle, post, setPost, isEdit, onSubmit, buttonLabe
         } catch (error) {
             showErrorMessage(error);
         }
-    }, []);
+    }, [createErrorFromResponse, showErrorMessage]);
 
     useEffect(() => {
         console.log(post);

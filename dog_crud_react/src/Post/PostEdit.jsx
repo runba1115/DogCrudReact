@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import PostFormFields from '../components/PostFormFields';
+import { useShowVaridatedMessage } from '../hooks/ShowValidatedMessage';
 
 /**
  * 投稿編集画面
@@ -24,6 +25,7 @@ function PostEdit() {
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
     const navigate = useNavigate();
+    const showVaridatedMessage = useShowVaridatedMessage();
 
     /**
      * フォームが送信されたときのハンドラ
@@ -41,7 +43,8 @@ function PostEdit() {
             // パスワードが入力されなかった。以降の処理を行わない
             return;
         }
-        setPost(prevPost => ({...prevPost, password:inputtedPassword}));
+
+        setPost(prevPost => ({ ...prevPost, password: inputtedPassword }));
 
         setIsSubmitting(true);
 
@@ -73,7 +76,11 @@ function PostEdit() {
                     alert(MESSAGES.POST_NOT_FOUND);
                     navigate(ROUTES.POST_INDEX);
                 } else if (response.status == HTTP_STATUS_CODES.FORBIDDEN) {
+                    // 更新が拒否された（不正なパスワードである）
                     alert(MESSAGES.POST_UPDATE_FORBIDDEN)
+                }else if(response.status === HTTP_STATUS_CODES.BAD_REQUEST){
+                    // バリデーションエラーが発生した
+                    await showVaridatedMessage(response);
                 }
                 else {
                     // 想定外のエラーが発生した。

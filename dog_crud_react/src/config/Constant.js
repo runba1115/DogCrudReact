@@ -46,6 +46,7 @@ export const MESSAGES = {
 
     // デバッグ用メッセージ
     UNEXPECTED_ERROR: '想定していないエラーが発生しました',
+    SHOW_VALIDATED_MESSAGE_WRONG_USAGE: 'デバッグ用メッセージ：showValidatedMessageの使い方が不正です'
 }
 
 // API
