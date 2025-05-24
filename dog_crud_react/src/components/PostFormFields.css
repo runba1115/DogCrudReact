@@ -1,12 +1,19 @@
 /* 色の変数設定 */
 :root {
-    --button_background_color: #007bff; /* 送信ボタンの背景色 */
-    --button_disabled_background: rgb(184, 184, 184); /* 無効ボタンの背景色 */
-    --button_text_color: white; /* ボタンの文字色 */
-    --link_color: #007bff; /* リンクの色 */
-    --link_hover_color: #0056b3; /* リンクのホバー時の色 */
-    --border_color: var(--common_border_color); /* ボーダーの色 */
-    --error_color: red; /* エラーメッセージの色 */
+    /* 送信ボタンの背景色 */
+    --button_background_color: #007bff;
+    /* 無効ボタンの背景色 */
+    --button_disabled_background: rgb(184, 184, 184);
+    /* ボタンの文字色 */
+    --button_text_color: white;
+    /* リンクの色 */
+    --link_color: #007bff;
+    /* リンクのホバー時の色 */
+    --link_hover_color: #0056b3;
+    /* ボーダーの色 */
+    --border_color: var(--common_border_color);
+    /* エラーメッセージの色 */
+    --error_color: red;
 }
 
 /* フォーム全体のスタイル */
@@ -52,17 +59,17 @@
     resize: vertical;
 }
 
-.post_form_image{
+.post_form_image {
     width: 250px;
     display: block;
     margin: 0 auto;
 }
 
-.post_form_button{
+.post_form_button {
     padding: 10px 30px;
     display: block;
-    margin :10px auto 0;
-    width:auto;
+    margin: 10px auto 0;
+    width: auto;
     line-height: 20px;
 }
 

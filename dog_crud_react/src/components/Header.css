@@ -1,8 +1,11 @@
 /* 色の変数設定 */
 :root {
-    --header_background_color: white; /* ヘッダーの背景色 */
-    --header_text_color: black; /* ヘッダーの文字色 */
-    --header_hover_color: rgb(0, 204, 255); /* ヘッダー内リンクのホバー時の色 */
+    /* ヘッダーの背景色 */
+    --header_background_color: white;
+    /* ヘッダーの文字色 */
+    --header_text_color: black;
+    /* ヘッダー内リンクのホバー時の色 */
+    --header_hover_color: rgb(0, 204, 255);
 }
 
 /* ヘッダー全体のスタイル */
@@ -10,7 +13,7 @@ header {
     width: 100%;
     border-bottom: 1px solid var(--common_border_color);
     background-color: var(--header_background_color);
-    
+
     /* ヘッダーの位置を左上に固定し、ほかの要素と被ったときヘッダーが手前に表示されるようにする */
     position: fixed;
     top: 0;
@@ -59,12 +62,11 @@ header {
 
 /* ヘッダー内リンクにホバー時の色 */
 .header_right_element>a:hover,
-.header_right_element>button:hover
-{
+.header_right_element>button:hover {
     color: var(--header_hover_color);
 }
 
 /* ヘッダーでコンテンツが隠れないよう、bodyの上にスペースを追加 */
-body{
+body {
     padding-top: 70px;
 }
