@@ -6,10 +6,15 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import PostIndex from './Post/PostIndex';
 import PostShow from './Post/PostShow';
 import PostEdit from './Post/PostEdit';
+import Header from './components/Header';
 
 function App() {
     return (
         <BrowserRouter>
+            <Header 
+                isAuthenticated={false}
+                email={''}
+            />
             <Routes>
                 <Route path={ROUTES.POST_INDEX} element={<PostIndex />}></Route>
                 <Route path={ROUTES.POST_SHOW()} element={<PostShow />}></Route>

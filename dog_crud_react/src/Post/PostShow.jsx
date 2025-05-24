@@ -4,7 +4,8 @@ import { API_BASE_URL, APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from '../conf
 import { useDeletePost } from '../hooks/DeletePost';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
-// import './PostShow.css';
+import { format } from 'date-fns';
+import './PostShow.css';
 
 /**
  * 投稿詳細画面
@@ -75,17 +76,17 @@ function PostShow() {
                 <div>読み込み中です…</div>
             ) : (
 
-                <div className='posts_detail_view_post'>
-                    <h2>投稿詳細</h2>
-                    {/* <p className="posts_simple_view_user">ユーザー名：{post.user.userName}</p> */}
-                    <h3>{post.title}</h3>
+                <div className='post_detail_view_post'>
+                    <h3>{post.title}
+                        <span className="post_detail_date_info">作成日時: {format(new Date(post.createdAt), 'yyyy/MM/dd HH:mm')}</span>
+                        <span className="post_detail_date_info">更新日時: {format(new Date(post.updatedAt), 'yyyy/MM/dd HH:mm')}</span>
+                    </h3>
                     <p>{post.content}</p>
-                    {/* <p>投稿者ID: {post.user.id}</p> */}
-                    <p>作成日時: {post.createdAt}</p>
-                    <p>更新日時: {post.updatedAt}</p>
-                    <img src={post.imageUrl} alt="犬の画像" />
-                    <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button posts_simple_view_button posts_simple_view_edit_button"}>編集</Link>
-                    <button onClick={() => handleDelete(post.id)} className={"common_button posts_simple_view_button posts_simple_view_delete_button"}>削除</button>
+                    <img src={post.imageUrl} alt="犬の画像" className="post_detail_dog_image" />
+                    <p>
+                        <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button post_detail_view_button post_detail_view_edit_button"}>編集</Link>
+                        <button onClick={() => handleDelete(post.id)} className={"common_button post_detail_view_button post_detail_view_delete_button"}>削除</button>
+                    </p>
                 </div >
             )}
         </div>

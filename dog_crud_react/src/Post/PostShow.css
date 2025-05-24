@@ -1,0 +1,66 @@
+/* 色の変数設定 */
+:root {
+    --create_button_background_color: #28a745; /* 新規作成ボタンの背景色 */
+    --detail_button_background_color: #007bff; /* 詳細ボタンの背景色 */
+    --edit_button_background_color: #ffc107; /* 編集ボタンの背景色 */
+    --delete_button_background_color: #dc3545; /* 削除ボタンの背景色 */
+}
+
+/* 各投稿のスタイル */
+.post_detail_view_post {
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.post_detail_view_post p {
+    margin: 5px 0;
+}
+
+.post_detail_date_info{
+    margin-left:5px;
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+/* 投稿一覧画面の投稿内のボタン 共通スタイル */
+.post_detail_view_button{
+    margin-top: 5px;
+    font-size:var(--base-font-size);
+    line-height:40px;
+    width:100px;
+    margin-right: 5px;
+}
+
+.post_detail_dog_image{
+    width:250px;
+}
+
+/* 詳細ボタン */
+.post_detail_view_detail_button {
+    background-color: var(--detail_button_background_color);
+    margin-top:30px;
+}
+
+/* 編集ボタン */
+.post_detail_view_edit_button {
+    background-color: var(--edit_button_background_color);
+    color: white;
+    text-decoration: none;
+}
+
+/* 削除ボタン */
+.post_detail_view_delete_form {
+    display: inline-block;
+}
+
+.post_detail_view_delete_button {
+    background-color: var(--delete_button_background_color);
+}
+
+/* ボタンの無効化 */
+/* ※commonの中に似たものがあるが、それを適用しても上記により背景色などが上書きされてしまう。
+ここで同様の設定を行う。 */
+.post_detail_view_disable_button{
+    background-color: var(--common_disabled_button_background);
+    color: var(--common_disabled_button_text_color);
+}

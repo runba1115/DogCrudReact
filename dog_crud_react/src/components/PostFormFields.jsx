@@ -1,4 +1,4 @@
-// import './PostFormFields.css'
+import './PostFormFields.css'
 
 import { useCallback, useEffect } from "react";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
@@ -49,7 +49,7 @@ function PostFormFields({ formTitle, post, setPost, isEdit, onSubmit, buttonLabe
     return (
         <form onSubmit={onSubmit} className='common_container common_shadow post_form_container'>
             <h2>{formTitle}</h2>
-            <label className='post_form_label'></label>
+            <label className='post_form_label'>タイトル</label>
             <input
                 type="text"
                 value={post.title}
@@ -78,12 +78,12 @@ function PostFormFields({ formTitle, post, setPost, isEdit, onSubmit, buttonLabe
                         犬読み込み中…
                     </>
                 ) : (
-                    <img src={post.imageUrl} alt="画像" />
+                    <img src={post.imageUrl} alt="画像" className='post_form_image' />
                 )
             }
-            <input type="button" value="ほかの子にする" onClick={handleButtonClick} />
+            <input type="button" value="ほかの子にする" onClick={handleButtonClick} className='common_button post_form_button post_form_other_dog_button' />
 
-            <input type="submit" className='common_button post_form_submit_button' value={buttonLabel} />
+            <input type="submit" className='common_button post_form_button post_form_submit_button' value={buttonLabel} />
         </form >
     );
 }
