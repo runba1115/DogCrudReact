@@ -68,10 +68,10 @@ function PostIndex() {
             {posts.length === 0 ? (
                 <p>投稿がまだありません</p>
             ) : (
-                <ul>
+                <>
                     {posts.map(post => {
                         return (
-                            <div className="posts_simple_view_post">
+                            <div className="posts_simple_view_post" key={post.id}>
                                 {/* <p className="posts_simple_view_user">ユーザー名：{post.user.userName}</p> */}
                                 <h3 className="posts_simple_view_title">{post.title}</h3>
                                 <p>{post.content}</p>
@@ -83,7 +83,7 @@ function PostIndex() {
                             </div>
                         );
                     })}
-                </ul>
+                </>
             )}
         </div>
     );
