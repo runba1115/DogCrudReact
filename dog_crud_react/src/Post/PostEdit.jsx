@@ -38,13 +38,10 @@ function PostEdit() {
         }
 
         // 更新確認ダイアログの表示を行う（キャンセルされたら中断）
-        const inputtedPassword = prompt(MESSAGES.POST_EXECUTE_CONFIRM, "");
-        if (!inputtedPassword) {
-            // パスワードが入力されなかった。以降の処理を行わない
+        if(!window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)){
+            alert("キャンセルされました");
             return;
         }
-
-        setPost(prevPost => ({ ...prevPost, password: inputtedPassword }));
 
         setIsSubmitting(true);
 
@@ -108,7 +105,10 @@ function PostEdit() {
                 if (response.ok) {
                     // 投稿の取得に成功した場合
                     const data = await response.json();
-                    setPost(data)
+
+                    // 取得したデータの通り、パスワード以外を設定する。
+                    // ※パスワードはユーザーに
+                    setPost({...data, password: ''});
                 } else {
                     // 投稿の取得に失敗した場合
                     if (response.status === HTTP_STATUS_CODES.NOT_FOUND) {
@@ -140,10 +140,10 @@ function PostEdit() {
             <PostFormFields
                 formTitle={'投稿編集'}
                 post={post}
-                setPost={setPost}
                 isEdit={true}
+                setPost={setPost}
                 onSubmit={handleSubmit}
-                buttonLabel={"投稿する"}
+                buttonLabel={"更新する"}
             />
         )
     );

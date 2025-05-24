@@ -39,7 +39,8 @@ export const MESSAGES = {
     POST_GET_FAILED: '投稿の取得に失敗しました',
     POST_NOT_FOUND: "投稿が見つかりません（削除された可能性があります）",
 
-    POST_EXECUTE_CONFIRM: '本当に実行しますか？\n実行する場合、作成時に設定したパスワードを入力してください',
+    POST_EXECUTE_CONFIRM: '本当に実行しますか？',
+    POST_EXECUTE_CONFIRM_WITH_PASSWORD: '本当に実行しますか？\n実行する場合、作成時に設定したパスワードを入力してください',
     POST_DELETE_SUCCESSED: '削除に成功しました',
     POST_DELETE_FORBIDDEN: '削除に失敗しました\nパスワードが間違っていませんか？',
     POST_DELETE_FAILED: '削除に失敗しました',

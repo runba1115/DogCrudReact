@@ -26,7 +26,8 @@ export const useDeletePost = (onSuccess = () => { }) => {
      */
     const deletePost = useCallback(async (id) => {
         // 削除確認ダイアログの表示を行う（キャンセルされたら中断）
-        const inputtedPassword = prompt(MESSAGES.POST_EXECUTE_CONFIRM, "");
+        // TODO:パスワードを入力するが、これでは入力されたパスワードが伏字にならない。伏字になる方法を検討する必要がある
+        const inputtedPassword = prompt(MESSAGES.POST_EXECUTE_CONFIRM_WITH_PASSWORD, "");
         if (!inputtedPassword) {
             // パスワードが入力されなかった。以降の処理を行わない
             return;

@@ -64,21 +64,14 @@ function PostFormFields({ formTitle, post, setPost, isEdit, onSubmit, buttonLabe
                 onChange={handleChange}
                 className='post_form_textarea'
             />
-            {isEdit ? (
-                <></>
-            ) : (
-                <>
-                    <label className='post_form_label'>パスワード</label>
-                    <input
-                        type="password"
-                        value={post.password}
-                        name="password"
-                        onChange={handleChange}
-                        className='post_form_input'
-                    />
-                </>
-            )
-            }
+            <label className='post_form_label'>パスワード{isEdit ? '※投稿を作成したときのものを入力してください' :''}</label>
+            <input
+                type="password"
+                value={post.password}
+                name="password"
+                onChange={handleChange}
+                className='post_form_input'
+            />
             {
                 !post?.imageUrl ? (
                     <>

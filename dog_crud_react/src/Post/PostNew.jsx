@@ -10,7 +10,7 @@ import { useShowVaridatedMessage } from "../hooks/ShowValidatedMessage";
  * 新規投稿作成ページ
  * @returns 新規投稿作成ページ
  */
-function PostNew({isAuthenticated, email, userPasword}) {
+function PostNew({ isAuthenticated, email, userPasword }) {
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -28,11 +28,11 @@ function PostNew({isAuthenticated, email, userPasword}) {
      * - 未ログインの場合、投稿フォームへのアクセスをブロック
      * - ユーザーIDを投稿データに設定
      */
-    useEffect(()=>{
-        if(isAuthenticated && userPasword !== null && userPasword !== ''){
-            setPost(prevPost => ({...prevPost, password: userPasword}));
-        }
-    },[]);
+    useEffect(() => {
+        const isUserLogin = (isAuthenticated && userPasword !== null && userPasword !== '');
+        const defaultPassword = isUserLogin ? userPasword : '';
+        setPost(prevPost => ({ ...prevPost, password: defaultPassword }));
+    }, []);
 
     /**
      * フォーム送信
@@ -69,10 +69,10 @@ function PostNew({isAuthenticated, email, userPasword}) {
                 alert(MESSAGES.POST_CREATE_SUCCESSED);
                 navigate(ROUTES.POST_INDEX);
             } else {
-                if(response.status === HTTP_STATUS_CODES.BAD_REQUEST){
+                if (response.status === HTTP_STATUS_CODES.BAD_REQUEST) {
                     await showVaridatedMessage(response);
                 }
-                else{
+                else {
                     // 想定外の例外が発生した
                     throw await createErrorFromResponse(response);
                 }
@@ -80,7 +80,7 @@ function PostNew({isAuthenticated, email, userPasword}) {
         } catch (error) {
             // ネットワークエラーまたはサーバーエラーをキャッチ
             showErrorMessage(error, MESSAGES.POST_CREATE_FAILED)
-        } finally{
+        } finally {
             // 投稿送信中フラグをfalseにリセット
             setIsSubmitting(false);
         }
@@ -90,8 +90,8 @@ function PostNew({isAuthenticated, email, userPasword}) {
         <PostFormFields
             formTitle={'新規投稿'}
             post={post}
-            setPost={setPost}
             isEdit={false}
+            setPost={setPost}
             onSubmit={handleSubmit}
             buttonLabel={"投稿する"}
         />
