@@ -38,8 +38,9 @@ export const MESSAGES = {
     POST_GET_FAILED: '投稿の取得に失敗しました',
     POST_NOT_FOUND: "投稿が見つかりません（削除された可能性があります）",
 
-    DELETE_CONFIRM: '本当に削除しますか？',
+    EXECUTE_CONFIRM: '本当に実行しますか？\n実行する場合、作成時に設定したパスワードを入力してください',
     DELETE_SUCCESSED: '削除に成功しました',
+    DELETE_FORBIDDEN: '削除に失敗しました\nパスワードが間違っていませんか？',
     DELETE_FAILED: '削除に失敗しました',
 
     // デバッグ用メッセージ
@@ -62,5 +63,6 @@ export const HTTP_STATUS_CODES = {
     OK: 200,
     BAD_REQUEST: 400, 
     UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
     NOT_FOUND: 404,
 }

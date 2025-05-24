@@ -59,8 +59,7 @@ public class PostController {
         post.setImageUrl(postRequest.getImageUrl());
 
         // パスワードはハッシュ化してから保存する
-        // post.setPassword(passwordEncoder.encode(postRequest.getPassword()));
-        post.setPassword("aaa");
+        post.setPassword(passwordEncoder.encode(postRequest.getPassword()));
 
         Post savedPost = postRepository.save(post);
         return ResponseEntity.ok(savedPost);
@@ -119,13 +118,21 @@ public class PostController {
      *         ※削除成功時、「消えたから返すものがない」という意味で204 No Contentを返す(そのためステータス200ではない)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (!postRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody PostRequestDto dto) {
+        // 指定IDの投稿を検索する
+        System.out.println("送られてきたパスワード: " + dto.getPassword());
+        return postRepository.findById(id)
+                .map(post -> {
+                    if (passwordEncoder.matches(dto.getPassword(), post.getPassword())) {
+                        // 削除を実行する
+                        postRepository.delete(post);
+                        return ResponseEntity.noContent().<Void>build();
+                    } else {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).<Void>build();
+                    }
 
-        // 投稿をID指定で削除
-        postRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+                })
+                // 該当投稿が存在しなければ 404 を返す
+                .orElse(ResponseEntity.notFound().build());
     }
 }
