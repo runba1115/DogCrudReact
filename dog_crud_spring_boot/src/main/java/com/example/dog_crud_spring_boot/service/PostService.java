@@ -1,6 +1,7 @@
 package com.example.dog_crud_spring_boot.service;
 
 import com.example.dog_crud_spring_boot.dto.PostRequestDto;
+import com.example.dog_crud_spring_boot.dto.PostResponseDto;
 // import com.example.dog_crud_spring_boot.exception.ValidationException;
 import com.example.dog_crud_spring_boot.model.Age;
 import com.example.dog_crud_spring_boot.model.Post;
@@ -47,9 +48,28 @@ public class PostService {
      * 
      * @return すべての投稿
      */
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostResponseDto> getAllPosts() {
+        return postRepository.findAll().stream()
+                .map(post -> new PostResponseDto(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getAge().getId(),
+                        post.getImageUrl(),
+                        post.getCreatedAt(),
+                        post.getUpdatedAt()))
+                .toList();
     }
+
+    // /**
+    // * 特定のidの投稿を取得する
+    // *
+    // * @param id 投稿のID
+    // * @return 該当する投稿（存在しない場合は空のOptional）
+    // */
+    // public Optional<Post> getPostById(Long id) {
+    // return postRepository.findById(id);
+    // }
 
     /**
      * 特定のidの投稿を取得する
@@ -57,8 +77,17 @@ public class PostService {
      * @param id 投稿のID
      * @return 該当する投稿（存在しない場合は空のOptional）
      */
-    public Optional<Post> getPostById(Long id) {
-        return postRepository.findById(id);
+    public PostResponseDto getPostById(Long id) {
+        return postRepository.findById(id)
+                .map(post -> new PostResponseDto(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getAge().getId(),
+                        post.getImageUrl(),
+                        post.getCreatedAt(),
+                        post.getUpdatedAt()))
+                .orElse(null);
     }
 
     /**

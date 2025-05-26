@@ -1,6 +1,7 @@
 package com.example.dog_crud_spring_boot.controller;
 
 import com.example.dog_crud_spring_boot.dto.PostRequestDto;
+import com.example.dog_crud_spring_boot.dto.PostResponseDto;
 import com.example.dog_crud_spring_boot.model.Post;
 import com.example.dog_crud_spring_boot.service.PostService;
 
@@ -35,8 +36,8 @@ public class PostController {
      * @return 投稿のリストを含む HTTP レスポンス（ステータスコード 200）
      */
     @GetMapping("/all")
-    public ResponseEntity<List<Post>> getAll() {
-        List<Post> postList = postService.getAllPosts();
+    public ResponseEntity<List<PostResponseDto>> getAll() {
+        List<PostResponseDto> postList = postService.getAllPosts();
         return ResponseEntity.ok(postList);
     }
 
@@ -60,17 +61,19 @@ public class PostController {
      * @return 該当する投稿が存在すればステータス200で投稿を返し、存在しなければ404を返す HTTP レスポンス
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getById(@PathVariable Long id) {
-        return postService.getPostById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<PostRequestDto> getById(@PathVariable Long id) {
+        PostResponseDto dto = postService.getPostById(id);
+        if (dto == null) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(dto);
     }
 
     /**
      * 指定されたIDの投稿を更新する
      * ※バリデーションに引っかかるなどすると例外が発生するが、グローバルエラーハンドラーで処理できるためtry-catchは不要である。
      *
-     * @param id          更新対象の投稿ID
+     * @param id             更新対象の投稿ID
      * @param updatedPostDto 新しい投稿データ（バリデーション付き）
      * @return 更新後の投稿データを含む HTTP レスポンス
      */
@@ -83,7 +86,7 @@ public class PostController {
     /**
      * 指定されたIDの投稿を削除する。
      * 
-     * @param id 削除対象の投稿ID
+     * @param id  削除対象の投稿ID
      * @param dto 削除時に入力されたパスワードを含むDTO
      * @return 削除成功時は204 No Content、存在しない場合は404 Not Found を返す HTTP レスポンス
      *         ※削除成功時、「消えたから返すものがない」という意味で204 No Contentを返す(そのためステータス200ではない)
