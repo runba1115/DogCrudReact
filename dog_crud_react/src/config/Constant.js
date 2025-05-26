@@ -58,6 +58,9 @@ export const APIS={
     POST_EDIT : (id = ':id') => `${API_BASE_URL}/api/posts/${id}`,
     POST_GET_BY_ID : (id = ':id') => `${API_BASE_URL}/api/posts/${id}`,
     POST_DELETE : (id = ':id') => `${API_BASE_URL}/api/posts/${id}`,
+
+    // 年齢関係
+    AGE_ALL : `${API_BASE_URL}/api/ages/all`,
 }
 
 //　HTTPステータスコード（fetchしたときのレスポンスに対して使用する)

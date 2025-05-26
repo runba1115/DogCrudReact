@@ -7,12 +7,12 @@ import { HTTP_STATUS_CODES, MESSAGES } from "../config/Constant";
  * エラーのログ出力及びメッセージの表示を行う
  * @returns showErrorMessage 引数にcatch文で使用するerror、表示するメッセージを受け取りエラーメッセージを表示する関数
  */
-export const useShowVaridatedMessage = () => {
+export const useShowValidatedMessage = () => {
     /**
      * 
      * @param {Promise<Response>} response fetchして、バリデーションエラーの際に帰ってきたresponse
      */
-    const showVaridatedMessage = useCallback(async (response) => {
+    const showValidatedMessage = useCallback(async (response) => {
         // fetchしたとき、バリデーションエラーが発生した際のresponseを使用することを想定している。
         // その場合、ステータスがBAD_REQUESTであるため、その通りであることを確認する。
         if(response?.status !== HTTP_STATUS_CODES.BAD_REQUEST){
@@ -28,5 +28,5 @@ export const useShowVaridatedMessage = () => {
         alert(message);
     }, []);
 
-    return showVaridatedMessage;
+    return showValidatedMessage;
 }

@@ -4,24 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import PostFormFields from "../components/PostFormFields";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
-import { useShowVaridatedMessage } from "../hooks/ShowValidatedMessage";
+import { useShowValidatedMessage } from "../hooks/ShowValidatedMessage";
 
 /**
  * 新規投稿作成ページ
  * @returns 新規投稿作成ページ
  */
-function PostNew({ isAuthenticated, email, userPasword }) {
+function PostNew({ isAuthenticated, email, userPasword, ages }) {
     const [post, setPost] = useState({
         title: '',
         content: '',
         imageUrl: '',
+        ageId: '',
         password: '',
     })
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
-    const showVaridatedMessage = useShowVaridatedMessage();
+    const showValidatedMessage = useShowValidatedMessage();
 
     /**
      * 初回レンダリング時の処理
@@ -70,7 +71,7 @@ function PostNew({ isAuthenticated, email, userPasword }) {
                 navigate(ROUTES.POST_INDEX);
             } else {
                 if (response.status === HTTP_STATUS_CODES.BAD_REQUEST) {
-                    await showVaridatedMessage(response);
+                    await showValidatedMessage(response);
                 }
                 else {
                     // 想定外の例外が発生した
@@ -91,6 +92,7 @@ function PostNew({ isAuthenticated, email, userPasword }) {
             formTitle={'新規投稿'}
             post={post}
             isEdit={false}
+            ages={ages}
             setPost={setPost}
             onSubmit={handleSubmit}
             buttonLabel={"投稿する"}

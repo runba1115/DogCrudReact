@@ -13,7 +13,7 @@ import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
  * @param {String} buttonLabel フォームを送信するボタンに表示する文字列
  * @returns 
  */
-function PostFormFields({ formTitle, post, setPost, isEdit, onSubmit, buttonLabel }) {
+function PostFormFields({ formTitle, post, setPost, isEdit, ages, onSubmit, buttonLabel }) {
     const showErrorMessage = useShowErrorMessage();
     const createErrorFromResponse = useCreateErrorFromResponse();
 
@@ -64,7 +64,41 @@ function PostFormFields({ formTitle, post, setPost, isEdit, onSubmit, buttonLabe
                 onChange={handleChange}
                 className='post_form_textarea'
             />
-            <label className='post_form_label'>パスワード{isEdit ? '※投稿を作成したときのものを入力してください' :''}</label>
+
+            <label className='post_form_label'>対象年齢</label>
+            <select
+                name="ageId"
+                value={post.ageId || ''}
+                onChange={handleChange}
+                className='post_form_input'
+            >
+                <option value="" disabled>選択してください</option>
+                {ages.map((age) => (
+                    <option key={age.id} value={age.id}>
+                        {age.title}
+                    </option>
+                ))}
+            </select>
+
+            {/* ラジオボタンを使用する場合の例
+            <label className='post_form_label'>対象年齢</label>
+            <div className='post_form_radio_group'>
+                {ages.map((age) => (
+                    <label key={age.id} className='post_form_radio_label'>
+                        <input
+                            type="radio"
+                            name="ageId"
+                            value={age.id}
+                            checked={Number(post.ageId) === age.id}
+                            onChange={handleChange}
+                            className='post_form_radio_input'
+                        />
+                        {age.title}
+                    </label>
+                ))}
+            </div> */}
+
+            <label className='post_form_label'>パスワード{isEdit ? '※投稿を作成したときのものを入力してください' : ''}</label>
             <input
                 type="password"
                 value={post.password}

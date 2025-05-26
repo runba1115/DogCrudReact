@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import PostFormFields from '../components/PostFormFields';
-import { useShowVaridatedMessage } from '../hooks/ShowValidatedMessage';
+import { useShowValidatedMessage } from '../hooks/ShowValidatedMessage';
 
 /**
  * 投稿編集画面
  * @returns 投稿編集画面
  */
-function PostEdit() {
+function PostEdit({ages}) {
     // URL パラメータから投稿 ID を取得
     const { id } = useParams();
 
@@ -20,12 +20,13 @@ function PostEdit() {
         title: '',
         content: '',
         imageUrl: '',
+        ageId: '',
         password: '',
     });
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
     const navigate = useNavigate();
-    const showVaridatedMessage = useShowVaridatedMessage();
+    const showValidatedMessage = useShowValidatedMessage();
 
     /**
      * フォームが送信されたときのハンドラ
@@ -77,7 +78,7 @@ function PostEdit() {
                     alert(MESSAGES.POST_UPDATE_FORBIDDEN)
                 }else if(response.status === HTTP_STATUS_CODES.BAD_REQUEST){
                     // バリデーションエラーが発生した
-                    await showVaridatedMessage(response);
+                    await showValidatedMessage(response);
                 }
                 else {
                     // 想定外のエラーが発生した。
@@ -141,6 +142,7 @@ function PostEdit() {
                 formTitle={'投稿編集'}
                 post={post}
                 isEdit={true}
+                ages={ages}
                 setPost={setPost}
                 onSubmit={handleSubmit}
                 buttonLabel={"更新する"}

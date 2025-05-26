@@ -2,11 +2,10 @@ package com.example.dog_crud_spring_boot.controller;
 
 import com.example.dog_crud_spring_boot.dto.PostRequestDto;
 import com.example.dog_crud_spring_boot.model.Post;
-import com.example.dog_crud_spring_boot.repository.PostRepository;
+import com.example.dog_crud_spring_boot.service.PostService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
@@ -19,18 +18,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
-
-    private final PostRepository postRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PostService postService;
 
     /**
      * PostControllerのコンストラクタ
      * 
-     * @param postRepository 投稿データへのアクセスを提供するリポジトリ
+     * @param postService 投稿に関するロジックを提供するサービス
      */
-    public PostController(PostRepository postRepository, PasswordEncoder passwordEncoder) {
-        this.postRepository = postRepository;
-        this.passwordEncoder = passwordEncoder;
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
     /**
@@ -40,7 +36,7 @@ public class PostController {
      */
     @GetMapping("/all")
     public ResponseEntity<List<Post>> getAll() {
-        List<Post> postList = postRepository.findAll();
+        List<Post> postList = postService.getAllPosts();
         return ResponseEntity.ok(postList);
     }
 
@@ -48,20 +44,12 @@ public class PostController {
      * 新しい投稿を作成する。
      * ※バリデーションに引っかかるなどすると例外が発生するが、グローバルエラーハンドラーで処理できるためtry-catchは不要である。
      *
-     * @param post クライアントから送信された投稿データ（バリデーション付き）
+     * @param postRequestDto クライアントから送信された投稿データ（バリデーション付き）
      * @return 保存された投稿データを含む HTTP レスポンス（ステータスコード 200）
      */
     @PostMapping
-    public ResponseEntity<Post> create(@Valid @RequestBody PostRequestDto postRequest) {
-        Post post = new Post();
-        post.setTitle(postRequest.getTitle());
-        post.setContent(postRequest.getContent());
-        post.setImageUrl(postRequest.getImageUrl());
-
-        // パスワードはハッシュ化してから保存する
-        post.setPassword(passwordEncoder.encode(postRequest.getPassword()));
-
-        Post savedPost = postRepository.save(post);
+    public ResponseEntity<Post> create(@Valid @RequestBody PostRequestDto postRequestDto) {
+        Post savedPost = postService.createPost(postRequestDto);
         return ResponseEntity.ok(savedPost);
     }
 
@@ -73,7 +61,7 @@ public class PostController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Post> getById(@PathVariable Long id) {
-        return postRepository.findById(id)
+        return postService.getPostById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -83,56 +71,26 @@ public class PostController {
      * ※バリデーションに引っかかるなどすると例外が発生するが、グローバルエラーハンドラーで処理できるためtry-catchは不要である。
      *
      * @param id          更新対象の投稿ID
-     * @param updatedPost 新しい投稿データ（バリデーション付き）
-     * @return 更新後の投稿データを含む HTTP レスポンス。該当IDが存在しない場合は404を返す
+     * @param updatedPostDto 新しい投稿データ（バリデーション付き）
+     * @return 更新後の投稿データを含む HTTP レスポンス
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Post> update(@PathVariable Long id, @Valid @RequestBody PostRequestDto updatedPost) {
-        // 指定IDの投稿を検索する
-        return postRepository.findById(id)
-                .map(post -> {
-                    if (passwordEncoder.matches(updatedPost.getPassword(), post.getPassword())) {
-                        // 入力されたパスワードが保存されているものと一致する。保存を実行する。
-                        // タイトルと本文を新しい値に更新
-                        post.setTitle(updatedPost.getTitle());
-                        post.setContent(updatedPost.getContent());
-                        post.setImageUrl(updatedPost.getImageUrl());
-
-                        // 更新された投稿を保存して返す
-                        Post savedPost = postRepository.save(post);
-                        return ResponseEntity.ok(savedPost);
-                    } else {
-                        return ResponseEntity.status(HttpStatus.FORBIDDEN).<Post>build();
-                    }
-
-                })
-                // 該当投稿が存在しなければ 404 を返す
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Post> update(@PathVariable Long id, @Valid @RequestBody PostRequestDto updatedPostDto) {
+        Post updatedPost = postService.updatePost(id, updatedPostDto);
+        return ResponseEntity.ok(updatedPost);
     }
 
     /**
      * 指定されたIDの投稿を削除する。
      * 
      * @param id 削除対象の投稿ID
+     * @param dto 削除時に入力されたパスワードを含むDTO
      * @return 削除成功時は204 No Content、存在しない場合は404 Not Found を返す HTTP レスポンス
      *         ※削除成功時、「消えたから返すものがない」という意味で204 No Contentを返す(そのためステータス200ではない)
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody PostRequestDto dto) {
-        // 指定IDの投稿を検索する
-        System.out.println("送られてきたパスワード: " + dto.getPassword());
-        return postRepository.findById(id)
-                .map(post -> {
-                    if (passwordEncoder.matches(dto.getPassword(), post.getPassword())) {
-                        // 削除を実行する
-                        postRepository.delete(post);
-                        return ResponseEntity.noContent().<Void>build();
-                    } else {
-                        return ResponseEntity.status(HttpStatus.FORBIDDEN).<Void>build();
-                    }
-
-                })
-                // 該当投稿が存在しなければ 404 を返す
-                .orElse(ResponseEntity.notFound().build());
+        postService.deletePost(id, dto);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.dog_crud_spring_boot.dto;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -23,15 +24,14 @@ public class PostRequestDto {
     @Size(min = 5, max = 20, message = "パスワードは5文字以上20文字以内で入力してください")
     private String password;
 
+    @NotNull(message = "年齢を選択してください")
+    private Long ageId;
+
     @NotBlank(message = "画像のURLは必須です")
     private String imageUrl;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -40,6 +40,10 @@ public class PostRequestDto {
 
     public String getContent() {
         return content;
+    }
+
+    public Long getAgeId(){
+        return ageId;
     }
 
     public String getPassword() {

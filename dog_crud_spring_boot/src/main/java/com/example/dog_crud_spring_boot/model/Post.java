@@ -18,6 +18,10 @@ public class Post {
     @Column(nullable = false, length = 100)
     private String content;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name= "age_id", nullable = false)
+    private Age age;
+
     @Column(nullable = false)
     private String password;
 
@@ -66,6 +70,14 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Age getAge(){
+        return this.age;
+    }
+
+    public void setAge(Age age){
+        this.age = age;
     }
 
     public String getPassword() {
