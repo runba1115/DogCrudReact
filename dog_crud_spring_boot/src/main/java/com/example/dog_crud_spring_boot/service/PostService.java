@@ -1,15 +1,19 @@
 package com.example.dog_crud_spring_boot.service;
 
 import com.example.dog_crud_spring_boot.dto.PostRequestDto;
-import com.example.dog_crud_spring_boot.exception.ValidationException;
+// import com.example.dog_crud_spring_boot.exception.ValidationException;
 import com.example.dog_crud_spring_boot.model.Age;
 import com.example.dog_crud_spring_boot.model.Post;
 import com.example.dog_crud_spring_boot.repository.AgeRepository;
 import com.example.dog_crud_spring_boot.repository.PostRepository;
+
+import jakarta.validation.ValidationException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 投稿に関するビジネスロジックを提供するサービスクラス。
@@ -28,8 +32,8 @@ public class PostService {
     /**
      * コンストラクタ
      * 
-     * @param postRepository 投稿データへのアクセスを提供するリポジトリ
-     * @param ageRepository 年齢データへのアクセスを提供するリポジトリ
+     * @param postRepository  投稿データへのアクセスを提供するリポジトリ
+     * @param ageRepository   年齢データへのアクセスを提供するリポジトリ
      * @param passwordEncoder パスワードのハッシュ化・照合を行うエンコーダー
      */
     public PostService(PostRepository postRepository, AgeRepository ageRepository, PasswordEncoder passwordEncoder) {
@@ -67,7 +71,7 @@ public class PostService {
     public Post createPost(PostRequestDto request) {
         // 入力された年齢IDに対応するAgeデータを取得（存在しなければ例外）
         Age age = ageRepository.findById(request.getAgeId())
-            .orElseThrow(() -> new ValidationException(WRONG_AGE_DATA));
+                .orElseThrow(() -> new ValidationException(WRONG_AGE_DATA));
 
         // 投稿データの作成と各フィールドの設定
         Post post = new Post();
@@ -86,7 +90,7 @@ public class PostService {
     /**
      * 指定されたIDの投稿を更新する
      *
-     * @param id 更新対象の投稿ID
+     * @param id      更新対象の投稿ID
      * @param request 更新後の投稿データ（バリデーション済み）
      * @return 更新された投稿オブジェクト
      * @throws ValidationException 投稿が存在しない、パスワードが一致しない、または年齢IDが不正な場合にスローされる
@@ -94,7 +98,7 @@ public class PostService {
     public Post updatePost(Long id, PostRequestDto request) {
         // 指定された投稿IDの投稿データを取得（存在しなければ例外）
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new ValidationException(TARGET_DATA_NOT_FOUND));
+                .orElseThrow(() -> new ValidationException(TARGET_DATA_NOT_FOUND));
 
         // パスワードが一致しない場合は例外を投げる
         if (!passwordEncoder.matches(request.getPassword(), post.getPassword())) {
@@ -103,7 +107,7 @@ public class PostService {
 
         // 入力された年齢IDに対応するAgeデータを取得（存在しなければ例外）
         Age age = ageRepository.findById(request.getAgeId())
-            .orElseThrow(() -> new ValidationException(WRONG_AGE_DATA));
+                .orElseThrow(() -> new ValidationException(WRONG_AGE_DATA));
 
         // 投稿内容の更新
         post.setTitle(request.getTitle());
@@ -118,14 +122,14 @@ public class PostService {
     /**
      * 指定されたIDの投稿を削除する。
      *
-     * @param id 削除対象の投稿ID
+     * @param id      削除対象の投稿ID
      * @param request 削除に必要な情報（パスワードを含む）
      * @throws ValidationException 投稿が存在しない、またはパスワードが一致しない場合にスローされる
      */
     public void deletePost(Long id, PostRequestDto request) {
         // 指定された投稿IDの投稿データを取得（存在しなければ例外）
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new ValidationException(TARGET_DATA_NOT_FOUND));
+                .orElseThrow(() -> new ValidationException(TARGET_DATA_NOT_FOUND));
 
         // パスワードが一致しない場合は例外を投げる
         if (!passwordEncoder.matches(request.getPassword(), post.getPassword())) {

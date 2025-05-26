@@ -108,8 +108,10 @@ function PostEdit({ages}) {
                     const data = await response.json();
 
                     // 取得したデータの通り、パスワード以外を設定する。
-                    // ※パスワードはユーザーに
-                    setPost({...data, password: ''});
+                    // ※パスワードはユーザーに入力させるため、空文字とする
+                    // 年齢は、APIから取得するとき、data.age.idに格納されている。送信するときにはdata.ageIdに格納するため、それに格納しなおす
+                    setPost({...data, password: '', ageId: data.age.id});
+                    console.log(data);
                 } else {
                     // 投稿の取得に失敗した場合
                     if (response.status === HTTP_STATUS_CODES.NOT_FOUND) {

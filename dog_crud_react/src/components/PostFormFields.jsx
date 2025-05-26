@@ -65,7 +65,7 @@ function PostFormFields({ formTitle, post, setPost, isEdit, ages, onSubmit, butt
                 className='post_form_textarea'
             />
 
-            <label className='post_form_label'>対象年齢</label>
+            {/* <label className='post_form_label'>年齢</label>
             <select
                 name="ageId"
                 value={post.ageId || ''}
@@ -75,13 +75,13 @@ function PostFormFields({ formTitle, post, setPost, isEdit, ages, onSubmit, butt
                 <option value="" disabled>選択してください</option>
                 {ages.map((age) => (
                     <option key={age.id} value={age.id}>
-                        {age.title}
+                        {age.value}
                     </option>
                 ))}
-            </select>
+            </select> */}
 
-            {/* ラジオボタンを使用する場合の例
-            <label className='post_form_label'>対象年齢</label>
+            {/* ラジオボタンを使用する場合の例 */}
+            <label className='post_form_label'>年齢</label>
             <div className='post_form_radio_group'>
                 {ages.map((age) => (
                     <label key={age.id} className='post_form_radio_label'>
@@ -93,10 +93,10 @@ function PostFormFields({ formTitle, post, setPost, isEdit, ages, onSubmit, butt
                             onChange={handleChange}
                             className='post_form_radio_input'
                         />
-                        {age.title}
+                        {age.value}
                     </label>
                 ))}
-            </div> */}
+            </div>
 
             <label className='post_form_label'>パスワード{isEdit ? '※投稿を作成したときのものを入力してください' : ''}</label>
             <input
