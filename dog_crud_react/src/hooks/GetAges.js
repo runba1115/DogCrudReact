@@ -10,6 +10,7 @@ import { useShowValidatedMessage } from "./ShowValidatedMessage";
 export const useGetAges = () => {
     const showErrorMessage = useShowErrorMessage();
     const showValidatedMessage = useShowValidatedMessage();
+    const [isAgeLoading, setIsAgeLoading] = useState(true);
 
     const getAges = useCallback(async () => {
         try {
@@ -27,6 +28,8 @@ export const useGetAges = () => {
             }
         } catch (error) {
             showErrorMessage(error);
+        }finally{
+            setIsAgeLoading(false);
         }
 
         // 年齢を取得できなかった。nullを返す。
@@ -34,5 +37,5 @@ export const useGetAges = () => {
     }, [showErrorMessage, showValidatedMessage]);
 
 
-    return getAges;
+    return {getAges, isLoading};
 }

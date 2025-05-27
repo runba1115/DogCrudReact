@@ -14,10 +14,10 @@ export const ROUTES = {
 
 // メッセージ
 export const MESSAGES = {
-    // ユーザー認証関係のメッセージ
+    // ユーザー関係のメッセージ
     USER_REGISTER_SUCCESSED : 'ユーザー登録に成功しました',
     USER_REGISTER_FAILED : 'ユーザー登録に失敗しました',
-    LOGGED_IN: 'ログイン済みです',
+    LOGGED_IN: 'すでにログイン済みです',
     NOT_ALREADY_LOGGED_IN:  '未ログインです',
     LOG_IN_SUCCESS: 'ログインに成功しました',
     LOG_IN_FAILED: 'ログインに失敗しました',
@@ -28,6 +28,8 @@ export const MESSAGES = {
     DONT_HAVE_PROMISSION : '対象の投稿に対しこの操作を行う権限がありません',
 
     USER_INFO_GET_FAILED : 'ユーザー情報の取得に失敗しました',
+
+    NO_PERMISSION: 'この操作を実行する権限がありません',
 
     // 投稿関係
     POST_CREATE_SUCCESSED: '投稿の作成に成功しました',
@@ -40,7 +42,6 @@ export const MESSAGES = {
     POST_NOT_FOUND: "投稿が見つかりません（削除された可能性があります）",
 
     POST_EXECUTE_CONFIRM: '本当に実行しますか？',
-    POST_EXECUTE_CONFIRM_WITH_PASSWORD: '本当に実行しますか？\n実行する場合、作成時に設定したパスワードを入力してください',
     POST_DELETE_SUCCESSED: '削除に成功しました',
     POST_DELETE_FORBIDDEN: '削除に失敗しました\nパスワードが間違っていませんか？',
     POST_DELETE_FAILED: '削除に失敗しました',
@@ -52,6 +53,12 @@ export const MESSAGES = {
 
 // API
 export const APIS={
+    // ユーザー関係
+    USER_REGISTER: `${API_BASE_URL}/api/users/register`,
+    USER_LOGIN: `${API_BASE_URL}/api/users/login`,
+    USER_LOGOUT: `${API_BASE_URL}/api/users/logout`,
+    USER_GET_CURRENT: `${API_BASE_URL}/api/users/me`,
+
     // 投稿関係
     POST_ALL : `${API_BASE_URL}/api/posts/all`,
     POST_CREATE : `${API_BASE_URL}/api/posts`,

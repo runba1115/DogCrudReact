@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { API_BASE_URL, APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from '../config/Constant';
+import { APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from '../config/Constant';
 import { useDeletePost } from '../hooks/DeletePost';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
@@ -12,10 +12,11 @@ import './PostShow.css';
  * @returns 投稿詳細画面
  */
 function PostShow() {
+    const { userInfo, isUserInfoLoading  } = useUser();
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const navigate = useNavigate();
-    const deletePost = useDeletePost(useCallback(() => { navigate(ROUTES.POST_INDEX); }, [navigate]));
+    const { handleEdit, handleDelete } = usePostActions(userInfo);
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
 
@@ -60,15 +61,12 @@ function PostShow() {
         getPost();
     }, []);
 
-    /**
-     * 削除ボタン押下時に呼ばれる関数
-     * 指定IDの投稿を削除した後、投稿一覧に遷移する
-     *
-     * @param {number|string} id - 削除対象の投稿ID
-     */
-    const handleDelete = async (id) => {
-        await deletePost(id);
+    // ユーザー情報の読み込み中は何も表示しない。
+    if(isUserInfoLoading){
+        return null;
     }
+
+    const isOwner = (post.userId === userInfo?.id);
 
     return (
         <div className='common_container'>
@@ -85,8 +83,8 @@ function PostShow() {
                     <p>{post.content}</p>
                     <img src={post.imageUrl} alt="犬の画像" className="post_detail_dog_image" />
                     <p>
-                        <Link to={ROUTES.POST_EDIT(post.id)} className={"common_button post_detail_view_button post_detail_view_edit_button"}>編集</Link>
-                        <button onClick={() => handleDelete(post.id)} className={"common_button post_detail_view_button post_detail_view_delete_button"}>削除</button>
+                        <button onClick={() => handleEdit(post)} className={`common_button post_detail_view_button post_detail_view_edit_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>編集</button>
+                        <button onClick={() => handleDelete(post)} className={`common_button post_detail_view_button post_detail_view_delete_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>削除</button>
                     </p>
                 </div >
             )}

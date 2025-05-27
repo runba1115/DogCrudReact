@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.dog_crud_spring_boot.dto.ErrorResponseDto;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * バリデーション失敗時の例外を処理する
@@ -30,7 +35,12 @@ public class GlobalExceptionHandler {
         List<ErrorResponseDto> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> new ErrorResponseDto(error.getField(), error.getDefaultMessage()))
+                .map(error -> {
+                    ErrorResponseDto dto = new ErrorResponseDto();
+                    dto.setField(error.getField());
+                    dto.setMessage(error.getDefaultMessage());
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         // HTTP 400 Bad Request でレスポンス
@@ -46,11 +56,13 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGenericException(Exception ex) {
-        // 開発用に例外スタックトレースを出力する
-        ex.printStackTrace();
+        // ログにエラースタックトレースを出力
+        logger.error("予期しないエラーが発生しました", ex)
 
         // クライアントには簡潔なエラーメッセージのみ返す
-        ErrorResponseDto error = new ErrorResponseDto("server", "エラーが発生しました");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        ErrorResponseDto dto = new ErrorResponseDto();
+        dto.setField("server");
+        dto.setMessage("エラーが発生しました");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dto);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.security.config.Customizer;
  * CORS設定やセキュリティ（ログイン・認可）の構成を行う
  */
 @Configuration
+@EnableMethodSecurity
 public class WebConfig implements WebMvcConfigurer {
 
     /**
@@ -43,6 +44,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
+
+    /**
+     * Spring Securityのフィルタチェーンを定義する
+     * 認証・認可、ログイン、ログアウト、CORS、CSRFの設定をまとめて行う
+     *
+     * @param http HttpSecurityの設定用オブジェクト
+     * @return 設定済みのSecurityFilterChainオブジェクト
+     * @throws Exception セキュリティ設定中に発生する可能性のある例外
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -55,7 +65,18 @@ public class WebConfig implements WebMvcConfigurer {
 
                 // 全てのリクエストを許可する（現状は細かい制限を加えない）
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll());
+                        .anyRequest().permitAll())
+
+                // フォームログインの設定
+                .formLogin(form -> form
+                        .loginProcessingUrl("/login")// ログインのリクエストパス
+                        .successHandler((req, res, auth) -> res.setStatus(200))// 成功時はHTTP 200
+                        .failureHandler((req, res, ex) -> res.setStatus(401)))// 失敗時はHTTP 401（Unauthorized）
+
+                // ログアウト設定
+                .logout(logout -> logout
+                        .logoutUrl("/logout")// ログアウトのリクエストパス
+                        .logoutSuccessHandler((req, res, auth) -> res.setStatus(200))); // ログアウト成功時はHTTP 200
 
         // 最終的にSecurityFilterChainを返す
         return http.build();

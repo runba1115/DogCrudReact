@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_BASE_URL, APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from '../config/Constant';
+import { APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from '../config/Constant';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
@@ -10,7 +10,7 @@ import { useShowValidatedMessage } from '../hooks/ShowValidatedMessage';
  * 投稿編集画面
  * @returns 投稿編集画面
  */
-function PostEdit({ages}) {
+function PostEdit() {
     // URL パラメータから投稿 ID を取得
     const { id } = useParams();
 
@@ -21,7 +21,6 @@ function PostEdit({ages}) {
         content: '',
         imageUrl: '',
         ageId: '',
-        password: '',
     });
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
@@ -110,7 +109,7 @@ function PostEdit({ages}) {
                     // 取得したデータの通り、パスワード以外を設定する。
                     // ※パスワードはユーザーに入力させるため、空文字とする
                     // 年齢は、APIから取得するとき、data.age.idに格納されている。送信するときにはdata.ageIdに格納するため、それに格納しなおす
-                    setPost({...data, password: '', ageId: data.age.id});
+                    setPost({...data});
                     console.log(data);
                 } else {
                     // 投稿の取得に失敗した場合
@@ -143,8 +142,6 @@ function PostEdit({ages}) {
             <PostFormFields
                 formTitle={'投稿編集'}
                 post={post}
-                isEdit={true}
-                ages={ages}
                 setPost={setPost}
                 onSubmit={handleSubmit}
                 buttonLabel={"更新する"}

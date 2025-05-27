@@ -1,0 +1,84 @@
+/* 色の変数設定 */
+:root {
+    --user_auth_title_background_color: #3f4cff; /* タイトルの背景色 */
+    --user_auth_login_button_background_color: #000ba7; /* ログインボタンの背景色 */
+    --user_auth_register_button_background_color: #4753ff; /* 登録ボタンの背景色 */
+}
+
+/* ユーザー認証用コンテナ */
+.user_auth_container {
+    border: 1px solid var(--common_border_color);
+    margin: 30px auto;
+    padding-bottom: 20px;
+    width:100%;
+}
+
+/* タイトル */
+.user_auth_title {
+    margin: 0;
+    padding: 10px;
+    background-color: var(--user_auth_title_background_color);
+    border-bottom: 1px solid var(--common_border_color);
+    color: white;
+}
+
+/* フォーム */
+.user_auth_form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* フォームグループ */
+.user_auth_form_group {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* ラベル */
+.user_auth_label {
+    width: 30%;
+    text-align: right;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+/* 入力 */
+.user_auth_input {
+    width: 70%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+/* チェックボックス */
+.user_auth_checkbox {
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ボタンのグループ */
+.user_auth_button_group {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* ログインボタン */
+.user_auth_login_button {
+    background-color: var(--user_auth_login_button_background_color);
+}
+
+/* 登録ボタン */
+.user_auth_register_button{
+    background-color: var(--user_auth_register_button_background_color);
+}
+
+/* リンク */
+.user_auth_link {
+    text-align: center;
+    margin-top: 15px;
+}

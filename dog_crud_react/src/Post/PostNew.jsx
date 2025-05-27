@@ -10,30 +10,19 @@ import { useShowValidatedMessage } from "../hooks/ShowValidatedMessage";
  * 新規投稿作成ページ
  * @returns 新規投稿作成ページ
  */
-function PostNew({ isAuthenticated, email, userPasword, ages }) {
+function PostNew() {
+    // const { userInfo, isUserInfoLoading  } = useUser();
     const [post, setPost] = useState({
         title: '',
         content: '',
         imageUrl: '',
         ageId: '',
-        password: '',
     })
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
     const showValidatedMessage = useShowValidatedMessage();
-
-    /**
-     * 初回レンダリング時の処理
-     * - 未ログインの場合、投稿フォームへのアクセスをブロック
-     * - ユーザーIDを投稿データに設定
-     */
-    useEffect(() => {
-        const isUserLogin = (isAuthenticated && userPasword !== null && userPasword !== '');
-        const defaultPassword = isUserLogin ? userPasword : '';
-        setPost(prevPost => ({ ...prevPost, password: defaultPassword }));
-    }, []);
 
     /**
      * フォーム送信
@@ -87,12 +76,23 @@ function PostNew({ isAuthenticated, email, userPasword, ages }) {
         }
     }
 
+    // // ユーザー情報の読み込み途中の場合何も表示しない。
+    // if(isUserInfoLoading){
+    //     return null;
+    // }
+
+    // // 情報が存在しない（ログインしていない）場合、その旨を表示して一覧表示画面へ遷移する
+    // // 白い画面上にメッセージが表示される動きとなるが、URLが直接入力されない限りあり得ないためこの通りとする。
+    // if(!isUserInfoLoading && !userInfo){
+    //     alert(MESSAGES.NOT_ALREADY_LOGGED_IN);
+    //     navigate(ROUTES.POST_INDEX);
+    //     return null;
+    // }
+
     return (
         <PostFormFields
             formTitle={'新規投稿'}
             post={post}
-            isEdit={false}
-            ages={ages}
             setPost={setPost}
             onSubmit={handleSubmit}
             buttonLabel={"投稿する"}

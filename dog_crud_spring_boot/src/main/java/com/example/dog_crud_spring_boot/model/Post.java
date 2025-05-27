@@ -12,6 +12,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** 投稿者（Userエンティティと多対一で紐づく） */
+    @NotNull(message = "ユーザーIDを空にはできません（ログインしていますか？）")
+    @ManyToOne // 多対一のリレーション（投稿：ユーザー = 多：1）
+    @JoinColumn(name = "user_id") // 外部キーとして user_id カラムと結びつける
+    private User user;
+
     @Column(nullable = false, length = 20)
     private String title;
 
@@ -22,38 +28,47 @@ public class Post {
     @JoinColumn(name= "age_id", nullable = false)
     private Age age;
 
-    @Column(nullable = false)
-    private String password;
-
+    /** 犬の画像のURL */
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    /** 作成日時 */
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    /** 更新日時 */
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    /** 削除日時 */
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    /** 作成時に実行される処理 作成日時、更新日時を現在時刻で設定する */
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
+    /** 更新時に実行される処理 更新日時を現在時刻で設定する */
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 
+    /* 以下、ゲッター及びセッター */
+
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public User getUser(){
+        return user;
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     public String getTitle() {
@@ -80,14 +95,6 @@ public class Post {
         this.age = age;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -100,24 +107,11 @@ public class Post {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
-
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
 }

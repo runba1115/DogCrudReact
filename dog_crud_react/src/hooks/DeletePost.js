@@ -26,10 +26,7 @@ export const useDeletePost = (onSuccess = () => { }) => {
      */
     const deletePost = useCallback(async (id) => {
         // 削除確認ダイアログの表示を行う（キャンセルされたら中断）
-        // TODO:パスワードを入力するが、これでは入力されたパスワードが伏字にならない。伏字になる方法を検討する必要がある
-        const inputtedPassword = prompt(MESSAGES.POST_EXECUTE_CONFIRM_WITH_PASSWORD, "");
-        if (!inputtedPassword) {
-            // パスワードが入力されなかった。以降の処理を行わない
+        if (window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)) {
             return;
         }
 
@@ -37,10 +34,6 @@ export const useDeletePost = (onSuccess = () => { }) => {
             // 指定IDの投稿に対して DELETE リクエストを送信する
             const res = await fetch(`${APIS.POST_DELETE(id)}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ password: inputtedPassword }),
             });
 
             if (res.ok) {

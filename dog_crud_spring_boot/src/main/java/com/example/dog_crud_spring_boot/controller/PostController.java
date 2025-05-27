@@ -7,6 +7,7 @@ import com.example.dog_crud_spring_boot.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -47,9 +48,10 @@ public class PostController {
      * @param postRequestDto クライアントから送信された投稿データ（バリデーション付き）
      * @return 保存された投稿データを含む HTTP レスポンス（ステータスコード 200）
      */
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity<Post> create(@Valid @RequestBody PostRequestDto postRequestDto) {
-        Post savedPost = postService.createPost(postRequestDto);
+    public ResponseEntity<Post> create(@Valid @RequestBody PostRequestDto postRequestDto, Authentication authentication) {
+        Post savedPost = postService.createPost(postRequestDto, authentication);
         return ResponseEntity.ok(savedPost);
     }
 
@@ -70,27 +72,27 @@ public class PostController {
      * 指定されたIDの投稿を更新する
      * ※バリデーションに引っかかるなどすると例外が発生するが、グローバルエラーハンドラーで処理できるためtry-catchは不要である。
      *
-     * @param id             更新対象の投稿ID
+     * @param id          更新対象の投稿ID
      * @param updatedPostDto 新しい投稿データ（バリデーション付き）
      * @return 更新後の投稿データを含む HTTP レスポンス
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Post> update(@PathVariable Long id, @Valid @RequestBody PostRequestDto updatedPostDto) {
-        Post updatedPost = postService.updatePost(id, updatedPostDto);
+    public ResponseEntity<Post> update(@PathVariable Long id, @Valid @RequestBody PostRequestDto updatedPostDto, Authentication authentication) {
+        Post updatedPost = postService.updatePost(id, updatedPostDto, authentication);
         return ResponseEntity.ok(updatedPost);
     }
 
     /**
      * 指定されたIDの投稿を削除する。
      * 
-     * @param id  削除対象の投稿ID
+     * @param id 削除対象の投稿ID
      * @param dto 削除時に入力されたパスワードを含むDTO
      * @return 削除成功時は204 No Content、存在しない場合は404 Not Found を返す HTTP レスポンス
      *         ※削除成功時、「消えたから返すものがない」という意味で204 No Contentを返す(そのためステータス200ではない)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody PostRequestDto dto) {
-        postService.deletePost(id, dto);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody PostRequestDto dto, Authentication authentication) {
+        postService.deletePost(id, dto, authentication);
         return ResponseEntity.noContent().build();
     }
 }

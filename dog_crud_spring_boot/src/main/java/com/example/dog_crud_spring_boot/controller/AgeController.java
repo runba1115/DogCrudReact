@@ -1,6 +1,5 @@
 package com.example.dog_crud_spring_boot.controller;
 
-import com.example.dog_crud_spring_boot.dto.PostRequestDto;
 import com.example.dog_crud_spring_boot.model.Age;
 import com.example.dog_crud_spring_boot.repository.AgeRepository;
 

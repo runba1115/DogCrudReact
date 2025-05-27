@@ -7,46 +7,28 @@ import PostIndex from './Post/PostIndex';
 import PostShow from './Post/PostShow';
 import PostEdit from './Post/PostEdit';
 import Header from './components/Header';
-import { useGetAges } from './hooks/GetAges';
-import { useEffect, useState } from 'react';
+import UserRegister from './User/UserRegister';
+import UserLogin from './User/UserLogin';
 
 function App() {
-    const getAges = useGetAges();
-    const [ages, setAges] = useState([]);
-
-    /**
-     * APIを用いて年齢の一覧を取得する
-     */
-    useEffect(() => {
-        const fetchAges = async () => {
-            const data = await getAges();
-            if (data) {
-                setAges(data);
-            }
-        }
-
-        fetchAges();
-    }, [getAges]);
-
     return (
-        ages && ages.length > 0 ? (
-            <BrowserRouter>
-                <Header
-                    isAuthenticated={false}
-                    email={''}
-                />
-                <Routes>
-                    <Route path={ROUTES.POST_INDEX} element={<PostIndex />}></Route>
-                    <Route path={ROUTES.POST_SHOW()} element={<PostShow />}></Route>
-                    <Route path={ROUTES.POST_NEW} element={<PostNew ages={ages} />}></Route>
-                    <Route path={ROUTES.POST_EDIT()} element={<PostEdit ages={ages} />}></Route>
-                    <Route path={ROUTES.NOT_MATCH} elemenet={<Navigate to={ROUTES.POST_INDEX} />}></Route>
-                </Routes>
-            </BrowserRouter>)
+        <BrowserRouter>
+            <Header />
+            <Routes>
+                {/* 投稿関係 */}
+                <Route path={ROUTES.POST_INDEX} element={<PostIndex />}></Route>
+                <Route path={ROUTES.POST_SHOW()} element={<PostShow />}></Route>
+                <Route path={ROUTES.POST_NEW} element={<PostNew />}></Route>
+                <Route path={ROUTES.POST_EDIT()} element={<PostEdit />}></Route>
 
-            : (
-                <p>データの取得に失敗しました。ページを再読み込みしてください。</p>
-            )
+                {/* ユーザー関係 */}
+                <Route path={ROUTES.USER_REGISTER} element={<UserRegister />} />
+                <Route path={ROUTES.USER_LOGIN} element={<UserLogin />} />
+
+                {/* 上記以外の、不正なURLにアクセスされたら投稿一覧に遷移する */}
+                <Route path={ROUTES.NOT_MATCH} elemenet={<Navigate to={ROUTES.POST_INDEX} />}></Route>
+            </Routes>
+        </BrowserRouter>
     );
 }
 
