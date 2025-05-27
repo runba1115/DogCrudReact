@@ -1,4 +1,5 @@
 package com.example.dog_crud_spring_boot.dto;
+
 import lombok.Data;
 
 /**
@@ -6,7 +7,7 @@ import lombok.Data;
  * 認証されたユーザーの最小限の情報のみを含む
  */
 @Data
-public class UserResponseDto{
+public class UserResponseDto {
     private Long id;
     private String email;
     private String name;

@@ -1,4 +1,7 @@
 package com.example.dog_crud_spring_boot.dto;
+
+import java.time.LocalDateTime;
+
 import lombok.Data;
 
 /**
@@ -6,7 +9,8 @@ import lombok.Data;
  * ※ユーザーの情報や年齢の情報が含まれるが、ユーザーの情報内のパスワード、年齢の情報内の並び順を返さないようにすることが目的のため、
  * 削除日時のようなおそらく使わない値も念のため設定できるようにしている
  */
-public class PostResponseDto{
+@Data
+public class PostResponseDto {
     /** 投稿のID */
     Long id;
 
@@ -29,7 +33,7 @@ public class PostResponseDto{
     Long ageId;
 
     /** 年齢の値 */
-    Long ageValue;
+    String ageValue;
 
     /** 画像のURL */
     String imageUrl;

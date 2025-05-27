@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGenericException(Exception ex) {
         // ログにエラースタックトレースを出力
-        logger.error("予期しないエラーが発生しました", ex)
+        logger.error("予期しないエラーが発生しました", ex);
 
         // クライアントには簡潔なエラーメッセージのみ返す
         ErrorResponseDto dto = new ErrorResponseDto();

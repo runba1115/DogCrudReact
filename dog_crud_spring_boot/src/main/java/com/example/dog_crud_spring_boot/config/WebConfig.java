@@ -2,6 +2,7 @@ package com.example.dog_crud_spring_boot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -43,7 +44,6 @@ public class WebConfig implements WebMvcConfigurer {
                 // 認証情報（Cookie等）の送信を許可する
                 .allowCredentials(true);
     }
-
 
     /**
      * Spring Securityのフィルタチェーンを定義する

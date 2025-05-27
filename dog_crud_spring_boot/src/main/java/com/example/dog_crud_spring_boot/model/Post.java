@@ -13,7 +13,6 @@ public class Post {
     private Long id;
 
     /** 投稿者（Userエンティティと多対一で紐づく） */
-    @NotNull(message = "ユーザーIDを空にはできません（ログインしていますか？）")
     @ManyToOne // 多対一のリレーション（投稿：ユーザー = 多：1）
     @JoinColumn(name = "user_id") // 外部キーとして user_id カラムと結びつける
     private User user;
@@ -25,7 +24,7 @@ public class Post {
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name= "age_id", nullable = false)
+    @JoinColumn(name = "age_id", nullable = false)
     private Age age;
 
     /** 犬の画像のURL */
@@ -63,11 +62,11 @@ public class Post {
         return id;
     }
 
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -87,11 +86,11 @@ public class Post {
         this.content = content;
     }
 
-    public Age getAge(){
+    public Age getAge() {
         return this.age;
     }
 
-    public void setAge(Age age){
+    public void setAge(Age age) {
         this.age = age;
     }
 

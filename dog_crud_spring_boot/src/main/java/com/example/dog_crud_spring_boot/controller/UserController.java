@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,8 +53,10 @@ public class UserController {
 
         // 保存を実行する
         User savedUser = userRepository.save(user);
-        UserResponseDto userResponse = new UserResponseDto(savedUser.getId(), savedUser.getEmail(),
-                savedUser.getUserName());
+        UserResponseDto userResponse = new UserResponseDto();
+        userResponse.setId(savedUser.getId());
+        userResponse.setEmail(savedUser.getEmail());
+        userResponse.setName(savedUser.getName());
 
         return ResponseEntity.ok(userResponse);
     }
@@ -76,7 +79,7 @@ public class UserController {
         UserResponseDto response = new UserResponseDto();
         response.setId(user.getId());
         response.setEmail(user.getEmail());
-        response.setuserName(user.getName());
+        response.setName(user.getName());
         return ResponseEntity.ok(response);
     }
 }

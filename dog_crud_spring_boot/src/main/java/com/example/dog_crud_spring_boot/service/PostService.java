@@ -13,6 +13,7 @@ import jakarta.validation.ValidationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +33,8 @@ public class PostService {
     /**
      * コンストラクタ
      * 
-     * @param postRepository  投稿データへのアクセスを提供するリポジトリ
-     * @param ageRepository   年齢データへのアクセスを提供するリポジトリ
+     * @param postRepository 投稿データへのアクセスを提供するリポジトリ
+     * @param ageRepository  年齢データへのアクセスを提供するリポジトリ
      */
     public PostService(PostRepository postRepository, AgeRepository ageRepository) {
         this.postRepository = postRepository;
@@ -46,7 +47,7 @@ public class PostService {
      * @param post DTOに変換する対象
      * @return フロントエンド側に返却するPostのDTO
      */
-    private PostResponseDto convertPostToPostResponseDto(Post post){
+    private PostResponseDto convertPostToPostResponseDto(Post post) {
         PostResponseDto dto = new PostResponseDto();
         dto.setId(post.getId());
         dto.setUserId(post.getUser().getId());
@@ -113,7 +114,7 @@ public class PostService {
     /**
      * 投稿の作成者とログインしているユーザーが同じかを確認し、同じでなければ例外を投げる
      * 
-     * @param post 確認対象の投稿
+     * @param post           確認対象の投稿
      * @param authentication ログインしているユーザー
      * @throws AccessDeniedException 投稿の作成者とログインしているユーザーが同じ出ない場合にthrowされる
      */
@@ -134,7 +135,8 @@ public class PostService {
      * @param request 更新後の投稿データ（バリデーション済み）
      * @return 更新された投稿オブジェクト
      */
-    public Post updatePost(Long id, PostRequestDto request, Authentication authentication) {
+    public PostResponseDto updatePost(Long id, PostRequestDto request, Authentication authentication)
+            throws AccessDeniedException {
         // 指定された投稿IDの投稿データを取得（存在しなければ例外）
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ValidationException(TARGET_DATA_NOT_FOUND));
@@ -142,7 +144,7 @@ public class PostService {
         // 入力された年齢IDに対応するAgeデータを取得（存在しなければ例外）
         Age age = ageRepository.findById(request.getAgeId())
                 .orElseThrow(() -> new ValidationException(WRONG_AGE_DATA));
-        
+
         // 更新しようとしたユーザーと作成者が同じかを確認する（異なっていれば例外を投げることで処理を中断するためreturnは不要）
         validateUserOwnership(post, authentication);
 
@@ -151,7 +153,7 @@ public class PostService {
         post.setContent(request.getContent());
         post.setImageUrl(request.getImageUrl());
         post.setAge(age);
-        
+
         // 更新内容を保存して返却する
         Post savedPost = postRepository.save(post);
         PostResponseDto response = convertPostToPostResponseDto(savedPost);
@@ -164,11 +166,12 @@ public class PostService {
      * @param id      削除対象の投稿ID
      * @param request 削除に必要な情報（パスワードを含む）
      */
-    public void deletePost(Long id, PostRequestDto request, Authentication authentication) {
+    public void deletePost(Long id, PostRequestDto request, Authentication authentication)
+            throws AccessDeniedException {
         // 指定された投稿IDの投稿データを取得（存在しなければ例外）
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ValidationException(TARGET_DATA_NOT_FOUND));
-        
+
         // 削除しようとしたユーザーと作成者が同じかを確認する（異なっていれば例外を投げることで処理を中断するためreturnは不要）
         validateUserOwnership(post, authentication);
 
