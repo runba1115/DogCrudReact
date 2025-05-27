@@ -1,7 +1,6 @@
 package com.example.dog_crud_spring_boot.controller;
 
 import com.example.dog_crud_spring_boot.dto.PostRequestDto;
-import com.example.dog_crud_spring_boot.dto.PostResponseDto;
 import com.example.dog_crud_spring_boot.model.Post;
 import com.example.dog_crud_spring_boot.service.PostService;
 
@@ -36,8 +35,8 @@ public class PostController {
      * @return 投稿のリストを含む HTTP レスポンス（ステータスコード 200）
      */
     @GetMapping("/all")
-    public ResponseEntity<List<PostResponseDto>> getAll() {
-        List<PostResponseDto> postList = postService.getAllPosts();
+    public ResponseEntity<List<Post>> getAll() {
+        List<Post> postList = postService.getAllPosts();
         return ResponseEntity.ok(postList);
     }
 
@@ -61,12 +60,10 @@ public class PostController {
      * @return 該当する投稿が存在すればステータス200で投稿を返し、存在しなければ404を返す HTTP レスポンス
      */
     @GetMapping("/{id}")
-    public ResponseEntity<PostRequestDto> getById(@PathVariable Long id) {
-        PostResponseDto dto = postService.getPostById(id);
-        if (dto == null) {
-            ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<Post> getById(@PathVariable Long id) {
+        return postService.getPostById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
