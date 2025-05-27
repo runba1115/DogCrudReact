@@ -1,6 +1,8 @@
 //　定数のインポートを行う
-import { MESSAGES } from "../config/Constant";
+import { useCallback } from "react";
+import { MESSAGES, ROUTES } from "../config/Constant";
 import { useDeletePost } from "./DeletePost";
+import { useNavigate } from "react-router-dom";
 
 /**
  * バリデーションのエラーメッセージ表示用のカスタムフック
@@ -8,8 +10,9 @@ import { useDeletePost } from "./DeletePost";
  * @param userInfo ログイン中のユーザー情報
  * @returns showErrorMessage 引数にcatch文で使用するerror、表示するメッセージを受け取りエラーメッセージを表示する関数
  */
-export const usePostActions = (userInfo) => {
-    const deletePost = useDeletePost(useCallback(() => { getPosts(); }, []));
+export const usePostActions = (userInfo, onDeleteSuccess) => {
+    const deletePost = useDeletePost(useCallback(() => { onDeleteSuccess() }, []));
+    const navigate = useNavigate();
 
     /**
      * 詳細ボタン押下時に呼ばれる関数

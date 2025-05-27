@@ -3,6 +3,7 @@ import { createContext, useState, useContext } from 'react';
 import { APIS, HTTP_STATUS_CODES, MESSAGES } from '../config/Constant';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
+import { useShowValidatedMessage } from '../hooks/ShowValidatedMessage';
 
 // ユーザー情報と認証状態を格納するContext
 export const UserContext = createContext();
@@ -23,6 +24,7 @@ export const UserProvider = ({ children }) => {
 
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
+    const showValidatedMessage = useShowValidatedMessage();
 
     /**
      * アプリ起動時などにセッションが有効かどうか確認し、
@@ -38,8 +40,6 @@ export const UserProvider = ({ children }) => {
 
             if (res.ok) {
                 // 認証OK（ログイン済み）
-                console.log(MESSAGES.LOGGED_IN);
-
                 // ユーザー情報の読み取り
                 const data = await res.json();
 
@@ -51,8 +51,7 @@ export const UserProvider = ({ children }) => {
             } else {
                 if (res.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
                     // セッションが切れているなどで未認証の場合
-                    console.log(MESSAGES.NOT_ALREADY_LOGGED_IN);
-
+                    alert("みろぐいんです")
                     // 未ログイン状態に設定する
                     setUserInfo(null);
                     setIsAuthenticated(false);
@@ -79,7 +78,7 @@ export const UserProvider = ({ children }) => {
 
     /**
      * 登録を行う
-     * @param  userName ユーザー名
+     * @param  userName 名前
      * @param  email メールアドレス
      * @param  password パスワード
      * @returns true:登録に成功した　false:登録に失敗した
@@ -102,10 +101,16 @@ export const UserProvider = ({ children }) => {
                 alert(MESSAGES.USER_REGISTER_SUCCESSED);
 
                 // 成功したことを表すtrueを返す
-                return true; 
+                return true;
             } else {
-                const errorText = await response.text();
-                throw new Error(errorText);
+                if (response.status === HTTP_STATUS_CODES.BAD_REQUEST) {
+                    showValidatedMessage(response);
+                }
+                else {
+                    const errorText = await response.text();
+                    throw new Error(errorText);
+                }
+
             }
         } catch (error) {
             showErrorMessage(error, MESSAGES.USER_REGISTER_FAILED);

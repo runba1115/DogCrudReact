@@ -5,6 +5,7 @@ import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import PostFormFields from '../components/PostFormFields';
 import { useShowValidatedMessage } from '../hooks/ShowValidatedMessage';
+import { useUser } from '../contexts/UserContext';
 
 /**
  * 投稿編集画面
@@ -12,6 +13,7 @@ import { useShowValidatedMessage } from '../hooks/ShowValidatedMessage';
  */
 function PostEdit() {
     // URL パラメータから投稿 ID を取得
+    const { userInfo} = useUser();
     const { id } = useParams();
 
     // 送信中かどうかの状態を管理。初期値は false（送信中でない）
@@ -93,8 +95,23 @@ function PostEdit() {
         }
     }
 
+    // 情報が存在しない（ログインしていない）場合、その旨を表示して一覧表示画面へ遷移する
+    // 白い画面上にメッセージが表示される動きとなる。URLが直接入力されない限りあり得ないためこの通りのままとする。
+    if(!userInfo){
+    }
+
     // 初めて表示された時の初期化処理
     useEffect(() => {
+        // ユーザー情報が存在しない（ログインしていない）場合、その旨を表示して一覧表示画面へ遷移する
+        // 白い画面上にメッセージが表示される動きとなる。URLが直接入力されない限りあり得ないためこの通りのままとする。
+        if(!userInfo){
+            alert(MESSAGES.NOT_ALREADY_LOGGED_IN);
+            navigate(ROUTES.POST_INDEX);
+
+            // 以降の処理を行わない。
+            return null;
+        }
+
         /**
          * 編集対象の投稿を取得する非同期関数
          */

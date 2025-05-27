@@ -56,7 +56,7 @@ public class UserController {
         UserResponseDto userResponse = new UserResponseDto();
         userResponse.setId(savedUser.getId());
         userResponse.setEmail(savedUser.getEmail());
-        userResponse.setName(savedUser.getName());
+        userResponse.setUserName(savedUser.getUserName());
 
         return ResponseEntity.ok(userResponse);
     }
@@ -79,7 +79,7 @@ public class UserController {
         UserResponseDto response = new UserResponseDto();
         response.setId(user.getId());
         response.setEmail(user.getEmail());
-        response.setName(user.getName());
+        response.setUserName(user.getUserName());
         return ResponseEntity.ok(response);
     }
 }

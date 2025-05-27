@@ -9,8 +9,16 @@ import PostEdit from './Post/PostEdit';
 import Header from './components/Header';
 import UserRegister from './User/UserRegister';
 import UserLogin from './User/UserLogin';
+import { useUser } from './contexts/UserContext';
+import { useEffect } from 'react';
 
 function App() {
+    const {initializeUser} = useUser();
+    useEffect(() => {
+        // ログイン情報を取得する
+        initializeUser();
+    }, []);
+
     return (
         <BrowserRouter>
             <Header />

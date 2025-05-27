@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { APIS, HTTP_STATUS_CODES, MESSAGES } from "../config/Constant";
 import { useShowErrorMessage } from "./ShowErrorMessage";
 import { useShowValidatedMessage } from "./ShowValidatedMessage";
@@ -37,5 +37,5 @@ export const useGetAges = () => {
     }, [showErrorMessage, showValidatedMessage]);
 
 
-    return {getAges, isLoading};
+    return {getAges, isAgeLoading};
 }

@@ -17,7 +17,7 @@ export const MESSAGES = {
     // ユーザー関係のメッセージ
     USER_REGISTER_SUCCESSED : 'ユーザー登録に成功しました',
     USER_REGISTER_FAILED : 'ユーザー登録に失敗しました',
-    LOGGED_IN: 'すでにログイン済みです',
+    ALREADY_LOGGED_IN: 'すでにログイン済みです',
     NOT_ALREADY_LOGGED_IN:  '未ログインです',
     LOG_IN_SUCCESS: 'ログインに成功しました',
     LOG_IN_FAILED: 'ログインに失敗しました',
@@ -55,8 +55,8 @@ export const MESSAGES = {
 export const APIS={
     // ユーザー関係
     USER_REGISTER: `${API_BASE_URL}/api/users/register`,
-    USER_LOGIN: `${API_BASE_URL}/api/users/login`,
-    USER_LOGOUT: `${API_BASE_URL}/api/users/logout`,
+    USER_LOGIN: `${API_BASE_URL}/login`,
+    USER_LOGOUT: `${API_BASE_URL}/logout`,
     USER_GET_CURRENT: `${API_BASE_URL}/api/users/me`,
 
     // 投稿関係

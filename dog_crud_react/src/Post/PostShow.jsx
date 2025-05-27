@@ -6,13 +6,15 @@ import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import { format } from 'date-fns';
 import './PostShow.css';
+import { useUser } from '../contexts/UserContext';
+import { usePostActions } from '../hooks/PostActions';
 
 /**
  * 投稿詳細画面
  * @returns 投稿詳細画面
  */
 function PostShow() {
-    const { userInfo, isUserInfoLoading  } = useUser();
+    const { userInfo  } = useUser();
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const navigate = useNavigate();
@@ -60,11 +62,6 @@ function PostShow() {
     useEffect(() => {
         getPost();
     }, []);
-
-    // ユーザー情報の読み込み中は何も表示しない。
-    if(isUserInfoLoading){
-        return null;
-    }
 
     const isOwner = (post.userId === userInfo?.id);
 

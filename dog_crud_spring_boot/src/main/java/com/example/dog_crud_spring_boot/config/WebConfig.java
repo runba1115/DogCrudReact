@@ -1,5 +1,6 @@
 package com.example.dog_crud_spring_boot.config;
 
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -80,5 +81,11 @@ public class WebConfig implements WebMvcConfigurer {
 
         // 最終的にSecurityFilterChainを返す
         return http.build();
+    }
+
+    @Bean
+    public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
+        // SameSite=None を許可（Secure属性も必要なので注意）
+        return CookieSameSiteSupplier.ofNone().whenHasName("JSESSIONID");
     }
 }

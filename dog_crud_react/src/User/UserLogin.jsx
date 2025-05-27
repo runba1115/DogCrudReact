@@ -18,10 +18,10 @@ function UserLogin() {
     useEffect(()=>{
         // すでに認証済みの場合、投稿一覧画面へ遷移させる（ログインの必要がないため）
         if(isAuthenticated){
-            alert(MESSAGES.LOGGED_IN);
+            alert(MESSAGES.ALREADY_LOGGED_IN);
             navigate(ROUTES.POST_INDEX)
         }
-    },[isAuthenticated, navigate]);
+    },[]);
 
     /**
      * フォーム送信時に実行されるログイン処理
@@ -63,7 +63,7 @@ function UserLogin() {
                         <input
                             type="email"
                             value={email}
-                            autoComplete="username"
+                            autoComplete="name"
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="メールアドレス"
                             required

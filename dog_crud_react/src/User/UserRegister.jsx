@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MESSAGES, ROUTES } from '../config/Constant';
 import { useNavigate } from 'react-router-dom';
 import './UserAuth.css';
@@ -19,10 +19,10 @@ function UserRegister() {
     useEffect(() => {
         // すでに認証済みの場合、投稿一覧画面へ遷移させる（ログインの必要がないため）
         if (isAuthenticated) {
-            alert(MESSAGES.LOGGED_IN);
+            alert(MESSAGES.ALREADY_LOGGED_IN);
             navigate(ROUTES.POST_INDEX)
         }
-    }, [isAuthenticated, navigate]);
+    }, []);
 
     /**
      * フォーム送信時に実行されるログイン処理

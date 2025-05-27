@@ -5,15 +5,16 @@ import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import { format } from 'date-fns';
 import './PostIndex.css';
+import { useUser } from '../contexts/UserContext';
+import { usePostActions } from '../hooks/PostActions';
 
 /**
  * 投稿一覧画面
  * @returns 投稿一覧画面
  */
 function PostIndex() {
-    const { userInfo, isUserInfoLoading , isAuthenticated } = useUser();
+    const { userInfo , isAuthenticated } = useUser();
     const [posts, setPosts] = useState([]);
-    const { handleShow, handleEdit, handleDelete } = usePostActions(userInfo);
     const navigate = useNavigate();
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
@@ -43,6 +44,7 @@ function PostIndex() {
             setPosts([]);
         }
     }
+    const { handleShow, handleEdit, handleDelete } = usePostActions(userInfo, getPosts);
 
 
     // 初回レンダリング時に投稿一覧を取得する
@@ -61,16 +63,10 @@ function PostIndex() {
         navigate(ROUTES.POST_NEW);
     }
 
-    // ユーザー情報の読み込み途中の場合何も表示しない。
-    if(isUserInfoLoading){
-        return null;
-    }
-
     return (
         <div className='common_container '>
             {/* 新規投稿作成画面へのリンク */}
             <button onClick={() => handleNew()} className={`common_button post_create_button ${isAuthenticated ? "" : "post_simple_view_disable_button"}`} disabled={!isAuthenticated}>新規作成</button>
-            <Link to={`/posts/new`} className='common_button post_create_button'>新規作成</Link>
             <h2>投稿一覧</h2>
 
             {/* 投稿が存在しない場合のメッセージ表示 */}

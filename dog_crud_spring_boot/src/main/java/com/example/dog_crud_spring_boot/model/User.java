@@ -28,7 +28,7 @@ public class User implements UserDetails {
     @NotBlank(message = "名前を設定してください")
     @Size(max = 20, message = "名前が長すぎます")
     @Column(nullable = false, length = 20)
-    private String name;
+    private String userName;
 
     /** メールアドレス（ログインIDとして使用） */
     @NotBlank(message = "メールアドレスを設定してください")
@@ -36,10 +36,10 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    /** メールアドレス（ログインIDとして使用） */
+    /** パスワード */
     @NotBlank(message = "パスワードを設定してください")
     @Size(min = 8, message = "パスワードは5文字以上で設定してください")
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false, length = 255)
     private String password;
 
     // --- 以下、ゲッター・セッター（ID以外書き換え可能） ---
@@ -56,8 +56,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -81,6 +85,7 @@ public class User implements UserDetails {
 
     /**
      * 認証に使うユーザー名を返す（ここではメールアドレスを使用）
+     * ※上記のゲッターのgetUserNameとは関係ないことに留意すること
      */
     @Override
     public String getUsername() {

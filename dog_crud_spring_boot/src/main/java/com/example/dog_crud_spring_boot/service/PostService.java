@@ -52,7 +52,7 @@ public class PostService {
         dto.setId(post.getId());
         dto.setUserId(post.getUser().getId());
         dto.setUserEmail(post.getUser().getEmail());
-        dto.setUserName(post.getUser().getName());
+        dto.setUserName(post.getUser().getUserName());
         dto.setTitle(post.getTitle());
         dto.setContent(post.getContent());
         dto.setAgeId(post.getAge().getId());
