@@ -19,12 +19,6 @@
     margin: 5px 0;
 }
 
-.post_simple_date_info {
-    margin-left: 5px;
-    font-size: 14px;
-    font-weight: lighter;
-}
-
 /* 投稿一覧画面の投稿内のボタン 共通スタイル */
 .post_simple_view_button {
     margin-top: 5px;

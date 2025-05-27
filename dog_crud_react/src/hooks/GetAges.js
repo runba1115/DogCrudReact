@@ -27,7 +27,7 @@ export const useGetAges = () => {
                 }
             }
         } catch (error) {
-            showErrorMessage(error);
+            showErrorMessage(error, MESSAGES.AGE_GET_ERROR);
         }finally{
             setIsAgeLoading(false);
         }

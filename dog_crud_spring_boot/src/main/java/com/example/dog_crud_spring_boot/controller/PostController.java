@@ -2,10 +2,8 @@ package com.example.dog_crud_spring_boot.controller;
 
 import com.example.dog_crud_spring_boot.dto.PostRequestDto;
 import com.example.dog_crud_spring_boot.dto.PostResponseDto;
-import com.example.dog_crud_spring_boot.model.Post;
 import com.example.dog_crud_spring_boot.service.PostService;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;

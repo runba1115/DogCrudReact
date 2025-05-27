@@ -6,6 +6,7 @@ import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import PostFormFields from '../components/PostFormFields';
 import { useShowValidatedMessage } from '../hooks/ShowValidatedMessage';
 import { useUser } from '../contexts/UserContext';
+import Loading from '../components/Loading';
 
 /**
  * 投稿編集画面
@@ -13,7 +14,7 @@ import { useUser } from '../contexts/UserContext';
  */
 function PostEdit() {
     // URL パラメータから投稿 ID を取得
-    const { userInfo} = useUser();
+    const { userInfo } = useUser();
     const { id } = useParams();
 
     // 送信中かどうかの状態を管理。初期値は false（送信中でない）
@@ -40,7 +41,7 @@ function PostEdit() {
         }
 
         // 更新確認ダイアログの表示を行う（キャンセルされたら中断）
-        if(!window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)){
+        if (!window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)) {
             alert("キャンセルされました");
             return;
         }
@@ -60,7 +61,10 @@ function PostEdit() {
                     {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(post)
+                    body: JSON.stringify(post),
+
+                    // ログイン情報がクッキーに保存されている。それを含めて送ることで作成者を判別できるようにする
+                    credentials: 'include',
                 }
             );
 
@@ -75,9 +79,11 @@ function PostEdit() {
                     alert(MESSAGES.POST_NOT_FOUND);
                     navigate(ROUTES.POST_INDEX);
                 } else if (response.status == HTTP_STATUS_CODES.FORBIDDEN) {
-                    // 更新が拒否された（不正なパスワードである）
-                    alert(MESSAGES.POST_UPDATE_FORBIDDEN)
-                }else if(response.status === HTTP_STATUS_CODES.BAD_REQUEST){
+                    // 更新が拒否された(投稿の作成者ではない)
+                    // →更新できないユーザーが編集ページを開いている。一覧画面に遷移する。
+                    alert(MESSAGES.NO_PERMISSION);
+                    navigate(ROUTES.POST_INDEX);
+                } else if (response.status === HTTP_STATUS_CODES.BAD_REQUEST) {
                     // バリデーションエラーが発生した
                     await showValidatedMessage(response);
                 }
@@ -95,23 +101,8 @@ function PostEdit() {
         }
     }
 
-    // 情報が存在しない（ログインしていない）場合、その旨を表示して一覧表示画面へ遷移する
-    // 白い画面上にメッセージが表示される動きとなる。URLが直接入力されない限りあり得ないためこの通りのままとする。
-    if(!userInfo){
-    }
-
     // 初めて表示された時の初期化処理
     useEffect(() => {
-        // ユーザー情報が存在しない（ログインしていない）場合、その旨を表示して一覧表示画面へ遷移する
-        // 白い画面上にメッセージが表示される動きとなる。URLが直接入力されない限りあり得ないためこの通りのままとする。
-        if(!userInfo){
-            alert(MESSAGES.NOT_ALREADY_LOGGED_IN);
-            navigate(ROUTES.POST_INDEX);
-
-            // 以降の処理を行わない。
-            return null;
-        }
-
         /**
          * 編集対象の投稿を取得する非同期関数
          */
@@ -126,7 +117,7 @@ function PostEdit() {
                     // 取得したデータの通り、パスワード以外を設定する。
                     // ※パスワードはユーザーに入力させるため、空文字とする
                     // 年齢は、APIから取得するとき、data.age.idに格納されている。送信するときにはdata.ageIdに格納するため、それに格納しなおす
-                    setPost({...data});
+                    setPost({ ...data });
                     console.log(data);
                 } else {
                     // 投稿の取得に失敗した場合
@@ -146,24 +137,33 @@ function PostEdit() {
         };
 
         fetchPost();
+
+
+        // 投稿を作成したユーザーのIDとログインしているユーザーのIDが異なる場合、権限がない旨を表示して一覧画面に戻る
+        if (!userInfo) {
+            alert(MESSAGES.NO_PERMISSION);
+            navigate(ROUTES.POST_INDEX);
+
+            // 以降の処理を行わない。
+            return;
+        }
     }, [createErrorFromResponse, showErrorMessage, id, navigate]);
 
+    // 投稿が読み込み中の場合、読み込み中画面を表示する
+    // ※画像のURLが空の場合、自動的に別の画像のURLが取得されてしまう。postだけの確認では、imageUrlに値が設定され終わる前に条件が成立してしまうため、
+    // imageUrlが空である限り読み込み中画面を表示する
+    if (!post.imageUrl) {
+        return <Loading />
+    }
 
     return (
-        // このページを表示した時点ではまだ投稿を取得できていない。
-        // その状態で下記を表示すると、画像のURLが設定されていないとして、別の画像のURLが設定されてしまう。
-        // 取得できていない間はその旨を表示するのはそういった理由からである。
-        !post?.imageUrl ? (
-            <p>読み込み中です…しばらくお待ちください</p>
-        ) : (
-            <PostFormFields
-                formTitle={'投稿編集'}
-                post={post}
-                setPost={setPost}
-                onSubmit={handleSubmit}
-                buttonLabel={"更新する"}
-            />
-        )
+        <PostFormFields
+            formTitle={'投稿編集'}
+            post={post}
+            setPost={setPost}
+            onSubmit={handleSubmit}
+            buttonLabel={"更新する"}
+        />
     );
 }
 

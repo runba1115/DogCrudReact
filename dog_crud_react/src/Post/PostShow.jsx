@@ -8,13 +8,14 @@ import { format } from 'date-fns';
 import './PostShow.css';
 import { useUser } from '../contexts/UserContext';
 import { usePostActions } from '../hooks/PostActions';
+import Loading from '../components/Loading';
 
 /**
  * 投稿詳細画面
  * @returns 投稿詳細画面
  */
 function PostShow() {
-    const { userInfo  } = useUser();
+    const { userInfo } = useUser();
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const navigate = useNavigate();
@@ -63,28 +64,28 @@ function PostShow() {
         getPost();
     }, []);
 
+    // 投稿が読み込み中の場合、読み込み中画面を表示する
+    if (!post) {
+        return <Loading />
+    }
+
     const isOwner = (post.userId === userInfo?.id);
 
     return (
         <div className='common_container'>
-            {post == null ? (
-                <div>読み込み中です…</div>
-            ) : (
-
-                <div className='common_shadow post_detail_view_post'>
-                    <h3>{post.title}
-                        <span className="post_detail_date_info">年齢: {post.age.value}</span>
-                        <span className="post_detail_date_info">作成日時: {format(new Date(post.createdAt), 'yyyy/MM/dd HH:mm')}</span>
-                        <span className="post_detail_date_info">更新日時: {format(new Date(post.updatedAt), 'yyyy/MM/dd HH:mm')}</span>
-                    </h3>
-                    <p>{post.content}</p>
-                    <img src={post.imageUrl} alt="犬の画像" className="post_detail_dog_image" />
-                    <p>
-                        <button onClick={() => handleEdit(post)} className={`common_button post_detail_view_button post_detail_view_edit_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>編集</button>
-                        <button onClick={() => handleDelete(post)} className={`common_button post_detail_view_button post_detail_view_delete_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>削除</button>
-                    </p>
-                </div >
-            )}
+            <div className='common_shadow post_detail_view_post'>
+                <h3>{post.title}
+                    <span className="post_detail_date_info">年齢: {post.ageValue}</span>
+                    <span className="post_detail_date_info">作成日時: {format(new Date(post.createdAt), 'yyyy/MM/dd HH:mm')}</span>
+                    <span className="post_detail_date_info">更新日時: {format(new Date(post.updatedAt), 'yyyy/MM/dd HH:mm')}</span>
+                </h3>
+                <p>{post.content}</p>
+                <img src={post.imageUrl} alt="犬の画像" className="post_detail_dog_image" />
+                <p>
+                    <button onClick={() => handleEdit(post)} className={`common_button post_detail_view_button post_detail_view_edit_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>編集</button>
+                    <button onClick={() => handleDelete(post)} className={`common_button post_detail_view_button post_detail_view_delete_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>削除</button>
+                </p>
+            </div >
         </div>
 
     );

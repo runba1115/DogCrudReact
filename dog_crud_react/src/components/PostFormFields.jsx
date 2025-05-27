@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
 import { useGetAges } from '../hooks/GetAges';
+import { MESSAGES } from '../config/Constant';
+import Loading from './Loading';
 
 /**
  * 投稿作成（もしくは編集）画面の入力画面
@@ -37,7 +39,7 @@ function PostFormFields({ formTitle, post, setPost, onSubmit, buttonLabel }) {
                 createErrorFromResponse(response);
             }
         } catch (error) {
-            showErrorMessage(error);
+            showErrorMessage(error, MESSAGES.DOG_API_ERROR);
         }
     }, [createErrorFromResponse, showErrorMessage]);
 
@@ -61,9 +63,13 @@ function PostFormFields({ formTitle, post, setPost, onSubmit, buttonLabel }) {
 
     }, [handleButtonClick, post?.imageUrl, getAges]);
 
-    // 年齢の一覧が読み込み中の場合その旨を表示する
+    // 年齢の一覧が読み込み中の場合読み込み中画面を表示する
     if (isAgeLoading) {
-        return (<p>読み込み中です…</p>);
+        return <Loading />
+    }
+
+    // 投稿が読み込み中の場合、読み込み中画面を表示する
+    if (!post) {
     }
 
     return (

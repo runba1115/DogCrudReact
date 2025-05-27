@@ -50,6 +50,9 @@ function PostNew() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(post),
+
+                    // ログイン情報がクッキーに保存されている。それを含めて送ることで作成者を判別できるようにする
+                    credentials: 'include',
                 }
             );
 

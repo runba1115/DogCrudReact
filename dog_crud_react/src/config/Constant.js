@@ -35,7 +35,7 @@ export const MESSAGES = {
     POST_CREATE_SUCCESSED: '投稿の作成に成功しました',
     POST_CREATE_FAILED: '投稿の作成に失敗しました',
     POST_UPDATE_SUCCESSED: '投稿の更新に成功しました',
-    POST_UPDATE_FORBIDDEN: '更新に失敗しました\nパスワードが間違っていませんか？',
+    POST_UPDATE_FORBIDDEN: '更新に失敗しました',
     POST_UPDATE_FAILED: '投稿の更新に失敗しました',
     
     POST_GET_FAILED: '投稿の取得に失敗しました',
@@ -45,6 +45,12 @@ export const MESSAGES = {
     POST_DELETE_SUCCESSED: '削除に成功しました',
     POST_DELETE_FORBIDDEN: '削除に失敗しました\nパスワードが間違っていませんか？',
     POST_DELETE_FAILED: '削除に失敗しました',
+
+    // 年齢関係
+    AGE_GET_ERROR: '犬の年齢の一覧の取得に失敗しました',
+
+    // 外部のAPI実行関係
+    DOG_API_ERROR: '犬の画像を取得できませんでした',
 
     // デバッグ用メッセージ
     UNEXPECTED_ERROR: '想定していないエラーが発生しました',

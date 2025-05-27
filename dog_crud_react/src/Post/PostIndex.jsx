@@ -79,11 +79,7 @@ function PostIndex() {
 
                         return (
                             <div key={post.id} className='post_simple_view_post common_shadow'>
-                                <h2>投稿詳細</h2>
                                 <h3>{post.title}
-                                    <span className="post_simple_date_info">年齢: {post.age.value}</span>
-                                    <span className="post_simple_date_info">作成日時: {format(new Date(post.createdAt), 'yyyy/MM/dd HH:mm')}</span>
-                                    <span className="post_simple_date_info">更新日時: {format(new Date(post.updatedAt), 'yyyy/MM/dd HH:mm')}</span>
                                 </h3>
                                 <p>{post.content}</p>
                                 <img src={post.imageUrl} alt="犬の画像" className="post_simple_dog_image" />
