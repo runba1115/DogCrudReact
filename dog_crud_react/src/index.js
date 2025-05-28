@@ -3,8 +3,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { UserProvider } from './contexts/UserContext';
+import { ThemeProvider } from '@emotion/react';
+import { createTheme } from '@mui/material';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light', // ここでライトモード固定
+  },
+});
+
+
 root.render(
     // React.StrictMode は、開発中に非推奨なAPIの使用や副作用の不備を検出するため、
     // useEffect などの副作用処理をあえて「マウント→アンマウント→再マウント」して動作確認する。
@@ -14,7 +24,9 @@ root.render(
     // React.StrictMode が残っていても実際の副作用処理は 1 回だけ実行され、本番に近い挙動になる。
     // <React.StrictMode>
     <UserProvider>
-        <App />
+        <ThemeProvider theme={lightTheme}>
+            <App />
+        </ThemeProvider>
     </UserProvider>
     // </React.StrictMode>
 );

@@ -1,11 +1,11 @@
-import './PostFormFields.css'
 
 import { useCallback, useEffect, useState } from "react";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
 import { useGetAges } from '../hooks/GetAges';
-import { MESSAGES } from '../config/Constant';
-import Loading from './Loading';
+import { MESSAGES, COMMON_STYLE } from '../config/Constant';
+import Loading from "./Loading";
+import { Autocomplete, Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 
 /**
  * 投稿作成（もしくは編集）画面の入力画面
@@ -29,7 +29,7 @@ function PostFormFields({ formTitle, post, setPost, onSubmit, buttonLabel }) {
     /**
      * ほかの犬の画像を表示するボタンがクリックされたときの処理
      */
-    const handleButtonClick = useCallback(async () => {
+    const handleImageChange = useCallback(async () => {
         try {
             const response = await fetch("https://dog.ceo/api/breeds/image/random");
             if (response.ok) {
@@ -56,86 +56,100 @@ function PostFormFields({ formTitle, post, setPost, onSubmit, buttonLabel }) {
         // 投稿の画像のURLが設定されていない場合、ほかの犬の画像を表示するボタンがクリックされたときの処理を実行して
         if (!post?.imageUrl) {
             const getImageUrl = async () => {
-                await handleButtonClick();
+                await handleImageChange();
             }
             getImageUrl();
         }
 
-    }, [handleButtonClick, post?.imageUrl, getAges]);
+    }, [handleImageChange, post?.imageUrl, getAges]);
 
     // 年齢の一覧が読み込み中の場合読み込み中画面を表示する
     if (isAgeLoading) {
         return <Loading />
     }
 
-    // 投稿が読み込み中の場合、読み込み中画面を表示する
-    if (!post) {
-    }
-
     return (
-        <form onSubmit={onSubmit} className='common_container common_shadow post_form_container'>
-            <h2>{formTitle}</h2>
-            <label className='post_form_label'>タイトル</label>
-            <input
-                type="text"
-                value={post.title}
+        <Box
+            component="form"
+            onSubmit={onSubmit}
+            sx={{
+                maxWidth: COMMON_STYLE.CONTAINER_MAX_WIDTH,
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                m: 'auto'
+            }}
+        >
+            <Typography variant="h6">{formTitle}</Typography>
+            {/* タイトル */}
+            <TextField
+                label="タイトル"
+                variant="outlined"
                 name="title"
+                value={post.title}
                 onChange={handleChange}
-                className='post_form_input'
+                fullWidth
             />
-            <label className='post_form_label'>内容</label>
-            <textarea
-                value={post.content}
+
+            {/* 内容 */}
+            <TextField
+                label="内容"
+                variant="outlined"
                 name="content"
+                multiline
+                rows={4}
+                value={post.content}
                 onChange={handleChange}
-                className='post_form_textarea'
+                fullWidth
             />
 
-            {/* <label className='post_form_label'>年齢</label>
-            <select
-                name="ageId"
-                value={post.ageId || ''}
-                onChange={handleChange}
-                className='post_form_input'
-            >
-                <option value="" disabled>選択してください</option>
-                {ages.map((age) => (
-                    <option key={age.id} value={age.id}>
-                        {age.value}
-                    </option>
-                ))}
-            </select> */}
-
-            {/* ラジオボタンを使用する場合の例 */}
-            <label className='post_form_label'>年齢</label>
-            <div className='post_form_radio_group'>
-                {ages.map((age) => (
-                    <label key={age.id} className='post_form_radio_label'>
-                        <input
-                            type="radio"
-                            name="ageId"
+            {/* 年齢（コンボボックス） */}
+            <FormControl>
+                <FormLabel>年齢</FormLabel>
+                <RadioGroup
+                    row
+                    name="ageId"
+                    value={post.ageId}
+                    onChange={handleChange}
+                >
+                    {ages.map((age)=>(
+                        <FormControlLabel
+                            key={age.id}
                             value={age.id}
-                            checked={Number(post.ageId) === age.id}
-                            onChange={handleChange}
-                            className='post_form_radio_input'
+                            control={<Radio />}
+                            label={age.value}
                         />
-                        {age.value}
-                    </label>
-                ))}
-            </div>
+                    ))}
+                </RadioGroup>
+            </FormControl>
+
+            {/* 年齢（コンボボックス） */}
+            <Autocomplete
+                disablePortal
+                options={ages}
+                getOptionLabel={(option) => option.value}
+                onChange={handleChange}
+                renderInput={(params) => <TextField {...params} label="年齢" />}
+            />
+
+            {/* 犬の画像 */}
             {
-                !post?.imageUrl ? (
-                    <>
-                        犬読み込み中…
-                    </>
+                post.imageUrl ? (
+                    <Box component="img" src={post.imageUrl} alt="犬の画像" />
                 ) : (
-                    <img src={post.imageUrl} alt="画像" className='post_form_image' />
+                    <Typography>読み込み中…</Typography>
                 )
             }
-            <input type="button" value="ほかの子にする" onClick={handleButtonClick} className='common_button post_form_button post_form_other_dog_button' />
 
-            <input type="submit" className='common_button post_form_button post_form_submit_button' value={buttonLabel} />
-        </form >
+            <Button variant="outlined" onClick={handleImageChange}>
+                ほかの子にする
+            </Button>
+
+            <Button type="submit" variant="contained">
+                投稿する
+            </Button>
+        </Box>
     );
 }
 

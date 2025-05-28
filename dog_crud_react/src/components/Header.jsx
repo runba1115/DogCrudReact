@@ -1,42 +1,74 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../config/Constant";
-import './Header.css'
 import { useUser } from "../contexts/UserContext";
+import PetsIcon from '@mui/icons-material/Pets';
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 
 /**
  * アプリケーション全体で表示されるヘッダー
  * @returns ヘッダー
  */
 function Header() {
-    const { userInfo, isAuthenticated, handleLogout  } = useUser();
+    const { userInfo, isAuthenticated, handleLogout } = useUser();
 
     return (
-        <header>
-            <div className="common_container header_container">
-                <div className="header_left_element">
-                    <Link to={ROUTES.POST_INDEX}>犬CRUD</Link>
-                </div>
-                <div className="header_right_element">
-                    {
-                        isAuthenticated
-                            ? (
-                                // ログイン済みの場合：ユーザー情報とログアウトボタンを表示する
+        <Box sx={{ flexGrow: 1 , mb: '30px' }}>
+            <AppBar position="sticky">
+                <Toolbar>
+                    {/* 左側 アプリ名および一覧画面に戻るためのボタン */}
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        sx={{ mr: 2 }}
+                        component={Link}
+                        to={ROUTES.POST_INDEX}
+                    >
+                        <PetsIcon />
+                    </IconButton>
+                    <Button
+                        component={Link}
+                        color="inherit"
+                        size="large"
+                        variant="outlined"
+                        sx={{
+                            textTransform: 'none',
+
+                        }}
+                    >
+                        犬CRUD
+                    </Button>
+
+                    {/* これにflexGrow: 1を設定することで右側に表示するオブジェクトが自動的に右に寄るようにする */}
+                    <Box sx={{ flexGrow: 1 }} />
+
+                    {/* 右側（ログイン状態によって切り替え） */}
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        {
+                            isAuthenticated ? (
                                 <>
-                                    <p>{userInfo.userName}</p>
-                                    <button onClick={handleLogout} className="common_button_to_link">ログアウト</button>
+                                    <Typography variant="body1">
+                                        {userInfo.userName}
+                                    </Typography>
+                                    <Button variant="text" color="inherit" onClick={handleLogout}>
+                                        ログアウト
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button variant="text" color="inherit" component={Link} to={ROUTES.USER_REGISTER}>
+                                        新規登録
+                                    </Button>
+                                    <Button variant="text" color="inherit" component={Link} to={ROUTES.USER_LOGIN}>
+                                        ログインする
+                                    </Button>
                                 </>
                             )
-                            : (
-                                // 未ログインの場合：新規登録／ログインリンクを表示する
-                                <>
-                                    <Link to={ROUTES.USER_REGISTER}>新規登録</Link>
-                                    <Link to={ROUTES.USER_LOGIN}>ログインする</Link>
-                                </>
-                            )
-                    }
-                </div>
-            </div>
-        </header>
+                        }
+                    </Box>
+                </Toolbar>
+            </AppBar>
+        </Box>
     );
 }
 

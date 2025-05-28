@@ -2,6 +2,7 @@ package com.example.dog_crud_spring_boot.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,8 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.naming.AuthenticationException;
 
 /**
  * アプリケーション全体で発生する例外を一括で処理するためのクラス。
@@ -62,6 +65,26 @@ public class GlobalExceptionHandler {
         ErrorResponseDto dto = new ErrorResponseDto();
         dto.setField("authorization");
         dto.setMessage(ex.getMessage());
+
+        List<ErrorResponseDto> dtoList = new ArrayList<>();
+        dtoList.add(dto);
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(dtoList);
+    }
+
+    /**
+     * 認可エラー（権限不足など）の例外を処理する。
+     * Spring Securityによってスローされる AuthorizationDeniedException を捕捉し、
+     * 統一フォーマットのエラーレスポンスを返却する。
+     *
+     * @param ex Spring Security によってスローされた認可例外
+     * @return エラー内容を含むレスポンス（HTTP 403 Forbidden）
+     */
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<List<ErrorResponseDto>> handleAuthenticationException(AuthorizationDeniedException ex) {
+        ErrorResponseDto dto = new ErrorResponseDto();
+        dto.setField("authorization");
+        dto.setMessage("権限がありません");
 
         List<ErrorResponseDto> dtoList = new ArrayList<>();
         dtoList.add(dto);

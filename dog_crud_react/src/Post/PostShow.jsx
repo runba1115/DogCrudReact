@@ -5,10 +5,10 @@ import { useDeletePost } from '../hooks/DeletePost';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import { format } from 'date-fns';
-import './PostShow.css';
 import { useUser } from '../contexts/UserContext';
 import { usePostActions } from '../hooks/PostActions';
 import Loading from '../components/Loading';
+import { Button, Card, CardActions, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 
 /**
  * 投稿詳細画面
@@ -72,22 +72,55 @@ function PostShow() {
     const isOwner = (post.userId === userInfo?.id);
 
     return (
-        <div className='common_container'>
-            <div className='common_shadow post_detail_view_post'>
-                <h3>{post.title}
-                    <span className="post_detail_date_info">年齢: {post.ageValue}</span>
-                    <span className="post_detail_date_info">作成日時: {format(new Date(post.createdAt), 'yyyy/MM/dd HH:mm')}</span>
-                    <span className="post_detail_date_info">更新日時: {format(new Date(post.updatedAt), 'yyyy/MM/dd HH:mm')}</span>
-                </h3>
-                <p>{post.content}</p>
-                <img src={post.imageUrl} alt="犬の画像" className="post_detail_dog_image" />
-                <p>
-                    <button onClick={() => handleEdit(post)} className={`common_button post_detail_view_button post_detail_view_edit_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>編集</button>
-                    <button onClick={() => handleDelete(post)} className={`common_button post_detail_view_button post_detail_view_delete_button ${isOwner ? "" : "post_detail_view_disable_button"}`} disabled={!isOwner}>削除</button>
-                </p>
-            </div >
-        </div>
+        <Card>
+            <CardContent>
+                <Stack direction="row" spacing={2}>
+                    <Typography variant="h6" component="div">{post.title}</Typography>
+                    <Typography variant="body1">{post.content}</Typography>
+                </Stack>
+                <CardMedia
+                    component="img"
+                    src={post.imageUrl}
+                    alt="犬の画像"
+                    sx={{
+                        width: '250px'
+                    }}
+                />
+            </CardContent>
+            <CardActions>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    component={Link}
+                    to={ROUTES.POST_SHOW(post.id)}
+                    disabled={!isOwner}
+                >
+                    詳細
+                </Button>
 
+                <Button
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    component={Link}
+                    to={ROUTES.POST_EDIT(post.id)}
+                    disabled={!isOwner}
+                >
+                    編集
+                </Button>
+                <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={handleDelete}
+                    disabled={!isOwner}
+                >
+                    削除
+                </Button>
+            </CardActions>
+
+        </Card>
     );
 }
 

@@ -1,4 +1,4 @@
-import './PostFormFields.css'
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 /**
  * 読み込み中の表示
@@ -6,9 +6,17 @@ import './PostFormFields.css'
  */
 function Loading() {
     return (
-        <div className='common_container'>
-            <p>読み込み中です…</p>
-        </div >
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            minHeight="100vh"
+            gap={2}
+        >
+            <CircularProgress />
+            <Typography variant="body1">読み込み中です…</Typography>
+        </Box>
     );
 }
 

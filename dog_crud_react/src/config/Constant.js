@@ -83,3 +83,9 @@ export const HTTP_STATUS_CODES = {
     FORBIDDEN: 403,
     NOT_FOUND: 404,
 }
+
+// スタイル（各画面で共通のもの）
+export const COMMON_STYLE = {
+    /** 画面中央に表示するオブジェクトの最大の横幅 */
+    CONTAINER_MAX_WIDTH: '1000px',
+}

@@ -49,19 +49,16 @@ export const UserProvider = ({ children }) => {
                 // 認証済みに設定する
                 setIsAuthenticated(true);
             } else {
-                if (res.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
+                console.log(res);
+                if (res.status === HTTP_STATUS_CODES.UNAUTHORIZED || res.status === HTTP_STATUS_CODES.FORBIDDEN) {
                     // セッションが切れているなどで未認証の場合
-                    alert("みろぐいんです")
                     // 未ログイン状態に設定する
                     setUserInfo(null);
                     setIsAuthenticated(false);
                 }
                 else {
                     // それ以外の想定外エラー
-                    const error = new Error();
-                    error.status = res.status;
-                    error.body = await res.text()
-                    throw error;
+                    throw createErrorFromResponse(res);
                 }
             }
         } catch (error) {
@@ -86,14 +83,15 @@ export const UserProvider = ({ children }) => {
      *            ただし、認証済みであることを表す変数に state 系の関数を用いて値を設定しても、関数を抜けた直後にそれが反映されているとは限らない。（非同期のため。）
      *            そのため、本関数が値を返すようにする。
      */
-    const handleRegister = async (userName, email, password) => {
+    const handleRegister = async (user) => {
+        alert("aaa");
         try {
             const response = await fetch(`${APIS.USER_REGISTER}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userName, email, password })
+                body: JSON.stringify(user)
             });
 
             if (response.ok) {
