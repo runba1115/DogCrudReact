@@ -50,7 +50,7 @@ export const UserProvider = ({ children }) => {
                 setIsAuthenticated(true);
             } else {
                 console.log(res);
-                if (res.status === HTTP_STATUS_CODES.UNAUTHORIZED || res.status === HTTP_STATUS_CODES.FORBIDDEN) {
+                if (res.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
                     // セッションが切れているなどで未認証の場合
                     // 未ログイン状態に設定する
                     setUserInfo(null);
@@ -84,7 +84,6 @@ export const UserProvider = ({ children }) => {
      *            そのため、本関数が値を返すようにする。
      */
     const handleRegister = async (user) => {
-        alert("aaa");
         try {
             const response = await fetch(`${APIS.USER_REGISTER}`, {
                 method: 'POST',

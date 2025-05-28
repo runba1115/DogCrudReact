@@ -78,7 +78,7 @@ function PostEdit() {
                     // 更新対象の投稿が見つからなかった（削除された可能性がある）。投稿一覧に遷移する。
                     alert(MESSAGES.POST_NOT_FOUND);
                     navigate(ROUTES.POST_INDEX);
-                } else if (response.status == HTTP_STATUS_CODES.FORBIDDEN) {
+                } else if (response.status === HTTP_STATUS_CODES.FORBIDDEN) {
                     // 更新が拒否された(投稿の作成者ではない)
                     // →更新できないユーザーが編集ページを開いている。一覧画面に遷移する。
                     alert(MESSAGES.NO_PERMISSION);
@@ -147,7 +147,7 @@ function PostEdit() {
             // 以降の処理を行わない。
             return;
         }
-    }, [createErrorFromResponse, showErrorMessage, id, navigate]);
+    }, [createErrorFromResponse, showErrorMessage, id, navigate, userInfo]);
 
     // 投稿が読み込み中の場合、読み込み中画面を表示する
     // ※画像のURLが空の場合、自動的に別の画像のURLが取得されてしまう。postだけの確認では、imageUrlに値が設定され終わる前に条件が成立してしまうため、

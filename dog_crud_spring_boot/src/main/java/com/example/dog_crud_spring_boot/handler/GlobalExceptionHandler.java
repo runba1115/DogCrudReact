@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.naming.AuthenticationException;
-
 /**
  * アプリケーション全体で発生する例外を一括で処理するためのクラス。
  * 各種例外に対し、共通フォーマット（List<ErrorResponseDto>）のエラーレスポンスを返却する。
@@ -33,7 +31,7 @@ public class GlobalExceptionHandler {
      * バリデーション失敗時の例外を処理する
      *
      * @param ex @Valid によってスローされたバリデーション例外
-     * @return フィールドごとのエラーメッセージを含むレスポンス（HTTP 400 Bad Request）
+     * @return フィールドごとのエラーメッセージを含むレスポンス（HTTP 400 BAD_REQUEST）
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorResponseDto>> handleValidationException(MethodArgumentNotValidException ex) {
@@ -58,7 +56,7 @@ public class GlobalExceptionHandler {
      * 認可エラー（アクセス権限がない場合）の例外を処理する。
      * 
      * @param ex アクセス権限がない場合にスローされる例外
-     * @return 権限不足を示すエラーメッセージを含むレスポンス（HTTP 403 Forbidden）
+     * @return 権限不足を示すエラーメッセージを含むレスポンス（HTTP 403 FORBIDDEN）
      */
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<List<ErrorResponseDto>> handleAccessDeniedException(AccessDeniedException ex) {
@@ -78,7 +76,7 @@ public class GlobalExceptionHandler {
      * 統一フォーマットのエラーレスポンスを返却する。
      *
      * @param ex Spring Security によってスローされた認可例外
-     * @return エラー内容を含むレスポンス（HTTP 403 Forbidden）
+     * @return エラー内容を含むレスポンス（HTTP 401 UNAUTHORIZED）
      */
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<List<ErrorResponseDto>> handleAuthenticationException(AuthorizationDeniedException ex) {
@@ -89,7 +87,7 @@ public class GlobalExceptionHandler {
         List<ErrorResponseDto> dtoList = new ArrayList<>();
         dtoList.add(dto);
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(dtoList);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(dtoList);
     }
 
     /**
@@ -97,7 +95,7 @@ public class GlobalExceptionHandler {
      * 使用例：すでに登録されているメールアドレスでのユーザー登録リクエスト
      * 
      * @param ex クライアントの論理的な入力ミスによる例外
-     * @return エラー内容を含むレスポンス（HTTP 400 Bad Request）
+     * @return エラー内容を含むレスポンス（HTTP 400 BAD_REQUEST）
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<List<ErrorResponseDto>> handleIllegalArgumentException(IllegalArgumentException ex) {
@@ -115,7 +113,7 @@ public class GlobalExceptionHandler {
      * その他すべての例外を一括処理する
      *
      * @param ex 予期しない例外
-     * @return サーバーエラーを表すレスポンスDTO（ステータスコード500）
+     * @return サーバーエラーを表すレスポンスDTO（ステータスコード500 INTERNAL_SERVER_ERROR）
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<List<ErrorResponseDto>> handleGenericException(Exception ex) {

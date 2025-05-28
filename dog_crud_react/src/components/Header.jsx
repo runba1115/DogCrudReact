@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { ROUTES } from "../config/Constant";
+import { COMMON_STYLE, ROUTES } from "../config/Constant";
 import { useUser } from "../contexts/UserContext";
 import PetsIcon from '@mui/icons-material/Pets';
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, IconButton, Toolbar, Typography } from "@mui/material";
 
 /**
  * アプリケーション全体で表示されるヘッダー
@@ -12,8 +12,8 @@ function Header() {
     const { userInfo, isAuthenticated, handleLogout } = useUser();
 
     return (
-        <Box sx={{ flexGrow: 1 , mb: '30px' }}>
-            <AppBar position="sticky">
+        <AppBar position="sticky" sx={{ flexGrow: 1, mb: '30px' }}>
+            <Container sx={{ maxWidth: COMMON_STYLE.CONTAINER_MAX_WIDTH }}>
                 <Toolbar>
                     {/* 左側 アプリ名および一覧画面に戻るためのボタン */}
                     <IconButton
@@ -67,8 +67,8 @@ function Header() {
                         }
                     </Box>
                 </Toolbar>
-            </AppBar>
-        </Box>
+            </Container>
+        </AppBar>
     );
 }
 

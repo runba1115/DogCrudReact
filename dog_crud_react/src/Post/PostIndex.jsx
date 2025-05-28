@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { APIS, MESSAGES, ROUTES } from '../config/Constant';
+import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { APIS, COMMON_STYLE, MESSAGES, ROUTES } from '../config/Constant';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
-import { format } from 'date-fns';
 import { useUser } from '../contexts/UserContext';
-import { usePostActions } from '../hooks/PostActions';
 import { Button, Card, CardActions, CardContent, CardMedia, Container, Typography } from '@mui/material';
+import { useDeletePost } from '../hooks/DeletePost';
 
 /**
  * 投稿一覧画面
@@ -15,7 +14,6 @@ import { Button, Card, CardActions, CardContent, CardMedia, Container, Typograph
 function PostIndex() {
     const { userInfo, isAuthenticated } = useUser();
     const [posts, setPosts] = useState([]);
-    const navigate = useNavigate();
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
 
@@ -23,7 +21,7 @@ function PostIndex() {
      * 投稿一覧をAPI経由で取得してStateに格納する関数
      * fetchの成功可否をチェックし、失敗時にはエラーを通知する
      */
-    const getPosts = async () => {
+    const getPosts = useCallback(async () => {
         try {
             // セッションに紐づいたユーザー情報を取得するAPIを呼び出す
             const res = await fetch(`${APIS.POST_ALL}`);
@@ -43,17 +41,18 @@ function PostIndex() {
             // 投稿を空にする
             setPosts([]);
         }
-    }
-    const { handleShow, handleEdit, handleDelete } = usePostActions(userInfo, getPosts);
+    }, [createErrorFromResponse, showErrorMessage]);
+
+    const deletePost = useDeletePost(getPosts);
 
 
     // 初回レンダリング時に投稿一覧を取得する
     useEffect(() => {
         getPosts();
-    }, []);
+    }, [getPosts]);
 
     return (
-        <Container>
+        <Container sx={{maxWidth: COMMON_STYLE.CONTAINER_MAX_WIDTH}}>
             <Button
                 variant="contained"
                 sx={{
@@ -83,7 +82,7 @@ function PostIndex() {
                         const isOwner = (post.userId === userInfo?.id);
 
                         return (
-                            <Card sx={{ minWidth: 500 }} key={post.id}>
+                            <Card sx={{ minWidth: 500, mb: '20px' }} key={post.id}>
                                 <CardContent>
                                     <Typography variant="h6" component="div">{post.title}</Typography>
                                     <Typography variant="body1">{post.content}</Typography>
@@ -103,7 +102,6 @@ function PostIndex() {
                                         size="small"
                                         component={Link}
                                         to={ROUTES.POST_SHOW(post.id)}
-                                        disabled={!isOwner}
                                     >
                                         詳細
                                     </Button>
@@ -122,7 +120,7 @@ function PostIndex() {
                                         variant="contained"
                                         color="error"
                                         size="small"
-                                        onClick={handleDelete}
+                                        onClick={() => {deletePost(post.id);}}
                                         disabled={!isOwner}
                                     >
                                         削除

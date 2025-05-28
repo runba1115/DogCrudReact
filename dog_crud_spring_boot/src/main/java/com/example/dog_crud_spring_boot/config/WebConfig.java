@@ -66,7 +66,8 @@ public class WebConfig implements WebMvcConfigurer {
 
                 // 全てのリクエストを許可する（現状は細かい制限を加えない）
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated())
+                        .requestMatchers("/me").authenticated()
+                        .anyRequest().permitAll())
 
                 // フォームログインの設定
                 .formLogin(form -> form

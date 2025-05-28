@@ -21,6 +21,7 @@ function UserRegister() {
     const handleChange = (e) => {
         const { field, value } = e.target;
         setUser(prevUser => ({ ...prevUser, [field]: value }));
+        console.log(user);
     }
 
     useEffect(() => {
@@ -76,28 +77,35 @@ function UserRegister() {
                 <TextField
                     label="ユーザー名"
                     variant="outlined"
+                    name="userName"
                     required
                     fullWidth
+                    onChange={handleChange}
                 />
 
                 <TextField
                     label="メールアドレス"
                     type="email"
                     variant="outlined"
+                    name="email"
                     required
                     fullWidth
+                    onChange={handleChange}
                 />
 
                 <TextField
                     label="パスワード"
                     type="password"
                     variant="outlined"
+                    name="password"
                     required
                     fullWidth
+                    onChange={handleChange}
                 />
 
                 <Button
                     variant="contained"
+                    onClick={handleSubmit}
                 >
                     登録する
                 </Button>

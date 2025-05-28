@@ -16,6 +16,17 @@ public class Age {
     @Column(name = "sort_order", nullable = false)
     private Long sortOrder;
 
+    /**
+     * デフォルトのデータを作成する際に使用するコンストラクタ
+     * 
+     * @param value     表示する値
+     * @param sortOrder 並び順
+     */
+    public Age(String value, Long sortOrder) {
+        this.value = value;
+        this.sortOrder = sortOrder;
+    }
+
     public Long getId() {
         return id;
     }

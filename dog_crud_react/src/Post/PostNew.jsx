@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from "../config/Constant";
 import { useNavigate } from 'react-router-dom';
 import PostFormFields from "../components/PostFormFields";

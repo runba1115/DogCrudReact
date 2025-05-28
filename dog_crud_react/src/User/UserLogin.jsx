@@ -16,7 +16,7 @@ function UserLogin() {
 
     useEffect(()=>{
         // すでに認証済みの場合、投稿一覧画面へ遷移させる（ログインの必要がないため）
-        if(isAuthenticated){
+        if(isAuthenticated && !isSubmitting){
             alert(MESSAGES.ALREADY_LOGGED_IN);
             navigate(ROUTES.POST_INDEX)
         }

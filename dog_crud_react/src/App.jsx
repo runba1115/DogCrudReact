@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import { COMMON_STYLE, ROUTES } from './config/Constant';
+import { ROUTES } from './config/Constant';
 import PostNew from './Post/PostNew';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import PostIndex from './Post/PostIndex';
@@ -12,14 +11,13 @@ import UserLogin from './User/UserLogin';
 import { useUser } from './contexts/UserContext';
 import { useEffect } from 'react';
 import Loading from './components/Loading';
-import { Container } from '@mui/material';
 
 function App() {
     const { isUserInfoLoading, initializeUser } = useUser();
     useEffect(() => {
         // ログイン情報を取得する
         initializeUser();
-    }, []);
+    }, [initializeUser]);
 
     // ユーザー情報が読み込み中の場合、読み込み中画面を表示する
     if (isUserInfoLoading) {

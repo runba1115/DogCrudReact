@@ -41,7 +41,7 @@ function PostFormFields({ formTitle, post, setPost, onSubmit, buttonLabel }) {
         } catch (error) {
             showErrorMessage(error, MESSAGES.DOG_API_ERROR);
         }
-    }, [createErrorFromResponse, showErrorMessage]);
+    }, [createErrorFromResponse, showErrorMessage, setPost]);
 
     useEffect(() => {
         // 年齢を取得する

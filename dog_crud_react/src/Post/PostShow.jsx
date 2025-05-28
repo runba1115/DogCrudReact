@@ -1,14 +1,13 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from '../config/Constant';
-import { useDeletePost } from '../hooks/DeletePost';
+import { APIS, COMMON_STYLE, HTTP_STATUS_CODES, MESSAGES, ROUTES } from '../config/Constant';
 import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
-import { format } from 'date-fns';
 import { useUser } from '../contexts/UserContext';
-import { usePostActions } from '../hooks/PostActions';
 import Loading from '../components/Loading';
 import { Button, Card, CardActions, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import { useDeletePost } from '../hooks/DeletePost';
+import { format } from 'date-fns';
 
 /**
  * 投稿詳細画面
@@ -19,15 +18,15 @@ function PostShow() {
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const navigate = useNavigate();
-    const { handleEdit, handleDelete } = usePostActions(userInfo);
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
+    const deletePost = useDeletePost(() => { navigate(ROUTES.POST_INDEX) });
 
     /**
      * APIから投稿詳細を取得する非同期関数
      * 成功時には取得したデータをstateにセットし、失敗時にはエラー通知とリダイレクトを行う
      */
-    const getPost = async () => {
+    const getPost = useCallback(async () => {
         try {
             // 投稿詳細の取得APIを呼び出す
             const res = await fetch(`${APIS.POST_GET_BY_ID(id)}`);
@@ -54,7 +53,7 @@ function PostShow() {
             navigate(ROUTES.POST_INDEX);
             return;
         }
-    }
+    }, [createErrorFromResponse, id, navigate, showErrorMessage]);
 
     /**
      * 初回レンダリング時に投稿詳細を取得する
@@ -62,7 +61,7 @@ function PostShow() {
      */
     useEffect(() => {
         getPost();
-    }, []);
+    }, [getPost]);
 
     // 投稿が読み込み中の場合、読み込み中画面を表示する
     if (!post) {
@@ -72,12 +71,13 @@ function PostShow() {
     const isOwner = (post.userId === userInfo?.id);
 
     return (
-        <Card>
+        <Card sx={{ maxWidth: COMMON_STYLE.CONTAINER_MAX_WIDTH, m: 'auto' }}>
             <CardContent>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={2} alignItems="flex-end">
                     <Typography variant="h6" component="div">{post.title}</Typography>
-                    <Typography variant="body1">{post.content}</Typography>
+                    <Typography variant="body1" component="div">{format(new Date(post.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</Typography>
                 </Stack>
+                <Typography variant="body1">{post.content}</Typography>
                 <CardMedia
                     component="img"
                     src={post.imageUrl}
@@ -88,17 +88,6 @@ function PostShow() {
                 />
             </CardContent>
             <CardActions>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    component={Link}
-                    to={ROUTES.POST_SHOW(post.id)}
-                    disabled={!isOwner}
-                >
-                    詳細
-                </Button>
-
                 <Button
                     variant="contained"
                     color="success"
@@ -113,7 +102,7 @@ function PostShow() {
                     variant="contained"
                     color="error"
                     size="small"
-                    onClick={handleDelete}
+                    onClick={() => { deletePost(post.id); }}
                     disabled={!isOwner}
                 >
                     削除
