@@ -10,13 +10,14 @@ import BackButton from "./BackButton";
 
 /**
  * 投稿作成（もしくは編集）画面の入力画面
- * @param {String} formTitle フォームのタイトル
- * @param {String} post 投稿の内容（title,content,imageUrlが格納されている値）
- * @param {Function} onSubmit フォームを送信するボタンクリック時の関数
- * @param {String} buttonLabel フォームを送信するボタンに表示する文字列
+ * @param formTitle フォームのタイトル
+ * @param post 投稿の内容（title,content,imageUrlが格納されている値）
+ * @param onSubmit フォームを送信するボタンクリック時の関数
+ * @param buttonLabel フォームを送信するボタンに表示する文字列
+ * @param isShow 詳細表示である場合trueを渡す 
  * @returns 
  */
-function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, buttonLabel }) {
+function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = () => { }, isSubmitting = false, buttonLabel, isShow }) {
     const [ages, setAges] = useState([]);
     const showErrorMessage = useShowErrorMessage();
     const createErrorFromResponse = useCreateErrorFromResponse();
@@ -110,10 +111,11 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, 
                             onChange={handleChange}
                             fullWidth
                             disabled={isSubmitting}
+                            slotProps={{ input: { readOnly: isShow, }, }}
                         />
 
                         {/* 内容 */}
-                        <TextField
+                        < TextField
                             label="内容"
                             variant="outlined"
                             name="content"
@@ -123,17 +125,17 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, 
                             onChange={handleChange}
                             fullWidth
                             disabled={isSubmitting}
+                            slotProps={{ input: { readOnly: isShow, }, }}
                         />
 
-                        {/* 年齢（コンボボックス） */}
+                        {/* 年齢（ラジオボタン） */}
                         <FormControl>
                             <FormLabel>年齢</FormLabel>
                             <RadioGroup
                                 row
                                 name="ageId"
                                 value={post.ageId}
-                                onChange={handleChange}
-                                disabled={isSubmitting}
+                                onChange={isShow ? () => { } : handleChange}
                             >
                                 {ages.map((age) => (
                                     <FormControlLabel
@@ -155,8 +157,11 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, 
                             getOptionLabel={(option) => option.value}
                             value={ages.find((age) => age.id === post.ageId) || null}
                             disabled={isSubmitting}
+                            readOnly={isShow}
                             onChange={(_, newValue) => {
-
+                                if(isShow){
+                                    return;
+                                }
                                 setPost(prevPost => ({
                                     ...prevPost,
                                     ageId: newValue ? newValue.id : null
@@ -164,7 +169,7 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, 
                             }}
                             // filterOptions={(options) => options}
                             renderInput={(params) => (
-                                <TextField {...params} label="年齢" placeholder="選択してください" />
+                                <TextField {...params} label="年齢" placeholder="選択してください"/>
                             )}
                         />
 
@@ -182,13 +187,18 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, 
                         flexDirection: 'column',
                         gap: 2,
                     }}>
-                        <Button variant="outlined" loading={isSubmitting}>
-                            ほかの子にする
-                        </Button>
 
-                        <Button type="submit" variant="contained" loading={isSubmitting}>
-                            {buttonLabel}
-                        </Button>
+                        {!isShow && (
+                            <>
+                                <Button variant="outlined" loading={isSubmitting}>
+                                    ほかの子にする
+                                </Button>
+
+                                <Button type="submit" variant="contained" loading={isSubmitting}>
+                                    {buttonLabel}
+                                </Button>
+                            </>
+                        )}
                     </CardActions>
                 </form>
             </Card>

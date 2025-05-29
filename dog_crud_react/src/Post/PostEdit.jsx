@@ -185,6 +185,7 @@ function PostEdit() {
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
             buttonLabel={"更新する"}
+            isShow={false}
         />
     );
 }

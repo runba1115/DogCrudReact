@@ -106,6 +106,7 @@ function PostNew() {
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
             buttonLabel={"投稿する"}
+            isShow={false}
         />
     );
 }
