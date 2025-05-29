@@ -220,7 +220,7 @@ function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = (
                             </Box>
                         ) : (
                             <Box sx={{display: 'flex', flexDirection: "column",gap: 2}}>
-                                <Button variant="outlined" loading={isSubmitting}>
+                                <Button variant="outlined" loading={isSubmitting} onClick={handleImageChange}>
                                     ほかの子にする
                                 </Button>
 
