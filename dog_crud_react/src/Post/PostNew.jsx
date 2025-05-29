@@ -83,7 +83,7 @@ function PostNew() {
             formTitle={'新規投稿'}
             post={post}
             setPost={setPost}
-            onSubmit={handleSubmit}
+            handleSubmit={handleSubmit}
             buttonLabel={"投稿する"}
         />
     );

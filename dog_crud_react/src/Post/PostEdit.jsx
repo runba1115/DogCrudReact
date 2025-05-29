@@ -29,6 +29,7 @@ function PostEdit() {
     const showErrorMessage = useShowErrorMessage();
     const navigate = useNavigate();
     const showValidatedMessage = useShowValidatedMessage();
+    const [ isInitialized, setIsInitialized] = useState(false);
 
     /**
      * フォームが送信されたときのハンドラ
@@ -103,6 +104,15 @@ function PostEdit() {
 
     // 初めて表示された時の初期化処理
     useEffect(() => {
+        // 初回のみ実行するため、初期化済みフラグがtrueなら以降の処理を行わない
+        // ※useEffectは第二引数の[]内を空にすることで1回のみ行われるようにできるが、第1引数の処理に影響を与えるものを第2引数に格納するのがuseEffectの記載として望ましい。
+        //   その形を維持しつつ、最初の1回のみ実行される洋子の形としている。
+        if(isInitialized){
+            return ;
+        }
+
+        setIsInitialized(true);
+
         /**
          * 編集対象の投稿を取得する非同期関数
          */
@@ -118,7 +128,6 @@ function PostEdit() {
                     // ※パスワードはユーザーに入力させるため、空文字とする
                     // 年齢は、APIから取得するとき、data.age.idに格納されている。送信するときにはdata.ageIdに格納するため、それに格納しなおす
                     setPost({ ...data });
-                    console.log(data);
                 } else {
                     // 投稿の取得に失敗した場合
                     if (response.status === HTTP_STATUS_CODES.NOT_FOUND) {
@@ -147,7 +156,7 @@ function PostEdit() {
             // 以降の処理を行わない。
             return;
         }
-    }, [createErrorFromResponse, showErrorMessage, id, navigate, userInfo]);
+    }, [isInitialized, createErrorFromResponse, showErrorMessage, id, navigate, userInfo]);
 
     // 投稿が読み込み中の場合、読み込み中画面を表示する
     // ※画像のURLが空の場合、自動的に別の画像のURLが取得されてしまう。postだけの確認では、imageUrlに値が設定され終わる前に条件が成立してしまうため、
@@ -161,7 +170,7 @@ function PostEdit() {
             formTitle={'投稿編集'}
             post={post}
             setPost={setPost}
-            onSubmit={handleSubmit}
+            handleSubmit={handleSubmit}
             buttonLabel={"更新する"}
         />
     );

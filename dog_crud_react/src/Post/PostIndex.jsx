@@ -52,7 +52,7 @@ function PostIndex() {
     }, [getPosts]);
 
     return (
-        <Container sx={{maxWidth: COMMON_STYLE.CONTAINER_MAX_WIDTH}}>
+        <Container sx={{ maxWidth: COMMON_STYLE.FORM_MAX_WIDTH }}>
             <Button
                 variant="contained"
                 sx={{
@@ -80,12 +80,12 @@ function PostIndex() {
                 <>
                     {posts.map(post => {
                         const isOwner = (post.userId === userInfo?.id);
-
                         return (
-                            <Card sx={{ minWidth: 500, mb: '20px' }} key={post.id}>
+                            <Card sx={{ mb: '20px' }} key={post.id}>
                                 <CardContent>
                                     <Typography variant="h6" component="div">{post.title}</Typography>
-                                    <Typography variant="body1">{post.content}</Typography>
+                                    <Typography variant="body1" sx={{whiteSpace: 'pre-line'}}>{post.content}</Typography>
+                                    <Typography variant="body2">{post.ageValue}</Typography>
                                     <CardMedia
                                         component="img"
                                         src={post.imageUrl}
@@ -120,7 +120,7 @@ function PostIndex() {
                                         variant="contained"
                                         color="error"
                                         size="small"
-                                        onClick={() => {deletePost(post.id);}}
+                                        onClick={() => { deletePost(post.id); }}
                                         disabled={!isOwner}
                                     >
                                         削除

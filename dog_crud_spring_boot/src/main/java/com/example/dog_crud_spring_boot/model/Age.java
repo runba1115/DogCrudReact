@@ -27,6 +27,10 @@ public class Age {
         this.sortOrder = sortOrder;
     }
 
+    /** JPA（リポジトリ）がデフォルトで使うコンストラクタ */
+    public Age() {
+    }
+
     public Long getId() {
         return id;
     }

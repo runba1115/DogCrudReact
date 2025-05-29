@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { MESSAGES, ROUTES } from '../config/Constant';
+import { COMMON_STYLE, MESSAGES, ROUTES } from '../config/Constant';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Container, TextField, Typography } from '@mui/material';
 
 /**
  * ユーザー登録画面
@@ -19,9 +19,8 @@ function UserRegister() {
     });
 
     const handleChange = (e) => {
-        const { field, value } = e.target;
-        setUser(prevUser => ({ ...prevUser, [field]: value }));
-        console.log(user);
+        const { name, value } = e.target;
+        setUser(prevUser => ({ ...prevUser, [name]: value }));
     }
 
     useEffect(() => {
@@ -30,7 +29,7 @@ function UserRegister() {
             alert(MESSAGES.ALREADY_LOGGED_IN);
             navigate(ROUTES.POST_INDEX)
         }
-    }, []);
+    }, [isAuthenticated, navigate]);
 
     /**
      * フォーム送信時に実行されるログイン処理
@@ -58,22 +57,20 @@ function UserRegister() {
     };
 
     return (
-        <Container>
-            <Typography>
-                登録
-            </Typography>
 
-            <Box
-                component="form"
-                onSubmit={handleSubmit}
+        <Card sx={{ maxWidth: COMMON_STYLE.FORM_MAX_WIDTH, m: 'auto' }}>
+            <form onSubmit={handleSubmit}>
+
+            <CardContent
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 2,
-                    maxWidth: '500px',
                     m: 'auto',
-                }}
-            >
+                }}>
+                <Typography>
+                    登録
+                </Typography>
                 <TextField
                     label="ユーザー名"
                     variant="outlined"
@@ -102,56 +99,17 @@ function UserRegister() {
                     fullWidth
                     onChange={handleChange}
                 />
-
+            </CardContent>
+            <CardActions sx={{m: 'auto', display: 'flex', justifyContent: 'center'}}>
                 <Button
                     variant="contained"
-                    onClick={handleSubmit}
+                    type="submit"
                 >
                     登録する
                 </Button>
-
-            </Box>
-        </Container>
-        // <div className='common_container'>
-        //     <div className='user_auth_container'>
-        //         <h2 className='user_auth_title'>ユーザー登録</h2>
-        //         <form onSubmit={handleSubmit} className='user_auth_form'>
-        //             <div className='user_auth_form_group'>
-        //                 <label className='user_auth_label'>ユーザー名</label>
-        //                 <input
-        //                     type="text"
-        //                     value={userName}
-        //                     onChange={(e) => setUserName(e.target.value)}
-        //                     required
-        //                     className='user_auth_input'
-        //                 />
-        //             </div>
-        //             <div className='user_auth_form_group'>
-        //                 <label className='user_auth_label'>メールアドレス</label>
-        //                 <input
-        //                     type="email"
-        //                     value={email}
-        //                     onChange={(e) => setEmail(e.target.value)}
-        //                     required
-        //                     className='user_auth_input'
-        //                 />
-        //             </div>
-        //             <div className='user_auth_form_group'>
-        //                 <label className='user_auth_label'>パスワード</label>
-        //                 <input
-        //                     type="password"
-        //                     value={password}
-        //                     onChange={(e) => setPassword(e.target.value)}
-        //                     required
-        //                     className='user_auth_input'
-        //                 />
-        //             </div>
-        //             <div className='user_auth_button_group'>
-        //                 <input type="submit" className='common_button user_auth_login_button' value={isSubmitting ? '実行中…' : '登録する'} disabled={isSubmitting} />
-        //             </div>
-        //         </form>
-        //     </div>
-        // </div>
+            </CardActions>
+            </form>
+        </Card>
     );
 }
 

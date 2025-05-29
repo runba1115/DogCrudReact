@@ -7,8 +7,6 @@ import lombok.Data;
 
 /**
  * 投稿を保存、更新するときのDTO
- * ※パスワードの長さに制限を設けるためのバリデーションが必要だが、
- * Post側に持たせるとハッシュ化したときに長くなり、バリデーションに引っかかってしまうため作成した
  */
 @Data
 public class PostRequestDto {

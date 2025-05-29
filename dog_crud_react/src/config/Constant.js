@@ -88,4 +88,10 @@ export const HTTP_STATUS_CODES = {
 export const COMMON_STYLE = {
     /** 画面中央に表示するオブジェクトの最大の横幅 */
     CONTAINER_MAX_WIDTH: '1000px',
+
+    /** ユーザー登録画面など、フォーム系の最大の横幅 */
+    FORM_MAX_WIDTH: '800px',
+
+    /** 画像の最大の横幅 */
+    IMAGE_MAX_WIDTH: '450px',
 }

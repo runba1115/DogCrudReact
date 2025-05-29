@@ -49,7 +49,6 @@ export const UserProvider = ({ children }) => {
                 // 認証済みに設定する
                 setIsAuthenticated(true);
             } else {
-                console.log(res);
                 if (res.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
                     // セッションが切れているなどで未認証の場合
                     // 未ログイン状態に設定する
@@ -122,11 +121,11 @@ export const UserProvider = ({ children }) => {
      * @param password
      * @return true:ログインに成功した　false:ログインに失敗した（ログインを行う関数が、その成否を返す理由は登録を行う関数と同じ。）
      */
-    const handleLogin = async (email, password) => {
+    const handleLogin = async (user) => {
         // フォームデータを URL エンコード形式で作成する
         const formData = new URLSearchParams();
-        formData.append('username', email);
-        formData.append('password', password);
+        formData.append('username', user.email);
+        formData.append('password', user.password);
 
         try {
             // ログイン API を呼び出して認証を試みる
