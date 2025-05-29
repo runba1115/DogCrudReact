@@ -7,6 +7,7 @@ import PostFormFields from '../components/PostFormFields';
 import { useShowValidatedMessage } from '../hooks/ShowValidatedMessage';
 import { useUser } from '../contexts/UserContext';
 import Loading from '../components/Loading';
+import { useIsPostValid } from '../hooks/IsPostValid';
 
 /**
  * 投稿編集画面
@@ -30,6 +31,7 @@ function PostEdit() {
     const navigate = useNavigate();
     const showValidatedMessage = useShowValidatedMessage();
     const [isInitialized, setIsInitialized] = useState(false);
+    const isPostValid = useIsPostValid();
 
     /**
      * フォームが送信されたときのハンドラ
@@ -40,11 +42,17 @@ function PostEdit() {
             // 送信中である。中断する。
             return;
         }
-
-        // フォームのデフォルトの送信動作をキャンセルする
         e.preventDefault();
 
         setIsSubmitting(true);
+
+        // 送信する前に、入力された値が適切かを確認する
+        if(!isPostValid(post)){
+            // 不正な場合以降の処理を行わない。
+            // ※メッセージ表示処理は上記内で行っているため不要
+            setIsSubmitting(false);
+            return;
+        }
 
         // 更新確認ダイアログの表示を行う（キャンセルされたら中断）
         if (!window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)) {
@@ -124,10 +132,14 @@ function PostEdit() {
                     // 投稿の取得に成功した場合
                     const data = await response.json();
 
-                    // 取得したデータの通り、パスワード以外を設定する。
-                    // ※パスワードはユーザーに入力させるため、空文字とする
-                    // 年齢は、APIから取得するとき、data.age.idに格納されている。送信するときにはdata.ageIdに格納するため、それに格納しなおす
+                    // 取得したデータの通りに値を設定する。
                     setPost({ ...data });
+
+                    // 取得したデータの作成者とログインしているユーザーが異なる場合、その旨を表示して一覧画面に戻る
+                    if (data.userId !== userInfo.id) {
+                        alert(MESSAGES.NO_PERMISSION);
+                        navigate(ROUTES.POST_INDEX);
+                    }
                 } else {
                     // 投稿の取得に失敗した場合
                     if (response.status === HTTP_STATUS_CODES.NOT_FOUND) {

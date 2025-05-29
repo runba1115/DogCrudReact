@@ -25,20 +25,20 @@ public class User implements UserDetails {
     private Long id;
 
     /** 名前（表示名） */
-    @NotBlank(message = "名前を設定してください")
+    @NotBlank(message = "名前を入力してください")
     @Size(max = 20, message = "名前が長すぎます")
     @Column(nullable = false, length = 20)
     private String userName;
 
     /** メールアドレス（ログインIDとして使用） */
-    @NotBlank(message = "メールアドレスを設定してください")
+    @NotBlank(message = "メールアドレスを入力してください")
     @Email(message = "メールアドレスの形式が正しくありません")
     @Column(nullable = false, unique = true)
     private String email;
 
     /** パスワード */
-    @NotBlank(message = "パスワードを設定してください")
-    @Size(min = 8, message = "パスワードは5文字以上で設定してください")
+    @NotBlank(message = "パスワードを入力してください")
+    @Size(min = 8, message = "パスワードが短すぎます")
     @Column(nullable = false, length = 255)
     private String password;
 

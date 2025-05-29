@@ -13,17 +13,17 @@ public class PostRequestDto {
 
     private Long id;
 
-    @NotBlank(message = "タイトルは必須です")
-    @Size(max = 20, message = "タイトルは20文字以内で入力してください")
+    @NotBlank(message = "タイトルを入力してください")
+    @Size(max = 20, message = "タイトルが長すぎます")
     private String title;
 
-    @NotBlank(message = "内容は必須です")
-    @Size(max = 100, message = "内容は100文字以内で入力してください")
+    @NotBlank(message = "内容を入力してください")
+    @Size(max = 100, message = "タイトルが長すぎます")
     private String content;
 
     @NotNull(message = "年齢を選択してください")
     private Long ageId;
 
-    @NotBlank(message = "画像のURLは必須です")
+    @NotBlank(message = "画像を選択してください")
     private String imageUrl;
 }

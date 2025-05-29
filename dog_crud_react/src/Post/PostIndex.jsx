@@ -73,7 +73,7 @@ function PostIndex() {
             </Typography>
             {/* 投稿が存在しない場合のメッセージ表示 */}
             {posts.length === 0 ? (
-                <Typography variant="h6" component="div" gutterBottom>
+                <Typography variant="body1" gutterBottom>
                     投稿はまだありません
                 </Typography>
             ) : (

@@ -3,6 +3,7 @@ import { COMMON_STYLE, MESSAGES, ROUTES } from '../config/Constant';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
+import { useIsUserValid } from '../hooks/IsUserValid';
 
 /**
  * ユーザー登録画面
@@ -11,6 +12,7 @@ import { Button, Card, CardActions, CardContent, TextField, Typography } from '@
 function UserRegister() {
     const { isAuthenticated, handleRegister } = useUser();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { isUserValidOnRegister } = useIsUserValid();
     const navigate = useNavigate();
     const [user, setUser] = useState({
         userName: '',
@@ -44,6 +46,14 @@ function UserRegister() {
 
         //重複して送信されないよう、送信中フラグをtrueにする
         setIsSubmitting(true);
+
+        // 送信する前に、入力された値が適切かを確認する
+        if(!isUserValidOnRegister(user)){
+            // 不正な場合以降の処理を行わない。
+            // ※メッセージ表示処理は上記内で行っているため不要
+            setIsSubmitting(false);
+            return;
+        }
 
         const isSuccess = await handleRegister(user);
 

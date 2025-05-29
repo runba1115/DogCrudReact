@@ -5,6 +5,7 @@ import PostFormFields from "../components/PostFormFields";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
 import { useShowValidatedMessage } from "../hooks/ShowValidatedMessage";
+import { useIsPostValid } from "../hooks/IsPostValid";
 
 /**
  * 新規投稿作成ページ
@@ -22,6 +23,7 @@ function PostNew() {
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
     const showValidatedMessage = useShowValidatedMessage();
+    const isPostValid = useIsPostValid();
 
     /**
      * フォーム送信
@@ -33,11 +35,18 @@ function PostNew() {
             return;
         }
 
+        e.preventDefault();
+
         // 重複して行われないよう、投稿送信中フラグをtrueに設定
         setIsSubmitting(true);
 
-        // デフォルトのフォーム送信動作（ページリロード）を無効化
-        e.preventDefault();
+        // 送信する前に、入力された値が適切かを確認する
+        if(!isPostValid(post)){
+            // 不正な場合以降の処理を行わない。
+            // ※メッセージ表示処理は上記内で行っているため不要
+            setIsSubmitting(false);
+            return;
+        }
 
         try {
             // APIに投稿のデータを送信する

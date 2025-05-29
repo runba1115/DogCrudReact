@@ -12,8 +12,37 @@ export const ROUTES = {
     NOT_MATCH : '*',
 };
 
+// バリデーションに使用する値
+export const VALIDATE_VALUES = {
+    // ユーザー登録、ログイン
+    USER_USER_NAME_MAX_LENGTH: 20,
+    USER_PASSWORD_MIN_LENGTH: 8,
+
+    // 投稿作成、編集
+    POST_TITLE_MAX_LENGTH: 8,
+    POST_CONTENT_MAX_LENGTH: 100,
+}
+
 // メッセージ
 export const MESSAGES = {
+    // バリデーション関係のメッセージ
+    // ユーザー登録、ログイン
+    VALIDATE_USER_USER_NAME_EMPTY: "名前を入力してください",
+    VALIDATE_USER_USER_NAME_TOO_LONG: "名前が長すぎます",
+    VALIDATE_USER_EMAIL_EMPTY: "メールアドレスを入力してください",
+    VALIDATE_USER_EMAIL_INCORRECT_FORMAT: "メールアドレスの形式が正しくありません",
+    VALIDATE_USER_PASSWORD_EMPTY: "パスワードを入力してください",
+    VALIDATE_USER_PASSWORD_TOO_SHORT: "パスワードが短すぎます",
+
+    // 投稿作成、編集
+    VALIDATE_POST_TITLE_EMPTY: "タイトルを入力してください",
+    VALIDATE_POST_TITLE_TOO_LONG: "タイトルが長すぎます",
+    VALIDATE_POST_CONTENT_EMPTY: "内容を入力してください",
+    VALIDATE_POST_CONTENT_TOO_LONG: "内容が長すぎます",
+    VALIDATE_POST_AGE_ID_EMPTY: "年齢を選択してください",
+    VALIDATE_POST_IMAGE_URL_EMPTY: "画像を選択してください",
+
+
     // ユーザー関係のメッセージ
     USER_REGISTER_SUCCESSED : 'ユーザー登録に成功しました',
     USER_REGISTER_FAILED : 'ユーザー登録に失敗しました',

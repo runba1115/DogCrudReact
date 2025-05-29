@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { COMMON_STYLE, MESSAGES, ROUTES } from '../config/Constant';
 import { useUser } from '../contexts/UserContext';
 import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
+import { useIsUserValid } from '../hooks/IsUserValid';
 
 /**
  * ログイン画面
@@ -11,6 +12,7 @@ import { Button, Card, CardActions, CardContent, TextField, Typography } from '@
 function UserLogin() {
     const { isAuthenticated, handleLogin } = useUser();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
     const [user, setUser] = useState({
         email: '',
         password: '',
@@ -20,14 +22,22 @@ function UserLogin() {
         setUser(prevUser => ({ ...prevUser, [name]: value }));
     };
     const navigate = useNavigate();
+    const { isUserValidOnLogin } = useIsUserValid();
 
+    /**
+     * すでに認証済みかを確認する
+     */
     useEffect(() => {
         // すでに認証済みの場合、投稿一覧画面へ遷移させる（ログインの必要がないため）
-        if (isAuthenticated && !isSubmitting) {
-            alert(MESSAGES.ALREADY_LOGGED_IN);
-            navigate(ROUTES.POST_INDEX)
+        if (!isInitialized) {
+            setIsInitialized(true);
+
+            if (isAuthenticated) {
+                alert(MESSAGES.ALREADY_LOGGED_IN);
+                navigate(ROUTES.POST_INDEX)
+            }
         }
-    }, [isAuthenticated, isSubmitting, navigate]);
+    }, [isAuthenticated, isInitialized, navigate]);
 
     /**
      * フォーム送信時に実行されるログイン処理
@@ -35,6 +45,7 @@ function UserLogin() {
      */
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (isSubmitting) {
             //すでに送信中である。何も行わない。
             return;
@@ -43,8 +54,13 @@ function UserLogin() {
         //重複して送信されないよう、送信中フラグをtrueにする
         setIsSubmitting(true);
 
-        // フォームのデフォルトの送信動作（ページリロード）をキャンセル
-        e.preventDefault();
+        // 送信する前に、入力された値が適切かを確認する
+        if(!isUserValidOnLogin(user)){
+            // 不正な場合以降の処理を行わない。
+            // ※メッセージ表示処理は上記内で行っているため不要
+            setIsSubmitting(false);
+            return;
+        }
 
         // useUserにて取得した、ログイン処理を行う（例外は下記の関数内で処理しているためこちらでの処理は不要）
         const isSuccess = await handleLogin(user);
