@@ -5,7 +5,7 @@ import { useCreateErrorFromResponse } from '../hooks/CreateErrorFromResponse';
 import { useShowErrorMessage } from '../hooks/ShowErrorMessage';
 import { useUser } from '../contexts/UserContext';
 import Loading from '../components/Loading';
-import { Button, Card, CardActions, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, Container, Stack, Typography } from '@mui/material';
 import { useDeletePost } from '../hooks/DeletePost';
 import { format } from 'date-fns';
 
@@ -71,45 +71,56 @@ function PostShow() {
     const isOwner = (post.userId === userInfo?.id);
 
     return (
-        <Card sx={{ maxWidth: COMMON_STYLE.CONTAINER_MAX_WIDTH, m: 'auto' }}>
-            <CardContent>
-                <Stack direction="row" spacing={2} alignItems="flex-end">
-                    <Typography variant="h6" component="div">{post.title}</Typography>
-                    <Typography variant="body1" component="div">{format(new Date(post.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</Typography>
-                </Stack>
-                <Typography variant="body1">{post.content}</Typography>
-                <CardMedia
-                    component="img"
-                    src={post.imageUrl}
-                    alt="犬の画像"
-                    sx={{
-                        width: '250px'
-                    }}
-                />
-            </CardContent>
-            <CardActions>
-                <Button
-                    variant="contained"
-                    color="success"
-                    size="small"
-                    component={Link}
-                    to={ROUTES.POST_EDIT(post.id)}
-                    disabled={!isOwner}
-                >
-                    編集
-                </Button>
-                <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    onClick={() => { deletePost(post.id); }}
-                    disabled={!isOwner}
-                >
-                    削除
-                </Button>
-            </CardActions>
+        <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
+            <Button
+                variant="text"
+                component={Link}
+                to={ROUTES.POST_INDEX}
+                sx={{ mb: '10px' }}
+            >
+                ＞ 一覧へ
+            </Button>
 
-        </Card>
+            <Card sx={{ m: 'auto' }}>
+                <CardContent>
+                    <Stack direction="row" spacing={2} alignItems="flex-end">
+                        <Typography variant="h6" component="div">{post.title}</Typography>
+                        <Typography variant="body1" component="div">{format(new Date(post.updatedAt), 'yyyy-MM-dd HH:mm:ss')}</Typography>
+                    </Stack>
+                    <Typography variant="body1">{post.content}</Typography>
+                    <CardMedia
+                        component="img"
+                        src={post.imageUrl}
+                        alt="犬の画像"
+                        sx={{
+                            width: '250px'
+                        }}
+                    />
+                </CardContent>
+                <CardActions>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        size="small"
+                        component={Link}
+                        to={ROUTES.POST_EDIT(post.id)}
+                        disabled={!isOwner}
+                    >
+                        編集
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        size="small"
+                        onClick={() => { deletePost(post.id); }}
+                        disabled={!isOwner}
+                    >
+                        削除
+                    </Button>
+                </CardActions>
+
+            </Card>
+        </Container>
     );
 }
 

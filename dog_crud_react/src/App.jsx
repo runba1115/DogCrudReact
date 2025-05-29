@@ -48,7 +48,7 @@ function App() {
                 <Route path={ROUTES.USER_LOGIN} element={<UserLogin />} />
 
                 {/* 上記以外の、不正なURLにアクセスされたら投稿一覧に遷移する */}
-                <Route path={ROUTES.NOT_MATCH} elemenet={<Navigate to={ROUTES.POST_INDEX} />}></Route>
+                <Route path={ROUTES.NOT_MATCH} element={<Navigate to={ROUTES.POST_INDEX} />}></Route>
             </Routes>
         </BrowserRouter>
     );

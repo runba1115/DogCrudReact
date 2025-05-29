@@ -89,15 +89,14 @@ public class PostController {
     /**
      * 指定されたIDの投稿を削除する。
      * 
-     * @param id  削除対象の投稿ID
-     * @param dto 削除時に入力されたパスワードを含むDTO
+     * @param id 削除対象の投稿ID
      * @return 削除成功時は204 No Content、存在しない場合は404 Not Found を返す HTTP レスポンス
      *         ※削除成功時、「消えたから返すものがない」という意味で204 No Contentを返す(そのためステータス200ではない)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody PostRequestDto dto,
-            Authentication authentication) throws AccessDeniedException {
-        postService.deletePost(id, dto, authentication);
+    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication)
+            throws AccessDeniedException {
+        postService.deletePost(id, authentication);
         return ResponseEntity.noContent().build();
     }
 }

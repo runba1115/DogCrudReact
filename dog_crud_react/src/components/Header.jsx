@@ -13,7 +13,7 @@ function Header() {
 
     return (
         <AppBar position="sticky" sx={{ flexGrow: 1, mb: '30px' }}>
-            <Container sx={{ maxWidth: COMMON_STYLE.CONTAINER_MAX_WIDTH }}>
+            <Container sx={{ maxWidth: COMMON_STYLE.HEADER_CONTAINER_MAX_WIDTH }}>
                 <Toolbar>
                     {/* 左側 アプリ名および一覧画面に戻るためのボタン */}
                     <IconButton

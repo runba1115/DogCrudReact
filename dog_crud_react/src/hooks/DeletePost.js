@@ -25,7 +25,7 @@ export const useDeletePost = (onSuccess = () => { }) => {
      */
     const deletePost = useCallback(async (id) => {
         // 削除確認ダイアログの表示を行う（キャンセルされたら中断）
-        if (window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)) {
+        if (!window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)) {
             return;
         }
 
@@ -33,6 +33,9 @@ export const useDeletePost = (onSuccess = () => { }) => {
             // 指定IDの投稿に対して DELETE リクエストを送信する
             const res = await fetch(`${APIS.POST_DELETE(id)}`, {
                 method: 'DELETE',
+
+                // ログイン情報がクッキーに保存されている。それを含めて送ることで実行したユーザーを判別できるようにする
+                credentials: 'include',
             });
 
             if (res.ok) {
@@ -42,7 +45,7 @@ export const useDeletePost = (onSuccess = () => { }) => {
             }
             else {
                 if (res.status === HTTP_STATUS_CODES.FORBIDDEN) {
-                    alert(MESSAGES.POST_DELETE_FORBIDDEN);
+                    alert(MESSAGES.NO_PERMISSION);
                 } else {
                     //想定外のエラー応答があった場合は共通関数でErrorオブジェクト生成する
                     throw await createErrorFromResponse(res);

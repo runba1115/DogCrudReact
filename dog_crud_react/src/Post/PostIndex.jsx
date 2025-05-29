@@ -52,7 +52,7 @@ function PostIndex() {
     }, [getPosts]);
 
     return (
-        <Container sx={{ maxWidth: COMMON_STYLE.FORM_MAX_WIDTH }}>
+        <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
             <Button
                 variant="contained"
                 sx={{
@@ -84,7 +84,7 @@ function PostIndex() {
                             <Card sx={{ mb: '20px' }} key={post.id}>
                                 <CardContent>
                                     <Typography variant="h6" component="div">{post.title}</Typography>
-                                    <Typography variant="body1" sx={{whiteSpace: 'pre-line'}}>{post.content}</Typography>
+                                    <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>{post.content}</Typography>
                                     <Typography variant="body2">{post.ageValue}</Typography>
                                     <CardMedia
                                         component="img"

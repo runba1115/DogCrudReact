@@ -163,10 +163,9 @@ public class PostService {
     /**
      * 指定されたIDの投稿を削除する。
      *
-     * @param id      削除対象の投稿ID
-     * @param request 削除に必要な情報（パスワードを含む）
+     * @param id 削除対象の投稿ID
      */
-    public void deletePost(Long id, PostRequestDto request, Authentication authentication)
+    public void deletePost(Long id, Authentication authentication)
             throws AccessDeniedException {
         // 指定された投稿IDの投稿データを取得（存在しなければ例外）
         Post post = postRepository.findById(id)

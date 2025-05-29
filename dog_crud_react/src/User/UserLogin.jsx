@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { COMMON_STYLE, MESSAGES, ROUTES } from '../config/Constant';
 import { useUser } from '../contexts/UserContext';
-import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Container, TextField, Typography } from '@mui/material';
 import { useIsUserValid } from '../hooks/IsUserValid';
 
 /**
@@ -55,7 +55,7 @@ function UserLogin() {
         setIsSubmitting(true);
 
         // 送信する前に、入力された値が適切かを確認する
-        if(!isUserValidOnLogin(user)){
+        if (!isUserValidOnLogin(user)) {
             // 不正な場合以降の処理を行わない。
             // ※メッセージ表示処理は上記内で行っているため不要
             setIsSubmitting(false);
@@ -76,50 +76,59 @@ function UserLogin() {
     };
 
     return (
+        <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
+            <Button
+                variant="text"
+                component={Link}
+                to={ROUTES.POST_INDEX}
+                sx={{ mb: '10px' }}
+            >
+                ＞ 一覧へ
+            </Button>
+            <Card>
+                <form onSubmit={handleSubmit}>
+                    <CardContent
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2,
+                            m: 'auto',
+                        }}>
+                        <Typography variant='h6' component='div'>
+                            ログイン
+                        </Typography>
 
-        <Card sx={{ maxWidth: COMMON_STYLE.FORM_MAX_WIDTH, m: 'auto' }}>
-            <form onSubmit={handleSubmit}>
-                <CardContent
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        m: 'auto',
-                    }}>
-                    <Typography variant='h6' component='div'>
-                        ログイン
-                    </Typography>
+                        <TextField
+                            label="メールアドレス"
+                            type="email"
+                            variant="outlined"
+                            name="email"
+                            required
+                            fullWidth
+                            onChange={handleChange}
+                        />
 
-                    <TextField
-                        label="メールアドレス"
-                        type="email"
-                        variant="outlined"
-                        name="email"
-                        required
-                        fullWidth
-                        onChange={handleChange}
-                    />
-
-                    <TextField
-                        label="パスワード"
-                        type="password"
-                        variant="outlined"
-                        name="password"
-                        required
-                        fullWidth
-                        onChange={handleChange}
-                    />
-                </CardContent>
-                <CardActions sx={{ m: 'auto', display: 'flex', justifyContent: 'center' }}>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                    >
-                        ログイン
-                    </Button>
-                </CardActions>
-            </form>
-        </Card >
+                        <TextField
+                            label="パスワード"
+                            type="password"
+                            variant="outlined"
+                            name="password"
+                            required
+                            fullWidth
+                            onChange={handleChange}
+                        />
+                    </CardContent>
+                    <CardActions sx={{ m: 'auto', display: 'flex', justifyContent: 'center' }}>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                        >
+                            ログイン
+                        </Button>
+                    </CardActions>
+                </form>
+            </Card >
+        </Container>
     );
 }
 

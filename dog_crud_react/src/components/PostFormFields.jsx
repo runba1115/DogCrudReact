@@ -3,9 +3,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
 import { useGetAges } from '../hooks/GetAges';
-import { MESSAGES, COMMON_STYLE } from '../config/Constant';
+import { MESSAGES, COMMON_STYLE, ROUTES } from '../config/Constant';
 import Loading from "./Loading";
-import { Autocomplete, Box, Button, Card, CardActions, CardContent, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Card, CardActions, CardContent, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 /**
  * 投稿作成（もしくは編集）画面の入力画面
@@ -82,114 +83,123 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, 
     }
 
     return (
-        <Card
-            sx={{
-                maxWidth: COMMON_STYLE.FORM_MAX_WIDTH,
-                margin: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-            }}
-        >
-            <form onSubmit={handleSubmit}>
-                <CardContent sx={{
+        <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
+            <Button
+                variant="text"
+                component={Link}
+                to={ROUTES.POST_INDEX}
+                sx={{ mb: '10px' }}
+            >
+                ＞ 一覧へ
+            </Button>
+            <Card
+                sx={{
+                    margin: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 2,
-                }}>
+                }}
+            >
+                <form onSubmit={handleSubmit}>
+                    <CardContent sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2,
+                    }}>
 
-                    <Typography variant="h6">{formTitle}</Typography>
-                    {/* タイトル */}
-                    <TextField
-                        label="タイトル"
-                        variant="outlined"
-                        name="title"
-                        value={post.title}
-                        onChange={handleChange}
-                        fullWidth
-                        disabled={isSubmitting}
-                    />
-
-                    {/* 内容 */}
-                    <TextField
-                        label="内容"
-                        variant="outlined"
-                        name="content"
-                        multiline
-                        rows={4}
-                        value={post.content}
-                        onChange={handleChange}
-                        fullWidth
-                        disabled={isSubmitting}
-                    />
-
-                    {/* 年齢（コンボボックス） */}
-                    <FormControl>
-                        <FormLabel>年齢</FormLabel>
-                        <RadioGroup
-                            row
-                            name="ageId"
-                            value={post.ageId}
+                        <Typography variant="h6">{formTitle}</Typography>
+                        {/* タイトル */}
+                        <TextField
+                            label="タイトル"
+                            variant="outlined"
+                            name="title"
+                            value={post.title}
                             onChange={handleChange}
+                            fullWidth
                             disabled={isSubmitting}
-                        >
-                            {ages.map((age) => (
-                                <FormControlLabel
-                                    key={age.id}
-                                    value={age.id}
-                                    control={<Radio />}
-                                    label={age.value}
-                                    disabled={isSubmitting}
-                                />
-                            ))}
-                        </RadioGroup>
-                    </FormControl>
+                        />
 
-                    {/* 年齢（コンボボックス） */}
-                    <Autocomplete
-                        disablePortal
-                        options={ages}
-                        name="ageId"
-                        getOptionLabel={(option) => option.value}
-                        value={ages.find((age) => age.id === post.ageId) || null}
-                        disabled={isSubmitting}
-                        onChange={(_, newValue) => {
+                        {/* 内容 */}
+                        <TextField
+                            label="内容"
+                            variant="outlined"
+                            name="content"
+                            multiline
+                            rows={4}
+                            value={post.content}
+                            onChange={handleChange}
+                            fullWidth
+                            disabled={isSubmitting}
+                        />
 
-                            setPost(prevPost => ({
-                                ...prevPost,
-                                ageId: newValue ? newValue.id : null
-                            }));
-                        }}
-                        // filterOptions={(options) => options}
-                        renderInput={(params) => (
-                            <TextField {...params} label="年齢" placeholder="選択してください" />
-                        )}
-                    />
+                        {/* 年齢（コンボボックス） */}
+                        <FormControl>
+                            <FormLabel>年齢</FormLabel>
+                            <RadioGroup
+                                row
+                                name="ageId"
+                                value={post.ageId}
+                                onChange={handleChange}
+                                disabled={isSubmitting}
+                            >
+                                {ages.map((age) => (
+                                    <FormControlLabel
+                                        key={age.id}
+                                        value={age.id}
+                                        control={<Radio />}
+                                        label={age.value}
+                                        disabled={isSubmitting}
+                                    />
+                                ))}
+                            </RadioGroup>
+                        </FormControl>
 
-                    {/* 犬の画像 */}
-                    {
-                        post.imageUrl ? (
-                            <Box component="img" src={post.imageUrl} alt="犬の画像" sx={{ maxWidth: COMMON_STYLE.IMAGE_MAX_WIDTH, m: 'auto' }} />
-                        ) : (
-                            <Typography>読み込み中…</Typography>
-                        )
-                    }
-                </CardContent>
-                <CardActions sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 2,
-                }}>
-                    <Button variant="outlined" loading={isSubmitting}>
-                        ほかの子にする
-                    </Button>
+                        {/* 年齢（コンボボックス） */}
+                        <Autocomplete
+                            disablePortal
+                            options={ages}
+                            name="ageId"
+                            getOptionLabel={(option) => option.value}
+                            value={ages.find((age) => age.id === post.ageId) || null}
+                            disabled={isSubmitting}
+                            onChange={(_, newValue) => {
 
-                    <Button type="submit" variant="contained" loading={isSubmitting}>
-                        {buttonLabel}
-                    </Button>
-                </CardActions>
-            </form>
-        </Card>
+                                setPost(prevPost => ({
+                                    ...prevPost,
+                                    ageId: newValue ? newValue.id : null
+                                }));
+                            }}
+                            // filterOptions={(options) => options}
+                            renderInput={(params) => (
+                                <TextField {...params} label="年齢" placeholder="選択してください" />
+                            )}
+                        />
+
+                        {/* 犬の画像 */}
+                        {
+                            post.imageUrl ? (
+                                <Box component="img" src={post.imageUrl} alt="犬の画像" sx={{ maxWidth: COMMON_STYLE.IMAGE_MAX_WIDTH, m: 'auto' }} />
+                            ) : (
+                                <Typography>読み込み中…</Typography>
+                            )
+                        }
+                    </CardContent>
+                    <CardActions sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2,
+                    }}>
+                        <Button variant="outlined" loading={isSubmitting}>
+                            ほかの子にする
+                        </Button>
+
+                        <Button type="submit" variant="contained" loading={isSubmitting}>
+                            {buttonLabel}
+                        </Button>
+                    </CardActions>
+                </form>
+            </Card>
+        </Container>
     );
 }
 
