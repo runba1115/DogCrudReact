@@ -15,27 +15,21 @@ function Header() {
         <AppBar position="sticky" sx={{ flexGrow: 1, mb: '30px' }}>
             <Container sx={{ maxWidth: COMMON_STYLE.HEADER_CONTAINER_MAX_WIDTH }}>
                 <Toolbar>
-                    {/* 左側 アプリ名および一覧画面に戻るためのボタン */}
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        sx={{ mr: 2 }}
-                        component={Link}
-                        to={ROUTES.POST_INDEX}
-                    >
-                        <PetsIcon />
-                    </IconButton>
+                    {/* 左側 アイコン及びアプリ名（クリック時、一覧画面に戻る） */}
                     <Button
                         component={Link}
+                        to={ROUTES.POST_INDEX}
                         color="inherit"
                         size="large"
-                        variant="outlined"
+                        variant="text"
                         sx={{
                             textTransform: 'none',
                         }}
                     >
-                        犬Crud
+                        <PetsIcon />
+                        <Typography variant="body1" sx={{ml: '10px'}}>
+                            犬Crud
+                        </Typography>
                     </Button>
 
                     {/* これにflexGrow: 1を設定することで右側に表示するオブジェクトが自動的に右に寄るようにする */}
