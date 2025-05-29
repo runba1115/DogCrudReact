@@ -39,6 +39,7 @@ public class User implements UserDetails {
     /** パスワード */
     @NotBlank(message = "パスワードを入力してください")
     @Size(min = 8, message = "パスワードが短すぎます")
+    @Size(min = 255, message = "パスワードが長すぎます")
     @Column(nullable = false, length = 255)
     private String password;
 

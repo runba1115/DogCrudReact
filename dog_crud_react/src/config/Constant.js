@@ -17,6 +17,7 @@ export const VALIDATE_VALUES = {
     // ユーザー登録、ログイン
     USER_USER_NAME_MAX_LENGTH: 20,
     USER_PASSWORD_MIN_LENGTH: 8,
+    USER_PASSWORD_MAX_LENGTH: 255,
 
     // 投稿作成、編集
     POST_TITLE_MAX_LENGTH: 8,
@@ -33,6 +34,7 @@ export const MESSAGES = {
     VALIDATE_USER_EMAIL_INCORRECT_FORMAT: "メールアドレスの形式が正しくありません",
     VALIDATE_USER_PASSWORD_EMPTY: "パスワードを入力してください",
     VALIDATE_USER_PASSWORD_TOO_SHORT: "パスワードが短すぎます",
+    VALIDATE_USER_PASSWORD_TOO_LONG: "パスワードが長すぎます",
 
     // 投稿作成、編集
     VALIDATE_POST_TITLE_EMPTY: "タイトルを入力してください",
