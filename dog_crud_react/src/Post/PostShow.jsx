@@ -16,13 +16,13 @@ import PostFormFields from '../components/PostFormFields';
  * @returns 投稿詳細画面
  */
 function PostShow() {
-    const { userInfo } = useUser();
+    // const { userInfo } = useUser();
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const navigate = useNavigate();
     const createErrorFromResponse = useCreateErrorFromResponse();
     const showErrorMessage = useShowErrorMessage();
-    const deletePost = useDeletePost(() => { navigate(ROUTES.POST_INDEX) });
+    // const deletePost = useDeletePost(() => { navigate(ROUTES.POST_INDEX) });
 
     /**
      * APIから投稿詳細を取得する非同期関数
@@ -70,7 +70,7 @@ function PostShow() {
         return <Loading />
     }
 
-    const isOwner = (post.userId === userInfo?.id);
+    // const isOwner = (post.userId === userInfo?.id);
 
     return (
         // <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>

@@ -3,10 +3,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
 import { useGetAges } from '../hooks/GetAges';
-import { MESSAGES, COMMON_STYLE } from '../config/Constant';
+import { MESSAGES, COMMON_STYLE, ROUTES } from '../config/Constant';
 import Loading from "./Loading";
 import { Autocomplete, Box, Button, Card, CardActions, CardContent, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import BackButton from "./BackButton";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext";
+import { useDeletePost } from "../hooks/DeletePost";
 
 /**
  * 投稿作成（もしくは編集）画面の入力画面
@@ -18,11 +21,14 @@ import BackButton from "./BackButton";
  * @returns 
  */
 function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = () => { }, isSubmitting = false, buttonLabel, isShow }) {
+    const { userInfo } = useUser();
     const [ages, setAges] = useState([]);
     const showErrorMessage = useShowErrorMessage();
     const createErrorFromResponse = useCreateErrorFromResponse();
     const { getAges, isAgeLoading } = useGetAges();
     const [isInitialized, setIsInitialized] = useState(false);
+    const navigate = useNavigate();
+    const deletePost = useDeletePost(() => { navigate(ROUTES.POST_INDEX) });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -82,6 +88,8 @@ function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = (
     if (isAgeLoading) {
         return <Loading />
     }
+
+    const isOwner = (post.userId === userInfo?.id);
 
     return (
         <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
@@ -159,7 +167,7 @@ function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = (
                             disabled={isSubmitting}
                             readOnly={isShow}
                             onChange={(_, newValue) => {
-                                if(isShow){
+                                if (isShow) {
                                     return;
                                 }
                                 setPost(prevPost => ({
@@ -169,7 +177,7 @@ function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = (
                             }}
                             // filterOptions={(options) => options}
                             renderInput={(params) => (
-                                <TextField {...params} label="年齢" placeholder="選択してください"/>
+                                <TextField {...params} label="年齢" placeholder="選択してください" />
                             )}
                         />
 
@@ -188,8 +196,30 @@ function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = (
                         gap: 2,
                     }}>
 
-                        {!isShow && (
-                            <>
+                        {isShow ? (
+                            <Box sx={{display: 'flex',gap: 2}}>
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    component={Link}
+                                    size="large"
+                                    to={ROUTES.POST_EDIT(post.id)}
+                                    disabled={!isOwner}
+                                >
+                                    編集
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    size="large"
+                                    onClick={() => { deletePost(post.id); }}
+                                    disabled={!isOwner}
+                                >
+                                    削除
+                                </Button>
+                            </Box>
+                        ) : (
+                            <Box sx={{display: 'flex', flexDirection: "column",gap: 2}}>
                                 <Button variant="outlined" loading={isSubmitting}>
                                     ほかの子にする
                                 </Button>
@@ -197,12 +227,12 @@ function PostFormFields({ formTitle, post, setPost = () => { }, handleSubmit = (
                                 <Button type="submit" variant="contained" loading={isSubmitting}>
                                     {buttonLabel}
                                 </Button>
-                            </>
+                            </Box>
                         )}
                     </CardActions>
                 </form>
-            </Card>
-        </Container>
+            </Card >
+        </Container >
     );
 }
 
