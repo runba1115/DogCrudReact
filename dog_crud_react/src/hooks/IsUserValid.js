@@ -43,7 +43,7 @@ export const useIsUserValid = () => {
 
 
         // 長すぎる場合不正とする
-        if (user.password.length < VALIDATE_VALUES.USER_PASSWORD_MAX_LENGTH) {
+        if (user.password.length > VALIDATE_VALUES.USER_PASSWORD_MAX_LENGTH) {
             alert(MESSAGES.VALIDATE_USER_PASSWORD_TOO_LONG);
             return false;
         }
