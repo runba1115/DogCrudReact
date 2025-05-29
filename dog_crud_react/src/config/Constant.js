@@ -65,7 +65,7 @@ export const MESSAGES = {
     // 投稿関係
     POST_CREATE_SUCCESSED: '投稿を作成しました',
     POST_CREATE_FAILED: '投稿の作成に失敗しました',
-    POST_UPDATE_SUCCESSED: '投稿の更新に成功しました',
+    POST_UPDATE_SUCCESSED: '投稿を更新しました',
     POST_UPDATE_FAILED: '投稿の更新に失敗しました',
     
     POST_GET_FAILED: '投稿の取得に失敗しました',

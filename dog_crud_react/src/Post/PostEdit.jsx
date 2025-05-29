@@ -54,12 +54,6 @@ function PostEdit() {
             return;
         }
 
-        // 更新確認ダイアログの表示を行う（キャンセルされたら中断）
-        if (!window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)) {
-            alert("キャンセルされました");
-            return;
-        }
-
         try {
             // API を呼び出して投稿を更新する
             const response = await fetch(
