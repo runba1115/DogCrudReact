@@ -33,10 +33,9 @@ function Header() {
                         variant="outlined"
                         sx={{
                             textTransform: 'none',
-
                         }}
                     >
-                        犬CRUD
+                        犬Crud
                     </Button>
 
                     {/* これにflexGrow: 1を設定することで右側に表示するオブジェクトが自動的に右に寄るようにする */}

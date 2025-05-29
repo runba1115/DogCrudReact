@@ -6,7 +6,8 @@ import { useGetAges } from '../hooks/GetAges';
 import { MESSAGES, COMMON_STYLE, ROUTES } from '../config/Constant';
 import Loading from "./Loading";
 import { Autocomplete, Box, Button, Card, CardActions, CardContent, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Routes } from "react-router-dom";
+import BackButton from "./BackButton";
 
 /**
  * 投稿作成（もしくは編集）画面の入力画面
@@ -84,14 +85,7 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, 
 
     return (
         <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
-            <Button
-                variant="text"
-                component={Link}
-                to={ROUTES.POST_INDEX}
-                sx={{ mb: '10px' }}
-            >
-                ＞ 一覧へ
-            </Button>
+            <BackButton />
             <Card
                 sx={{
                     margin: 'auto',

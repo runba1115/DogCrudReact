@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import { Button, Card, CardActions, CardContent, Container, TextField, Typography } from '@mui/material';
 import { useIsUserValid } from '../hooks/IsUserValid';
+import BackButton from '../components/BackButton';
 
 /**
  * ユーザー登録画面
@@ -68,14 +69,7 @@ function UserRegister() {
 
     return (
         <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
-            <Button
-                variant="text"
-                component={Link}
-                to={ROUTES.POST_INDEX}
-                sx={{ mb: '10px' }}
-            >
-                ＞ 一覧へ
-            </Button>
+            <BackButton />
             <Card>
                 <form onSubmit={handleSubmit}>
 

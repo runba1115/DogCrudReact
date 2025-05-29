@@ -8,6 +8,7 @@ import Loading from '../components/Loading';
 import { Button, Card, CardActions, CardContent, CardMedia, Container, Stack, Typography } from '@mui/material';
 import { useDeletePost } from '../hooks/DeletePost';
 import { format } from 'date-fns';
+import BackButton from '../components/BackButton';
 
 /**
  * 投稿詳細画面
@@ -72,14 +73,7 @@ function PostShow() {
 
     return (
         <Container sx={{ maxWidth: COMMON_STYLE.BODY_CONTAINER_MAX_WIDTH, m: 'auto', mb: '30px' }}>
-            <Button
-                variant="text"
-                component={Link}
-                to={ROUTES.POST_INDEX}
-                sx={{ mb: '10px' }}
-            >
-                ＞ 一覧へ
-            </Button>
+            <BackButton />
 
             <Card sx={{ m: 'auto' }}>
                 <CardContent>
