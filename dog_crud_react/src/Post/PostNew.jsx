@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { APIS, HTTP_STATUS_CODES, MESSAGES, ROUTES } from "../config/Constant";
 import { useNavigate } from 'react-router-dom';
 import PostFormFields from "../components/PostFormFields";
@@ -6,12 +6,14 @@ import { useCreateErrorFromResponse } from "../hooks/CreateErrorFromResponse";
 import { useShowErrorMessage } from "../hooks/ShowErrorMessage";
 import { useShowValidatedMessage } from "../hooks/ShowValidatedMessage";
 import { useIsPostValid } from "../hooks/IsPostValid";
+import { useUser } from "../contexts/UserContext";
 
 /**
  * 新規投稿作成ページ
  * @returns 新規投稿作成ページ
  */
 function PostNew() {
+    const { isAuthenticated } = useUser();
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -24,6 +26,15 @@ function PostNew() {
     const showErrorMessage = useShowErrorMessage();
     const showValidatedMessage = useShowValidatedMessage();
     const isPostValid = useIsPostValid();
+
+    useEffect(() => {
+        // ログインしていない場合新規投稿を作成できない。その旨を表示して投稿一覧画面に移動する
+        if(!isAuthenticated){
+            alert(MESSAGES.NO_PERMISSION);
+            navigate(ROUTES.POST_INDEX);
+            return;
+        }
+    }, []);
 
     /**
      * フォーム送信
@@ -41,7 +52,7 @@ function PostNew() {
         setIsSubmitting(true);
 
         // 送信する前に、入力された値が適切かを確認する
-        if(!isPostValid(post)){
+        if (!isPostValid(post)) {
             // 不正な場合以降の処理を行わない。
             // ※メッセージ表示処理は上記内で行っているため不要
             setIsSubmitting(false);

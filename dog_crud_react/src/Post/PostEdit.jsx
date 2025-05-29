@@ -15,8 +15,8 @@ import { useIsPostValid } from '../hooks/IsPostValid';
  */
 function PostEdit() {
     // URL パラメータから投稿 ID を取得
-    const { userInfo } = useUser();
     const { id } = useParams();
+    const { userInfo } = useUser();
 
     // 送信中かどうかの状態を管理。初期値は false（送信中でない）
     const [isSubmitting, setIsSubmitting] = useState(false);
