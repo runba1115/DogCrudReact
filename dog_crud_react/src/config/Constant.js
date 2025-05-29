@@ -63,7 +63,7 @@ export const MESSAGES = {
     NO_PERMISSION: 'この操作を実行する権限がありません',
 
     // 投稿関係
-    POST_CREATE_SUCCESSED: '投稿の作成に成功しました',
+    POST_CREATE_SUCCESSED: '投稿の作成しました',
     POST_CREATE_FAILED: '投稿の作成に失敗しました',
     POST_UPDATE_SUCCESSED: '投稿の更新に成功しました',
     POST_UPDATE_FAILED: '投稿の更新に失敗しました',
