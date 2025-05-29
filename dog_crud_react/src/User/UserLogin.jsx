@@ -27,7 +27,7 @@ function UserLogin() {
             alert(MESSAGES.ALREADY_LOGGED_IN);
             navigate(ROUTES.POST_INDEX)
         }
-    }, []);
+    }, [isAuthenticated, isSubmitting, navigate]);
 
     /**
      * フォーム送信時に実行されるログイン処理

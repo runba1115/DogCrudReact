@@ -15,7 +15,7 @@ import { Autocomplete, Box, Button, Card, CardActions, CardContent, FormControl,
  * @param {String} buttonLabel フォームを送信するボタンに表示する文字列
  * @returns 
  */
-function PostFormFields({ formTitle, post, setPost, handleSubmit, buttonLabel }) {
+function PostFormFields({ formTitle, post, setPost, handleSubmit, isSubmitting, buttonLabel }) {
     const [ages, setAges] = useState([]);
     const showErrorMessage = useShowErrorMessage();
     const createErrorFromResponse = useCreateErrorFromResponse();
@@ -107,6 +107,7 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, buttonLabel })
                         value={post.title}
                         onChange={handleChange}
                         fullWidth
+                        disabled={isSubmitting}
                     />
 
                     {/* 内容 */}
@@ -119,6 +120,7 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, buttonLabel })
                         value={post.content}
                         onChange={handleChange}
                         fullWidth
+                        disabled={isSubmitting}
                     />
 
                     {/* 年齢（コンボボックス） */}
@@ -129,6 +131,7 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, buttonLabel })
                             name="ageId"
                             value={post.ageId}
                             onChange={handleChange}
+                            disabled={isSubmitting}
                         >
                             {ages.map((age) => (
                                 <FormControlLabel
@@ -136,6 +139,7 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, buttonLabel })
                                     value={age.id}
                                     control={<Radio />}
                                     label={age.value}
+                                    disabled={isSubmitting}
                                 />
                             ))}
                         </RadioGroup>
@@ -148,6 +152,7 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, buttonLabel })
                         name="ageId"
                         getOptionLabel={(option) => option.value}
                         value={ages.find((age) => age.id === post.ageId) || null}
+                        disabled={isSubmitting}
                         onChange={(_, newValue) => {
 
                             setPost(prevPost => ({
@@ -175,11 +180,11 @@ function PostFormFields({ formTitle, post, setPost, handleSubmit, buttonLabel })
                     flexDirection: 'column',
                     gap: 2,
                 }}>
-                    <Button variant="outlined" onClick={handleImageChange}>
+                    <Button variant="outlined" loading={isSubmitting}>
                         ほかの子にする
                     </Button>
 
-                    <Button type="submit" variant="contained">
+                    <Button type="submit" variant="contained" loading={isSubmitting}>
                         {buttonLabel}
                     </Button>
                 </CardActions>

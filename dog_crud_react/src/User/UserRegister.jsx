@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { COMMON_STYLE, MESSAGES, ROUTES } from '../config/Constant';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
-import { Box, Button, Card, CardActions, CardContent, Container, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
 
 /**
  * ユーザー登録画面
@@ -78,6 +78,7 @@ function UserRegister() {
                     required
                     fullWidth
                     onChange={handleChange}
+                    disabled={isSubmitting}
                 />
 
                 <TextField
@@ -88,6 +89,7 @@ function UserRegister() {
                     required
                     fullWidth
                     onChange={handleChange}
+                    disabled={isSubmitting}
                 />
 
                 <TextField
@@ -98,12 +100,14 @@ function UserRegister() {
                     required
                     fullWidth
                     onChange={handleChange}
+                    disabled={isSubmitting}
                 />
             </CardContent>
             <CardActions sx={{m: 'auto', display: 'flex', justifyContent: 'center'}}>
                 <Button
                     variant="contained"
                     type="submit"
+                    loading={isSubmitting}
                 >
                     登録する
                 </Button>

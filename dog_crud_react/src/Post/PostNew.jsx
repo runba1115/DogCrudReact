@@ -84,6 +84,7 @@ function PostNew() {
             post={post}
             setPost={setPost}
             handleSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
             buttonLabel={"投稿する"}
         />
     );

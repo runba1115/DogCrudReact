@@ -29,7 +29,7 @@ function PostEdit() {
     const showErrorMessage = useShowErrorMessage();
     const navigate = useNavigate();
     const showValidatedMessage = useShowValidatedMessage();
-    const [ isInitialized, setIsInitialized] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     /**
      * フォームが送信されたときのハンドラ
@@ -41,16 +41,16 @@ function PostEdit() {
             return;
         }
 
+        // フォームのデフォルトの送信動作をキャンセルする
+        e.preventDefault();
+
+        setIsSubmitting(true);
+
         // 更新確認ダイアログの表示を行う（キャンセルされたら中断）
         if (!window.confirm(MESSAGES.POST_EXECUTE_CONFIRM)) {
             alert("キャンセルされました");
             return;
         }
-
-        setIsSubmitting(true);
-
-        // フォームのデフォルトの送信動作をキャンセルする
-        e.preventDefault();
 
         try {
             // API を呼び出して投稿を更新する
@@ -107,8 +107,8 @@ function PostEdit() {
         // 初回のみ実行するため、初期化済みフラグがtrueなら以降の処理を行わない
         // ※useEffectは第二引数の[]内を空にすることで1回のみ行われるようにできるが、第1引数の処理に影響を与えるものを第2引数に格納するのがuseEffectの記載として望ましい。
         //   その形を維持しつつ、最初の1回のみ実行される洋子の形としている。
-        if(isInitialized){
-            return ;
+        if (isInitialized) {
+            return;
         }
 
         setIsInitialized(true);
@@ -171,6 +171,7 @@ function PostEdit() {
             post={post}
             setPost={setPost}
             handleSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
             buttonLabel={"更新する"}
         />
     );

@@ -9,15 +9,24 @@ import Header from './components/Header';
 import UserRegister from './User/UserRegister';
 import UserLogin from './User/UserLogin';
 import { useUser } from './contexts/UserContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Loading from './components/Loading';
 
 function App() {
     const { isUserInfoLoading, initializeUser } = useUser();
+    const [ isInitialized, setIsInitialized ] = useState(false);
+
+    /**
+     * ユーザー情報を取得する（1回のみ実行する）
+     */
     useEffect(() => {
-        // ログイン情報を取得する
-        initializeUser();
-    }, [initializeUser]);
+        // 1回のみ実行するためのフラグ確認
+        if (!isInitialized) {
+            // ログイン情報を取得する
+            setIsInitialized(true);
+            initializeUser();
+        }
+    }, [isInitialized, initializeUser]);
 
     // ユーザー情報が読み込み中の場合、読み込み中画面を表示する
     if (isUserInfoLoading) {
